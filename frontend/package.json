@@ -4,7 +4,9 @@
   "main": "expo-router/entry",
   "dependencies": {
     "expo": "54",
+    "expo-blur": "~15.0.8",
     "expo-constants": "~18.0.14",
+    "expo-linear-gradient": "~15.0.8",
     "expo-linking": "~8.0.12",
     "expo-router": "~6.0.24",
     "expo-splash-screen": "~31.0.13",

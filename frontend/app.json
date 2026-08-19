@@ -7,6 +7,11 @@
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "scheme": "microfinanceapp",
+     "splash": {
+      "image": "./assets/icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#1B5E20"
+    },
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.ginabun.microfinanceapp",
