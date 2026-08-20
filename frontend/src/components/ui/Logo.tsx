@@ -23,7 +23,7 @@ export function Logo({type} : LogoProps) {
                   </Text>
                   <Text 
                    className= "text-lg font-bold -mt-4"
-                   style={{color: colors.textSecondary}}
+                   style={{color: type === "green" ? colors.textInverted : colors.textSecondary}}
                    >
                     {type === 'white' ? "ADVENTIST HERITAGE" : "GROWTH & STEWARDSHIP"}
                   </Text>
