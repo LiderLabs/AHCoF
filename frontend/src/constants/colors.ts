@@ -68,6 +68,7 @@ export const colors = {
   textSecondary: palette.gray600,
   textPrimary: palette.charcaol900,
   textInverted: palette.white,
+  textPlaceholder: palette.gray500,
 
   //Border
   buttonBorder: palette.green700,

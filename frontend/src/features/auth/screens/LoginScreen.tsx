@@ -2,6 +2,7 @@ import { View, Text, TextInput, Pressable, ImageBackground } from 'react-native'
 import { useState } from 'react';
 import { colors } from '@/src/constants/colors';
 import { Logo } from '@/src/components/ui/Logo';
+import { Button } from '@/src/components/ui/Button';
 
 
 export default function LoginScreen() {
@@ -39,13 +40,7 @@ export default function LoginScreen() {
         secureTextEntry
       />
 
-      <Pressable
-        className="w-full rounded-lg py-3 items-center"
-        style={{ backgroundColor: '#1B5E20' }}
-        onPress={() => console.log('Login pressed:', membershipId, password)}
-      >
-        <Text className="text-white font-semibold">Log In</Text>
-      </Pressable>
+      <Button label='Log In'/>
     </View>
   );
 }
