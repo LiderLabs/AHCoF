@@ -1,0 +1,44 @@
+ahcof-backend/
+├── app/
+│   ├── main.py
+│   ├── api/
+│   │   ├── router.py
+│   │   └── v1/
+│   ├── core/
+│   │   ├── config.py
+│   │   ├── database.py
+│   │   ├── security.py
+│   │   ├── logging.py
+│   │   └── exceptions.py
+│   ├── common/
+│   │   ├── enums.py
+│   │   ├── pagination.py
+│   │   └── responses.py
+│   ├── modules/
+│   │   ├── auth/
+│   │   ├── members/
+│   │   ├── dashboard/
+│   │   ├── savings/
+│   │   ├── loans/
+│   │   ├── shares/
+│   │   ├── transactions/
+│   │   ├── notifications/
+│   │   ├── forms/
+│   │   ├── statements/
+│   │   ├── payments/
+│   │   └── audit/
+│   └── scripts/
+│       └── seed_demo_data.py
+├── alembic/
+├── tests/
+│   ├── unit/
+│   ├── integration/
+│   └── conftest.py
+├── docker/
+│   └── Dockerfile
+├── docker-compose.yml
+├── alembic.ini
+├── pyproject.toml
+├── .env.example
+├── .gitignore
+└── README.md
