@@ -9,6 +9,7 @@ import { ShieldCheck, Users, Leaf } from "lucide-react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { BlurView } from "expo-blur";
 import { Button } from "@/src/components/ui/Button";
+import { Logo } from "@/src/components/ui/Logo";
 
 export default function SplashScreen() {
   const router = useRouter();
@@ -70,23 +71,10 @@ export default function SplashScreen() {
       tint="light"
       className="flex flex-col items-center gap-4 flex-1 justify-center items-center px-6">
         {/* Logo is here */}
-        <View className="flex flex-col items-center gap-4">
-          <Image
-            source={require("@/assets/logo_white.png")}
-            style={{ width: 120, height: 120 }}
-            resizeMode="contain"
-          />
-          <Text
-            className="text-3xl font-bold mb-2"
-            style={{ color: "#1B5E20" }}
-          >
-            AHCoF
-          </Text>
-          <Text className="text-gray-500 text-lg font-bold -mt-4">
-            ADVENTIST HERITAGE
-          </Text>
-        </View>
+        <Logo type="white"/>
 
+
+        {/* Splash screen onboarding text */}
         <View className="flex flex-col gap-3 py-3 mt-9 w-full">
           <Text className="text-2xl text-center font-bold">
             Supporting Adventist Financial Independence
