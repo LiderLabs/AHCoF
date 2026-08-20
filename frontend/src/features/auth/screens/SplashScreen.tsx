@@ -1,7 +1,6 @@
 import {
   View,
   Text,
-  Pressable,
   Image,
   ImageBackground,
 } from "react-native";
@@ -9,9 +8,25 @@ import { useRouter } from "expo-router";
 import { ShieldCheck, Users, Leaf } from "lucide-react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { BlurView } from "expo-blur";
+import { Button } from "@/src/components/ui/Button";
 
 export default function SplashScreen() {
   const router = useRouter();
+
+  const actions = [
+  {
+    key: 'get-started',
+    label: 'Get Started',
+    variant: 'primary' as const,
+    onPress: () => router.push('/(auth)/login'),
+  },
+  {
+    key: 'learn-more',
+    label: 'Learn More',
+    variant: 'secondary' as const,
+    onPress: () => router.push(''),
+  },
+]
 
   return (
     <ImageBackground
@@ -34,24 +49,25 @@ export default function SplashScreen() {
         colors={[
           "transparent",
           "rgba(255,255,255,0.05)",
+          "rgba(255,255,255,0.07)",
           "rgba(255,255,255,0.15)",
-          "rgba(255,255,255,0.35)",
-          "rgba(255,255,255,0.7)",
+          "rgba(255,255,255,0.3)",
         ]}
-        locations={[0, 0.25, 0.45, 0.6, 0.75, 0.9, 1]}
+        locations={[0, 0.2, 0.4, 0.6, 0.8, 1]}
         style={{
           position: "absolute",
           bottom: 0,
           left: 0,
           right: 0,
-          height: 40,
+          height: 150,
         }}
         pointerEvents="none"
       />
 
       {/* Main Content */}
       <BlurView 
-      
+      intensity={5}
+      tint="light"
       className="flex flex-col items-center gap-4 flex-1 justify-center items-center px-6">
         <View className="flex flex-col items-center gap-4">
           <Image
@@ -80,29 +96,11 @@ export default function SplashScreen() {
           </Text>
         </View>
 
+          {/* Buttons */}
         <View className="w-full flex gap-2 mt-6">
-          <Pressable
-            className="w-full rounded-xl py-3 items-center mb-4 "
-            style={{ backgroundColor: "#1B5E20" }}
-            onPress={() => router.push("/(auth)/login")}
-          >
-            <Text className="text-white font-semibold py-2 text-2xl">
-              Get Started
-            </Text>
-          </Pressable>
-
-          <Pressable
-            className="w-full rounded-xl py-3 items-center border-2"
-            style={{ borderColor: "#1B5E20" }}
-            onPress={() => router.push("/(auth)/onboarding")}
-          >
-            <Text
-              style={{ color: "#1B5E20" }}
-              className="font-semibold py-2 text-2xl"
-            >
-              Learn More
-            </Text>
-          </Pressable>
+          {actions.map(({key, ...buttonProps}) => (
+            <Button key={key} {...buttonProps}/>
+          ))}
         </View>
 
         <View className="flex-row items-center gap-3 mt-3 text-gray-400">
