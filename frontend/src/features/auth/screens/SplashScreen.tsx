@@ -69,6 +69,7 @@ export default function SplashScreen() {
       intensity={5}
       tint="light"
       className="flex flex-col items-center gap-4 flex-1 justify-center items-center px-6">
+        {/* Logo is here */}
         <View className="flex flex-col items-center gap-4">
           <Image
             source={require("@/assets/logo_white.png")}
