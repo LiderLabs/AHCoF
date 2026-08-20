@@ -64,13 +64,17 @@ export const colors = {
   splashGradientLocations: [0, 0.25, 0.45, 0.6, 0.75, 0.9, 1],
 
   //Text
-  textPrimary: palette.green700,
+  textLogo: palette.green700,
   textSecondary: palette.gray600,
-  textInverse: palette.white,
-  textDark: palette.charcaol900,
+  textPrimary: palette.charcaol900,
 
   //Border
   buttonBorder: palette.green700,
+  
+  //Button(bg and text)
+  buttonTransparent: 'transparent',
+  buttonTextPrimary: palette.white,
+  buttonTextSecondary: palette.green700,
 
   //Icons
   iconColor: palette.gray600,

@@ -1,7 +1,7 @@
 import {
   View,
   Text,
-  TouchableOpacity,
+  Pressable,
   Image,
   ImageBackground,
 } from "react-native";
@@ -81,7 +81,7 @@ export default function SplashScreen() {
         </View>
 
         <View className="w-full flex gap-2 mt-6">
-          <TouchableOpacity
+          <Pressable
             className="w-full rounded-xl py-3 items-center mb-4 "
             style={{ backgroundColor: "#1B5E20" }}
             onPress={() => router.push("/(auth)/login")}
@@ -89,9 +89,9 @@ export default function SplashScreen() {
             <Text className="text-white font-semibold py-2 text-2xl">
               Get Started
             </Text>
-          </TouchableOpacity>
+          </Pressable>
 
-          <TouchableOpacity
+          <Pressable
             className="w-full rounded-xl py-3 items-center border-2"
             style={{ borderColor: "#1B5E20" }}
             onPress={() => router.push("/(auth)/onboarding")}
@@ -102,7 +102,7 @@ export default function SplashScreen() {
             >
               Learn More
             </Text>
-          </TouchableOpacity>
+          </Pressable>
         </View>
 
         <View className="flex-row items-center gap-3 mt-3 text-gray-400">

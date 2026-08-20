@@ -1,4 +1,4 @@
-import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, Pressable } from 'react-native';
 import { useState } from 'react';
 
 export default function LoginScreen() {
@@ -27,13 +27,13 @@ export default function LoginScreen() {
         secureTextEntry
       />
 
-      <TouchableOpacity
+      <Pressable
         className="w-full rounded-lg py-3 items-center"
         style={{ backgroundColor: '#1B5E20' }}
         onPress={() => console.log('Login pressed:', membershipId, password)}
       >
         <Text className="text-white font-semibold">Log In</Text>
-      </TouchableOpacity>
+      </Pressable>
     </View>
   );
 }
