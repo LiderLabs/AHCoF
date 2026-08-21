@@ -9,8 +9,8 @@ export function LoginForm() {
 
   return (
     <View className="w-full">
-      <Input label="Email" value={email} onChangeText={setEmail} />
-      <Input label="Password" value={password} onChangeText={setPassword} secureTextEntry />
+      <Input label="Email" type="email" value={email} onChangeText={setEmail} />
+      <Input label="Password" type="password" value={password} onChangeText={setPassword} />
       <Button label="Log In" onPress={() => {/*later add login logic */}} />
     </View>
   );
