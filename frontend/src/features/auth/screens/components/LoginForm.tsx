@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { View } from "react-native";
-import { InputText } from "@/src/components/ui/InputText";
+import { Input } from "@/src/components/ui/Input";
 import { Button } from "@/src/components/ui/Button";
 
 export function LoginForm() {
@@ -9,8 +9,8 @@ export function LoginForm() {
 
   return (
     <View className="w-full">
-      <InputText label="Email" value={email} onChangeText={setEmail} />
-      <InputText label="Password" value={password} onChangeText={setPassword} secureTextEntry />
+      <Input label="Email" value={email} onChangeText={setEmail} />
+      <Input label="Password" value={password} onChangeText={setPassword} secureTextEntry />
       <Button label="Log In" onPress={() => {/*later add login logic */}} />
     </View>
   );
