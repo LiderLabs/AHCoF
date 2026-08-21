@@ -51,7 +51,7 @@ export default function SignupScreen() {
             Already have an account?{" "}
           </Text>
           <Text style={{ color: colors.primary, fontWeight: "600" }}>
-            Sign in
+            Login
           </Text>
         </Pressable>
       </ScrollView>

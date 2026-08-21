@@ -3,16 +3,16 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   Platform,
+  Pressable, 
+  Text,
 } from "react-native";
-import { useState } from "react";
+import { useRouter } from "expo-router";
 import { colors } from "@/src/constants/colors";
 import { Logo } from "@/src/components/ui/Logo";
-import { Button } from "@/src/components/ui/Button";
 import { LoginForm } from "./components/LoginForm";
 
 export default function LoginScreen() {
-  const [membershipId, setMembershipId] = useState("");
-  const [password, setPassword] = useState("");
+ const router = useRouter();
 
   return (
     <KeyboardAvoidingView
@@ -37,8 +37,22 @@ export default function LoginScreen() {
         >
           <Logo type="green" />
         </ImageBackground>
+
         {/* Login Form */}
         <LoginForm />
+
+        {/* Don't have an account */}
+        <Pressable
+          onPress={() => router.push("/(auth)/signup")}
+          className="flex-row justify-center mt-2"
+        >
+          <Text style={{ color: colors.textSecondary }}>
+            Don't have an account?{" "}
+          </Text>
+          <Text style={{ color: colors.primary, fontWeight: "600" }}>
+            Sign up
+          </Text>
+        </Pressable>
       </ScrollView>
     </KeyboardAvoidingView>
   );
