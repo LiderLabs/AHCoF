@@ -27,7 +27,7 @@ export function Input({ label, error, type = "text", ...rest }: InputProps) {
 
       <View className="relative justify-center"> 
         <TextInput
-          className="border rounded-xl px-4 py-3"
+          className="border rounded-xl px-4 py-5"
           style={{ borderColor: error ? "red" : colors.primary }}
           placeholderTextColor={colors.textSecondary}
           keyboardType={keyboardType}
