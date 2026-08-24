@@ -58,7 +58,7 @@ export function Dashboard() {
 
         {/* Portfolio Summary */}
         <View>
-          <Text className="text-lg font-bold mb-3">Portfolio Summary</Text>
+          <Text className="text-xl font-bold mb-3">Portfolio Summary</Text>
 
           <View className="flex-row gap-3 mb-3">
             <SummaryCard
@@ -98,7 +98,7 @@ export function Dashboard() {
 
         {/* Quick Actions */}
         <View>
-          <Text className="text-lg font-bold mb-3">Quick Actions</Text>
+          <Text className="text-xl font-bold mb-3">Quick Actions</Text>
           <View className="flex-row justify-between">
             <QuickActionButton
               icon={<PlusCircle size={24} color="white" />}
@@ -129,7 +129,7 @@ export function Dashboard() {
 
         {/* Mobile Money */}
         <View>
-          <Text className="text-lg font-bold mb-3">Mobile Money</Text>
+          <Text className="text-xl font-bold mb-3">Mobile Money</Text>
           <View className="flex-row gap-3">
             <InfoCard
               icon={<Smartphone size={18} color={colors.primary} />}
@@ -149,9 +149,9 @@ export function Dashboard() {
         {/* Recent Activities */}
         <View>
           <View className="flex-row justify-between items-center mb-1">
-            <Text className="text-lg font-bold">Recent Activities</Text>
+            <Text className="text-xl font-bold px-1 pb-2">Recent Activities</Text>
             <Text
-              className="text-sm font-semibold"
+              className="text-sm font-semibold self-end pr-2"
               style={{ color: colors.primary }}
               onPress={() => router.push("/activities")}
             >
@@ -193,13 +193,13 @@ export function Dashboard() {
         {/* Bottom feature cards */}
         <View className="flex-row gap-3">
           <FeatureCard
-            icon={<HeartHandshake size={22} color="white" />}
+            icon={<HeartHandshake size={32} color={colors.iconColorLight} />}
             title="Welfare Support"
             subtitle="Emergency community funds available."
             backgroundColor={colors.primary}
           />
           <FeatureCard
-            icon={<Share2 size={22} color="white" />}
+            icon={<Share2 size={32} color={colors.iconColorLight} />}
             title="Refer a Member"
             subtitle="Earn Points"
             backgroundColor="#134E4A"

@@ -6,7 +6,7 @@ import { colors } from "@/src/constants/colors";
 export function Header(){
 
     return (
-        <View className="flex-row items-center justify-between px-5">
+        <View className="flex-row items-center justify-between px-2">
            <View className="flex-row gap-2 items-center">
              {/* Profile image */}
             <ImageBackground style={{borderRadius: 50, borderWidth: 2, width: 60, height: 60, overflow: "hidden", }} source={require("@/assets/icon.png")}>

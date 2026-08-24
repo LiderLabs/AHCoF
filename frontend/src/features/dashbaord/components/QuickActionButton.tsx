@@ -18,11 +18,11 @@ export function QuickActionButton({
     <Pressable onPress={onPress} className="items-center" style={{ gap: 6 }}>
       <View
         className="items-center justify-center rounded-2xl"
-        style={{ width: 56, height: 56, backgroundColor }}
+        style={{ width: 70, height: 70, backgroundColor }}
       >
         {icon}
       </View>
-      <Text className="text-xs text-center">{label}</Text>
+      <Text className="text-sm text-center">{label}</Text>
     </Pressable>
   );
 }

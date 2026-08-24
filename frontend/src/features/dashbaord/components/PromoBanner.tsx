@@ -20,7 +20,7 @@ export function PromoBanner({ tag, title, buttonLabel, image, onPress }: PromoBa
         <Text className="font-bold text-base text-md mb-4">{title}</Text>
         <Button label={buttonLabel} onPress={onPress} className="text-md w-[70%]" fullWidth={false}/>
       </View>
-      <ImageBackground source={image} style={{ width: 160 }} imageStyle={{ resizeMode: "cover" }} />
+      <ImageBackground source={image} style={{ width: 160,  }} imageStyle={{ resizeMode: "cover", borderRadius: 10, }} />
     </Card>
   );
 }

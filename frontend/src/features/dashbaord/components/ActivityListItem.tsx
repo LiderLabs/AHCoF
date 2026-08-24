@@ -32,18 +32,18 @@ export function ActivityListItem({
           {icon}
         </View>
         <View className="flex-1">
-          <Text className="font-semibold text-sm">{title}</Text>
-          <Text className="text-xs" style={{ color: "#6B7280" }}>
+          <Text className="font-semibold text-md">{title}</Text>
+          <Text className="text-sm" style={{ color: "#6B7280" }}>
             {subtitle}
           </Text>
         </View>
       </View>
 
       <View className="items-end">
-        <Text className="font-semibold text-sm" style={{ color: amountColor }}>
+        <Text className="font-semibold text-md" style={{ color: amountColor }}>
           {amount}
         </Text>
-        <Text className="text-xs" style={{ color: statusColor }}>
+        <Text className="text-sm" style={{ color: statusColor }}>
           {status}
         </Text>
       </View>

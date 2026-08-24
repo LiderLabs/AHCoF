@@ -24,14 +24,14 @@ export function SummaryCard({
   return (
     <Card backgroundColor={backgroundColor} className="flex-1">
       <View className={`mb-6 self-start p-2 rounded-md`} style={{backgroundColor: "rgba(255,255,255,0.2)"}}>{icon}</View>
-      <Text className="text-sm mb-1" style={{ color: textColor, opacity: 0.8 }}>
+      <Text className="text-md mb-1" style={{ color: textColor, opacity: 0.8 }}>
         {label}
       </Text>
       <Text className="text-xl font-bold" style={{ color: textColor }}>
         {value}
       </Text>
       {subtext && (
-        <Text className="text-xs mt-1" style={{ color: subtextColor }}>
+        <Text className="text-sm font-bold mt-1" style={{ color: subtextColor }}>
           {subtext}
         </Text>
       )}

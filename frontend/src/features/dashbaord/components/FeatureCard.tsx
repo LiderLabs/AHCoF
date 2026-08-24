@@ -18,8 +18,8 @@ export function FeatureCard({ icon, title, subtitle, backgroundColor }: FeatureC
     >
       <View className="items-end">{icon}</View>
       <View>
-        <Text className="text-white font-bold text-base mb-1">{title}</Text>
-        <Text className="text-white text-xs" style={{ opacity: 0.85 }}>
+        <Text className="text-white text-md font-bold text-base mb-1">{title}</Text>
+        <Text className="text-white text-sm" style={{ opacity: 0.85 }}>
           {subtitle}
         </Text>
       </View>
