@@ -11,7 +11,7 @@ export function Logo({type} : LogoProps) {
     return (
            <View className="flex flex-col items-center gap-4">
                   <Image
-                    source={type === 'white' ? require("@/assets/logo_white.png") : require("@/assets/logo_green.png") }
+                    source={type === 'white' ? require("@/assets/logo_icon.png") : require("@/assets/logo_icon.png") }
                     style={{ width: 120, height: 120 }}
                     resizeMode="contain"
                   />

@@ -16,6 +16,9 @@ import {
   Compass,
   Grid3x3,
   User,
+  HelpCircle,
+  MessageSquare,
+  Bell
 } from "lucide-react-native";
 
 import { Header } from "@/src/components/ui/Header";
@@ -26,6 +29,7 @@ import { InfoCard } from "./components/InfoCard";
 import { ActivityListItem } from "./components/ActivityListItem";
 import { FeatureCard } from "./components/FeatureCard";
 import { BottomNavBar } from "@/src/components/ui/BottomNav";
+import { NotificationBadgeIcon } from "@/src/components/ui/NotificationBadgeIcon";
 import { colors } from "@/src/constants/colors";
 
 export function Dashboard() {
@@ -45,7 +49,18 @@ export function Dashboard() {
         contentContainerStyle={{ padding: 18, gap: 20, paddingBottom: 100 }}
       >
         {/* Header */}
-        <Header />
+            <Header
+        name="Elder Mensah"
+        status="Achiever"
+        avatar={require("@/assets/icon.png")}
+        actions={
+          <>
+            <HelpCircle size={24} color={colors.primary} />
+            <NotificationBadgeIcon icon={<Bell size={24} color={colors.primary} />} count={1} />
+            <MessageSquare size={24} color={colors.primary} />
+          </>
+        }
+      />
 
         {/* Promo banner */}
         <PromoBanner

@@ -22,7 +22,7 @@ export default function LoansScreen() {
       <Header
         name="Elder Mensah"
         status="Achiever"
-        avatar={require("@/assets/icon.png")}
+        avatar={require("@/assets/logo_icon.png")}
         actions={
           <>
             <HelpCircle size={24} color={colors.primary} />
