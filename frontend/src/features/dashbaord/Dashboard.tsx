@@ -110,7 +110,7 @@ export function Dashboard() {
               icon={<ClipboardList size={24} color="white" />}
               label="Apply Loan"
               backgroundColor="#B45309"
-              onPress={() => router.push("/loans/apply")}
+              onPress={() => router.push("/loans/newloan")}
             />
             <QuickActionButton
               icon={<CreditCard size={24} color="white" />}
