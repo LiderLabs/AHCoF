@@ -1,33 +1,36 @@
 import { View, ImageBackground, Text } from "react-native";
-import { Dot, CircleQuestionMark, Bell, MessageSquare } from "lucide-react-native";
+import { ReactNode } from "react";
+import { Dot } from "lucide-react-native";
 import { colors } from "@/src/constants/colors";
 
+interface HeaderProps {
+  name: string;
+  status: string;
+  avatar: any;
+  actions?: ReactNode;
+}
 
-export function Header(){
-
-    return (
-        <View className="flex-row items-center justify-between px-2">
-           <View className="flex-row gap-2 items-center">
-             {/* Profile image */}
-            <ImageBackground style={{borderRadius: 50, borderWidth: 2, width: 60, height: 60, overflow: "hidden", }} source={require("@/assets/icon.png")}>
-
-            </ImageBackground>
-            {/* Name and status */}
-            <View className="flex-col justify-center pt-3">
-                <Text className="text-2xl -mb-4">Hi, Username</Text>
-                <View className="flex-row items-center">
-                    <Text className="text-lg">Achiever</Text>
-                    <Dot size={50} color={colors.primary} style={{marginLeft: -15}}/>
-                </View>
-            </View>
-           </View>
-
-            {/* notification icons */}
-            <View className="flex-row gap-6">
-                <CircleQuestionMark size={27}/>
-                <Bell size={27}/>
-                <MessageSquare size={27}/>
-            </View>
+export function Header({ name, status, avatar, actions }: HeaderProps) {
+  return (
+    <View className="flex-row items-center justify-between px-5">
+      <View className="flex-row gap-2 items-center">
+        <ImageBackground
+          style={{ borderRadius: 30, borderWidth: 2, width: 60, height: 60, overflow: "hidden" }}
+          imageStyle={{ resizeMode: "cover" }}
+          source={avatar}
+        />
+        <View className="flex-col justify-center">
+          <Text className="text-2xl" style={{ lineHeight: 26 }}>
+            Hi, {name}
+          </Text>
+          <View className="flex-row items-center gap-1">
+            <Text className="text-lg">{status}</Text>
+            <Dot size={8} color={colors.primary} />
+          </View>
         </View>
-    )
+      </View>
+
+      <View className="flex-row gap-6 items-center">{actions}</View>
+    </View>
+  );
 }
