@@ -23,7 +23,7 @@ export function SummaryCard({
 }: SummaryCardProps) {
   return (
     <Card backgroundColor={backgroundColor} className="flex-1">
-      <View className="mb-6">{icon}</View>
+      <View className={`mb-6 self-start p-2 rounded-md`} style={{backgroundColor: "rgba(255,255,255,0.2)"}}>{icon}</View>
       <Text className="text-sm mb-1" style={{ color: textColor, opacity: 0.8 }}>
         {label}
       </Text>

@@ -9,6 +9,7 @@ interface ButtonProps extends PressableProps {
   icon?: ReactNode;
   iconPosition?: "left" | "right";
   className?: string;
+  fullWidth?: boolean;
 }
 
 export function Button({
@@ -18,6 +19,7 @@ export function Button({
   className = "",
   icon,
   iconPosition = "left",
+  fullWidth = true,
   ...rest
 }: ButtonProps) {
   const variantStyles = {
@@ -36,14 +38,14 @@ export function Button({
 
   return (
     <Pressable
-      className={`${className} w-full rounded-xl py-3 items-center mb-4 ${icon ? "flex-row" : ""}`}
+      className={`${fullWidth ? "w-full py-3" : ""} ${className} rounded-xl py-1 items-center mb-4 ${icon ? "flex-row" : ""}`}
       style={variantStyles[variant]}
       onPress={onPress}
       {...rest}
     >
       {icon && iconPosition == "left" && icon}
       <Text
-        className={`font-semibold py-2 text-2xl`}
+        className={`font-semibold py-2 ${fullWidth ? "text-2xl" : ""}`}
         style={textStyles[variant]}
       >
         {label}
