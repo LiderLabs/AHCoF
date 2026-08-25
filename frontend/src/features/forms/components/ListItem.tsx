@@ -55,7 +55,7 @@ export function ListItem({
         <View className="flex-1">
           <Text
             className="text-base font-semibold"
-            style={{ color: colors.text }}
+            style={{ color: colors.textPrimary }}
             numberOfLines={1}
           >
             {label}
