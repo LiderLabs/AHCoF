@@ -1,6 +1,7 @@
 from sqlalchemy import select
 
 from app.core.database import SessionLocal
+from app.core.security import hash_password
 from app.modules.members.model import Member
 
 
@@ -13,7 +14,14 @@ def seed_demo_member() -> None:
         )
 
         if existing_member is not None:
-            print("Demo member already exists.")
+            if existing_member.password_hash is None:
+                existing_member.password_hash = hash_password(
+                    "demo-password"
+                )
+                db.commit()
+                print("Demo member password updated.")
+            else:
+                print("Demo member already exists.")
             return
 
         member = Member(
@@ -29,6 +37,7 @@ def seed_demo_member() -> None:
             is_demo=True,
             accounts=[],
             gps_address="Kumasi, Ashanti Region, Ghana",
+            password_hash=hash_password("demo-password"),
         )
 
         db.add(member)

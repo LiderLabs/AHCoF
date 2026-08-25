@@ -73,3 +73,21 @@ class MemberResponse(BaseModel):
     updated_at: datetime
     accounts: list[str] = Field(default_factory=list)
     gps_address: str | None
+
+
+class LoginRequest(BaseModel):
+    model_config = api_model_config
+
+    phone_number: str
+    password: str
+
+
+class TokenResponse(BaseModel):
+    model_config = api_model_config
+
+    access_token: str
+    token_type: str = "bearer"
+
+
+class CurrentMemberResponse(MemberResponse):
+    pass
