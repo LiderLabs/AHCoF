@@ -5,7 +5,7 @@ export const navItems = [
   {
     key: "portfolio",
     label: "Portfolio",
-    route: "/dashboard",
+    route: "/portfolio",
     icon: (active: boolean) => (
       <Home size={22} color={active ? colors.primary : "#9CA3AF"} />
     ),

@@ -30,7 +30,7 @@ export default function ProfileScreen() {
     navItems.find((item) => item.route === pathname)?.key ?? "profile";
 
   return (
-    <View className="flex-1" style={{ backgroundColor: "#F5F6FA" }}>
+    <View className="flex-1 pt-6" style={{ backgroundColor: "#F5F6FA" }}>
       <ScrollView
         className="flex-1 px-4"
         contentContainerStyle={{ paddingTop: 16, paddingBottom: 24 }}
