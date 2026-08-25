@@ -113,7 +113,7 @@ export function Dashboard() {
               icon={<PlusCircle size={24} color="white" />}
               label="Save Money"
               backgroundColor={colors.primary}
-              onPress={() => router.push("/savings/new")}
+              onPress={() => router.push("/savings/savingspage")}
             />
             <QuickActionButton
               icon={<ClipboardList size={24} color="white" />}
