@@ -31,16 +31,10 @@ import { FeatureCard } from "./components/FeatureCard";
 import { BottomNavBar } from "@/src/components/ui/BottomNav";
 import { NotificationBadgeIcon } from "@/src/components/ui/NotificationBadgeIcon";
 import { colors } from "@/src/constants/colors";
+import { navItems } from "@/src/constants/navItems";
 
 export function Dashboard() {
   const router = useRouter();
-
-  const navItems = [
-    { key: "portfolio", label: "Portfolio", icon: <Home size={22} />, route: "/dashboard" },
-    { key: "explore", label: "Explore", icon: <Compass size={22} />, route: "/explore" },
-    { key: "more", label: "More", icon: <Grid3x3 size={22} />, route: "/more" },
-    { key: "profile", label: "Profile", icon: <User size={22} />, route: "/profile" },
-  ];
 
   return (
     <View className="flex-1 bg-white pt-6">
