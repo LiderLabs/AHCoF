@@ -59,7 +59,7 @@ export function SignupForm() {
 
   const handleSignup = () => {
     // add signup logic afterwards
-    router.replace("/profile");
+    router.replace("/portfolio");
   };
 
   return (

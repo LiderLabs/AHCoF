@@ -1,6 +1,6 @@
 
 import { Dashboard } from '@/src/features/dashbaord/Dashboard';
 
-export default function Profile() {
+export default function Portfolio() {
   return <Dashboard />;
 }

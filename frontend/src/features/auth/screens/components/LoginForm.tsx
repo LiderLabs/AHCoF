@@ -29,7 +29,7 @@ export function LoginForm() {
 
   const handleLogin = () => {
     // real logic comes here later
-    router.replace("/profile");
+    router.replace("/portfolio");
   };
 
   return (
