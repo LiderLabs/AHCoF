@@ -36,6 +36,8 @@ export default function LoansScreen() {
       <View className="pt-0 pb-1 -mb-5">
         <BackButton />
       </View>
+
+      {/* Header */}
       <Header
         name="Elder Mensah"
         status="Achiever"
