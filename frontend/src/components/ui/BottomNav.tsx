@@ -5,7 +5,7 @@ import { colors } from "@/src/constants/colors";
 interface NavItem {
   key: string;
   label: string;
-  icon: ReactNode;
+  icon: (isActive: boolean)=> ReactNode;
   route: string;
 }
 
@@ -30,10 +30,12 @@ export function BottomNavBar({ items, activeKey, onNavigate }: BottomNavBarProps
             className="items-center"
             style={{ gap: 2 }}
           >
-            {item.icon}
+            {item.icon(isActive)}
             <Text
               className="text-xs"
-              style={{ color: isActive ? colors.primary : "#9CA3AF" }}
+              style={{ color: isActive ? colors.primary : "#9CA3AF",
+                       fontWeight: isActive ? "600" : "400",
+               }}
             >
               {item.label}
             </Text>
