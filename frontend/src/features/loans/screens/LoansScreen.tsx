@@ -1,9 +1,18 @@
 import { ScrollView, View, Text } from "react-native";
 import { useRouter } from "expo-router";
 import {
-  Landmark, PlusCircle, BarChart3, CalendarClock,
-  Home, GraduationCap, Stethoscope, Rocket, PiggyBank,
-  HelpCircle, Bell, MessageSquare,
+  Landmark,
+  PlusCircle,
+  BarChart3,
+  CalendarClock,
+  Home,
+  GraduationCap,
+  Stethoscope,
+  Rocket,
+  PiggyBank,
+  HelpCircle,
+  Bell,
+  MessageSquare,
 } from "lucide-react-native";
 
 import { Header } from "@/src/components/ui/Header";
@@ -13,12 +22,20 @@ import { QuickActionButton } from "../../dashbaord/components/QuickActionButton"
 import { CategoryCard } from "../components/CategoryCard";
 import { TipCard } from "../components/TipCard";
 import { colors } from "@/src/constants/colors";
+import { BackButton } from "@/src/components/ui/BackButton";
 
 export default function LoansScreen() {
   const router = useRouter();
 
   return (
-    <ScrollView contentContainerStyle={{ padding: 16, gap: 20, paddingBottom: 40 }} className="bg-white flex-1 pt-6">
+    <ScrollView
+      contentContainerStyle={{ padding: 16, gap: 20, paddingBottom: 40 }}
+      className="bg-white flex-1 pt-4"
+    >
+      {/* Back button */}
+      <View className="pt-0 pb-1 -mb-5">
+        <BackButton />
+      </View>
       <Header
         name="Elder Mensah"
         status="Achiever"
@@ -26,7 +43,10 @@ export default function LoansScreen() {
         actions={
           <>
             <HelpCircle size={24} color={colors.primary} />
-            <NotificationBadgeIcon icon={<Bell size={24} color={colors.primary} />} count={1} />
+            <NotificationBadgeIcon
+              icon={<Bell size={24} color={colors.primary} />}
+              count={1}
+            />
             <MessageSquare size={24} color={colors.primary} />
           </>
         }
@@ -48,27 +68,66 @@ export default function LoansScreen() {
       />
 
       <View className="flex-row justify-between">
-        <QuickActionButton icon={<PlusCircle size={22} color={colors.primary} />} label="Apply Now" backgroundColor="#F0FDF4" onPress={() => router.push("/loans/apply")} />
-        <QuickActionButton icon={<BarChart3 size={22} color="#92400E" />} label="Track App" backgroundColor="#FEF3C7" onPress={() => router.push("/loans/track")} />
-        <QuickActionButton icon={<CalendarClock size={22} color="#374151" />} label="Schedule" backgroundColor="#F3F4F6" onPress={() => router.push("/loans/schedule")} />
+        <QuickActionButton
+          icon={<PlusCircle size={22} color={colors.primary} />}
+          label="Apply Now"
+          backgroundColor="#F0FDF4"
+          onPress={() => router.push("/loans/apply")}
+        />
+        <QuickActionButton
+          icon={<BarChart3 size={22} color="#92400E" />}
+          label="Track App"
+          backgroundColor="#FEF3C7"
+          onPress={() => router.push("/loans/track")}
+        />
+        <QuickActionButton
+          icon={<CalendarClock size={22} color="#374151" />}
+          label="Schedule"
+          backgroundColor="#F3F4F6"
+          onPress={() => router.push("/loans/schedule")}
+        />
       </View>
 
       <View>
         <View className="flex-row justify-between items-center mb-3">
           <Text className="text-lg font-bold">Loan Categories</Text>
-          <Text className="text-sm font-semibold" style={{ color: colors.primary }} onPress={() => router.push("/loans/categories")}>
+          <Text
+            className="text-sm font-semibold"
+            style={{ color: colors.primary }}
+            onPress={() => router.push("/loans/categories")}
+          >
             View all
           </Text>
         </View>
 
         <View className="gap-3">
           <View className="flex-row gap-3">
-            <CategoryCard label="Housing" icon={<Home size={18} color="white" />} image={require("@/assets/img-housing-loan.png")} onPress={() => router.push("/loans/housing")} />
-            <CategoryCard label="Education" icon={<GraduationCap size={18} color="white" />} image={require("@/assets/img-education-loan.png")} onPress={() => router.push("/loans/education")} />
+            <CategoryCard
+              label="Housing"
+              icon={<Home size={18} color="white" />}
+              image={require("@/assets/img-housing-loan.png")}
+              onPress={() => router.push("/loans/housing")}
+            />
+            <CategoryCard
+              label="Education"
+              icon={<GraduationCap size={18} color="white" />}
+              image={require("@/assets/img-education-loan.png")}
+              onPress={() => router.push("/loans/education")}
+            />
           </View>
           <View className="flex-row gap-3">
-            <CategoryCard label="Medical" icon={<Stethoscope size={18} color="white" />} image={require("@/assets/img-medical-loan.png")} onPress={() => router.push("/loans/medical")} />
-            <CategoryCard label="Personal" icon={<Rocket size={18} color="white" />} image={require("@/assets/img-personal-loan.png")} onPress={() => router.push("/loans/personal")} />
+            <CategoryCard
+              label="Medical"
+              icon={<Stethoscope size={18} color="white" />}
+              image={require("@/assets/img-medical-loan.png")}
+              onPress={() => router.push("/loans/medical")}
+            />
+            <CategoryCard
+              label="Personal"
+              icon={<Rocket size={18} color="white" />}
+              image={require("@/assets/img-personal-loan.png")}
+              onPress={() => router.push("/loans/personal")}
+            />
           </View>
         </View>
       </View>

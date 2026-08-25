@@ -12,7 +12,7 @@ interface HeaderProps {
 
 export function Header({ name, status, avatar, actions }: HeaderProps) {
   return (
-    <View className="flex-row items-center justify-between px-5">
+    <View className="flex-row items-center justify-between px-1">
       <View className="flex-row gap-2 items-center">
         <ImageBackground
           style={{ borderRadius: 30, borderWidth: 2, width: 60, height: 60, overflow: "hidden" }}

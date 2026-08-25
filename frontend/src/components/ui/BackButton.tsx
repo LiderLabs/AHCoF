@@ -13,7 +13,7 @@ export function BackButton({ onPress }: BackButtonProps) {
   return (
     <Pressable
       onPress={onPress ?? (() => router.back())}
-      className="items-center justify-center rounded-full mb-2"
+      className="items-center justify-center rounded-full"
       style={{ width: 36, height: 36, backgroundColor: "#F3F4F6" }}
     >
       <ChevronLeft size={20} color={colors.primary} />

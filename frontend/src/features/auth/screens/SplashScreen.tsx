@@ -92,7 +92,7 @@ export default function SplashScreen() {
           ))}
         </View>
 
-        <View className="flex-row items-center gap-3 mt-3 text-gray-400">
+        {/* <View className="flex-row items-center gap-3 mt-3 text-gray-400">
           <View className="flex-row gap-1 items-center">
             <ShieldCheck size={20} />
             <Text className="text-md">Secure</Text>
@@ -105,7 +105,7 @@ export default function SplashScreen() {
             <Leaf size={20} />
             <Text className="text-md">Ethical</Text>
           </View>
-        </View>
+        </View> */}
       </BlurView>
     </ImageBackground>
   );
