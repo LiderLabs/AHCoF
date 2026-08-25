@@ -110,7 +110,7 @@ export function FormsCenterScreen() {
           title="Streamlined Submissions"
           description="Fast-track your requests with our paperless workflow."
           buttonLabel="Learn about E-Sign"
-          image={require("@/assets/img_esign_tablet.png")}
+          image={require("@/assets/img_forms_center.png")}
           onPress={() => router.push("/forms/e-sign")}
         />
 
