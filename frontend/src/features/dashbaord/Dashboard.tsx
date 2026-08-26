@@ -144,13 +144,13 @@ export function Dashboard() {
               icon={<Smartphone size={18} color={colors.primary} />}
               title="Deposit Funds"
               subtitle="Instant deposit via MoMo"
-              onPress={() => router.push("/mobile-money/deposit")}
+              onPress={() => router.push("/deposit/")}
             />
             <InfoCard
               icon={<Wallet size={18} color={colors.primary} />}
               title="Withdraw Funds"
               subtitle="Secure withdrawal to wallet"
-              onPress={() => router.push("/mobile-money/withdraw")}
+              onPress={() => router.push("/withdraw")}
             />
           </View>
         </View>

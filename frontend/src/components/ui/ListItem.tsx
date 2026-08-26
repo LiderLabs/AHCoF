@@ -17,6 +17,7 @@ interface ListItemProps {
   disabled?: boolean;
   onPress?: () => void;
   className?: string;
+  rightIcon?: ReactNode;
 }
 
 export function ListItem({
@@ -33,6 +34,7 @@ export function ListItem({
   disabled = false,
   onPress,
   className = "",
+  rightIcon,
 }: ListItemProps) {
   return (
     <Pressable
