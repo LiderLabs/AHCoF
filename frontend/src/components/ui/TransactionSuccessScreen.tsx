@@ -8,6 +8,8 @@ import { colors } from "@/src/constants/colors";
 interface DetailRow {
   label: string;
   value: string;
+  valueBadge?: boolean;
+  copyable?: boolean;  
 }
 
 interface TransactionSuccessScreenProps {
