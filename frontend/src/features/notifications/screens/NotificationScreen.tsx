@@ -19,7 +19,6 @@ import { BottomNavBar } from "@/src/components/ui/BottomNav";
 import { navItems } from "@/src/constants/navItems";
 import { colors } from "@/src/constants/colors";
 
-// Placeholder — replace with real notifications from the API
 const notifications = [
   {
     key: "agm",
@@ -80,7 +79,7 @@ export default function NotificationsScreen() {
         contentContainerStyle={{ padding: 18, paddingBottom: 100 }}
       >
         <Header
-          name="Melchizedek"
+          name="Elder Mensah"
           status="Achiever"
           avatar={require("@/assets/logo_icon.png")}
           actions={

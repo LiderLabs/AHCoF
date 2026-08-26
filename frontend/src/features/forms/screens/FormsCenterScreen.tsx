@@ -80,7 +80,7 @@ export function FormsCenterScreen() {
         contentContainerStyle={{ padding: 18, gap: 20, paddingBottom: 100 }}
       >
         <Header
-          name="Melchizedek"
+          name="Elder Mensah"
           status="Achiever"
           avatar={require("@/assets/icon.png")}
           actions={
