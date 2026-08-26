@@ -24,7 +24,7 @@ export function DepositAmountScreen() {
   const canContinue = Number(amount) > 0 && !!providerId;
 
   return (
-    <View className="flex-1 bg-white px-4">
+    <View className="flex-1 bg-white px-4 pt-6">
       <TransactionHeader title="Deposit Funds" />
 
       <ScrollView contentContainerStyle={{ paddingBottom: 24, gap: 20 }}>
@@ -64,14 +64,14 @@ export function DepositAmountScreen() {
         </View>
       </ScrollView>
 
-      <View className="pb-4">
+      <View className="pb-6">
         <Button
           label="Continue"
           variant="primary"
           disabled={!canContinue}
           onPress={() =>
             router.push({
-              pathname: "/mobile-money/deposit/confirm",
+              pathname: "/deposit/confirm",
               params: { amount, providerId },
             })
           }

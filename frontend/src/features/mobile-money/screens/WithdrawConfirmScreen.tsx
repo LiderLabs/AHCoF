@@ -22,7 +22,7 @@ export function WithdrawConfirmScreen() {
   const total = Number(amount).toFixed(2);
 
   return (
-    <View className="flex-1 bg-white px-4">
+    <View className="flex-1 bg-white px-4 pt-6">
       <TransactionHeader title="Confirm Withdrawal" />
       <StepIndicator currentStep={2} totalSteps={3} />
 
@@ -75,14 +75,14 @@ export function WithdrawConfirmScreen() {
         />
       </ScrollView>
 
-      <View className="pb-4">
+      <View className="pb-6">
         <Button
           label="Confirm & Withdraw"
           variant="primary"
           icon={<Lock size={16} color="#fff" style={{ marginRight: 8 }} />}
           onPress={() =>
             router.push({
-              pathname: "/mobile-money/withdraw/success",
+              pathname: "/withdraw/success",
               params: {
                 amount: total,
                 providerId,

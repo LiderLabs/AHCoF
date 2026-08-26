@@ -15,7 +15,7 @@ export function WithdrawSuccessScreen() {
   const now = new Date();
 
   return (
-    <View className="flex-1 bg-white px-4 pt-6">
+    <View className="flex-1 bg-white px-4 pt-20 flex-col justify-center">
       <TransactionSuccessScreen
         title="Withdrawal Successful"
         description={`GHS ${amount} has been sent to your ${provider.name} wallet.`}
@@ -49,7 +49,7 @@ export function WithdrawSuccessScreen() {
             <Landmark size={28} color="#A7D0AE" />
           </View>
         }
-        onBackToDashboard={() => router.replace("/dashboard")}
+        onBackToDashboard={() => router.replace("/portfolio")}
         onDownloadReceipt={() => {}}
       />
     </View>

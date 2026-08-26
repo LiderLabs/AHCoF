@@ -8,7 +8,7 @@ export function DepositSuccessScreen() {
   const now = new Date();
 
   return (
-    <View className="flex-1 bg-white px-4 pt-6">
+    <View className="flex-1 bg-white px-4 pt-20 flex-col justify-center ">
       <TransactionSuccessScreen
         title="Deposit Successful"
         description={`GHS ${amount} has been added to your Regular Savings account.`}
@@ -25,7 +25,7 @@ export function DepositSuccessScreen() {
           },
         ]}
         footerNote="Funds may take 5-10 minutes to reflect in balance."
-        onBackToDashboard={() => router.replace("/dashboard")}
+        onBackToDashboard={() => router.replace("/portfolio")}
         onDownloadReceipt={() => {}}
       />
     </View>

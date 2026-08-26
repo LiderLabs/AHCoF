@@ -18,7 +18,7 @@ export function DepositConfirmScreen() {
   const total = Number(amount).toFixed(2);
 
   return (
-    <View className="flex-1 bg-white px-4">
+    <View className="flex-1 bg-white px-4 pt-6">
       <TransactionHeader title="Confirm Deposit" />
       <StepIndicator currentStep={2} totalSteps={3} />
 
@@ -79,7 +79,7 @@ export function DepositConfirmScreen() {
           icon={<Lock size={16} color="#fff" style={{ marginRight: 8 }} />}
           onPress={() =>
             router.push({
-              pathname: "/mobile-money/deposit/success",
+              pathname: "/deposit/success",
               params: {
                 amount: total,
                 referenceId: `#AH-${Math.floor(100000 + Math.random() * 900000)}`,
