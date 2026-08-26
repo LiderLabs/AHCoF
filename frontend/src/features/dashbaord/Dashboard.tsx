@@ -131,7 +131,7 @@ export function Dashboard() {
               icon={<TrendingUp size={24} color="#374151" />}
               label="Buy Shares"
               backgroundColor="#E5E7EB"
-              onPress={() => router.push("/shares/buy")}
+              onPress={() => router.push("/shares/sharespage")}
             />
           </View>
         </View>
