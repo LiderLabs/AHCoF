@@ -5,8 +5,13 @@ export const signupFormSchema = z.object({
   lastName: z.string().min(1, "Last name is required"),
   email: z.string().email("Enter a valid email").optional().or(z.literal("")),
   password: z.string().min(8, "Password must be at least 8 characters"),
+  confirmPassword: z.string(),
   phoneNumber: z.string().min(10, "Enter a valid phone number"),
-});
+})
+ .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+ })
 
 export const loginFormSchema = z.object({
   identifier: z.string().min(1, "Enter your email or phone number"),
