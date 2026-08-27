@@ -1,17 +1,18 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.core.config import settings
 from app.core.database import get_db
+from app.core.exceptions import (
+    AccountInactiveError,
+    InvalidCredentialsError,
+)
 from app.core.security import create_access_token, verify_password
-from app.modules.members.model import Member
-from app.modules.members.schema import LoginRequest, TokenResponse
-
 from app.modules.auth.dependencies import get_current_member
-from app.modules.members.schema import CurrentMemberResponse
-
 from app.modules.members.model import Member
+from app.modules.members.schema import CurrentMemberResponse, LoginRequest, TokenResponse
+
 
 router = APIRouter(
     prefix="/auth",
@@ -39,17 +40,10 @@ def login(
         or member.password_hash is None
         or not verify_password(payload.password, member.password_hash)
     ):
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid phone number or password.",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
+        raise InvalidCredentialsError()
 
     if not member.is_active:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Member account is inactive.",
-        )
+        raise AccountInactiveError()
 
     token = create_access_token(
         subject=str(member.id),
@@ -62,6 +56,7 @@ def login(
         access_token=token,
         token_type="bearer",
     )
+
 
 @router.get(
     "/me",

@@ -1,9 +1,10 @@
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from app.core.database import get_db
+from app.core.exceptions import MemberNotFoundError
 from app.modules.members.schema import MemberResponse
 from app.modules.members.service import get_all_members, get_member_by_id
 
@@ -40,8 +41,16 @@ def list_members(db: Session = Depends(get_db)) -> list[MemberResponse]:
     summary="Retrieve one member profile",
     description=(
         "Returns a single prototype member by internal UUID. "
-        "Returns HTTP 404 if no member exists with the provided UUID."
+        "Returns a standard error response with `error: MEMBER_NOT_FOUND` if no member exists."
     ),
+    responses={
+        200: {
+            "description": "Member profile found.",
+        },
+        404: {
+            "description": "Member not found.",
+        },
+    },
 )
 def retrieve_member(
     member_id: UUID,
@@ -50,9 +59,6 @@ def retrieve_member(
     member = get_member_by_id(db, member_id)
 
     if member is None:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Member not found.",
-        )
+        raise MemberNotFoundError()
 
     return member
