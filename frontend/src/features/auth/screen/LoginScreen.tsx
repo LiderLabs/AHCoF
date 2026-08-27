@@ -9,7 +9,7 @@ import {
 import { useRouter } from "expo-router";
 import { colors } from "@/src/constants/colors";
 import { Logo } from "@/src/components/ui/Logo";
-import { LoginForm } from "./components/LoginForm";
+import { LoginForm } from "../components/LoginForm";
 
 export default function LoginScreen() {
  const router = useRouter();

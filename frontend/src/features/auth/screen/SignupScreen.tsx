@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { useRouter } from "expo-router";
 import { Logo } from "@/src/components/ui/Logo";
-import { SignupForm } from "./components/SignupForm";
+import { SignupForm } from "../components/SignupForm";
 import { colors } from "@/src/constants/colors";
 
 export default function SignupScreen() {
