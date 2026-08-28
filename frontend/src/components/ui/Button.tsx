@@ -45,7 +45,7 @@ export function Button({
     >
       {icon && iconPosition == "left" && icon}
       <Text
-        className={`font-semibold py-2 ${fullWidth ? "text-2xl" : ""}`}
+        className={`font-semibold ${fullWidth ? "text-2xl" : "text-lg"}`}
         style={textStyles[variant]}
       >
         {label}

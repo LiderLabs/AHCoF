@@ -1,6 +1,7 @@
 import { Text, View } from "react-native";
 import { ReactNode } from "react";
 import { Card } from "@/src/components/ui/Card";
+import { colors } from "@/src/constants/colors";
 
 interface GoalProgressCardProps {
   icon: ReactNode;
@@ -28,36 +29,36 @@ export function GoalProgressCard({
       <View className="flex-row justify-between items-start mb-4">
         <View className="flex-row items-center gap-3">
           <View
-            className="rounded-xl"
-            style={{ width: 40, height: 40, backgroundColor: "#FDBA74" }}
+            className="rounded-xl items-center justify-center"
+            style={{ width: 50, height: 50, backgroundColor: "#FDBA74" }}
           >
             {icon}
           </View>
-          <Text className="font-bold text-base">{title}</Text>
+          <Text className="font-bold text-lg text-base">{title}</Text>
         </View>
-        <Text className="text-xs font-semibold" style={{ color: "#B45309" }}>{percentLabel}</Text>
+        <Text className="text-sm font-semibold" style={{ color: "#B45309" }}>{percentLabel}</Text>
       </View>
 
       <View className="flex-row justify-between mb-2">
-        <Text className="text-xs" style={{ color: "#6B7280" }}>Progress to goal</Text>
-        <Text className="text-xs" style={{ color: "#374151" }}>{currentValue} / {goalValue}</Text>
+        <Text className="text-md" style={{ color: "#6B7280" }}>Progress to goal</Text>
+        <Text className="text-md" style={{ color: "#374151" }}>{currentValue} / {goalValue}</Text>
       </View>
 
-      <View className="rounded-full mb-4" style={{ height: 8, backgroundColor: "#E5E7EB" }}>
+      <View className="rounded-full mb-4" style={{ height: 10, backgroundColor: "#E5E7EB" }}>
         <View
           className="rounded-full"
-          style={{ height: 8, width: `${progress * 100}%`, backgroundColor: "#B45309" }}
+          style={{ height: 10, width: `${progress * 100}%`, backgroundColor: "#B45309" }}
         />
       </View>
 
       <View className="flex-row gap-3">
-        <View className="flex-1 rounded-xl p-3" style={{ backgroundColor: "#F9FAFB" }}>
-          <Text className="text-xs" style={{ color: "#6B7280" }}>Maturity Date</Text>
-          <Text className="text-sm font-semibold mt-1">{maturityDate}</Text>
+        <View className="flex-1 rounded-xl p-3 py-4" style={{ backgroundColor: colors.backgroundlightGray }}>
+          <Text className="text-sm" style={{ color: "#6B7280" }}>Maturity Date</Text>
+          <Text className="text-md font-semibold mt-1">{maturityDate}</Text>
         </View>
-        <View className="flex-1 rounded-xl p-3" style={{ backgroundColor: "#F9FAFB" }}>
-          <Text className="text-xs" style={{ color: "#6B7280" }}>Auto-Transfer</Text>
-          <Text className="text-sm font-semibold mt-1">{autoTransferStatus}</Text>
+        <View className="flex-1 rounded-xl p-3 py-4" style={{ backgroundColor: colors.backgroundlightGray }}>
+          <Text className="text-sm" style={{ color: "#6B7280" }}>Auto-Transfer</Text>
+          <Text className="text-md font-semibold mt-1">{autoTransferStatus}</Text>
         </View>
       </View>
     </Card>
