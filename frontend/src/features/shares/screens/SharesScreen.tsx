@@ -18,8 +18,6 @@ import { SplitStatCard } from "@/src/components/ui/SplitStatCard";
 import { TipBanner } from "@/src/components/ui/TipBanner";
 import { BarChart } from "../components/BarChart";
 import { Card } from "@/src/components/ui/Card";
-import { BottomNavBar } from "@/src/components/ui/BottomNav";
-import { navItems } from "@/src/constants/navItems";
 import { colors } from "@/src/constants/colors";
 import { BackButton } from "@/src/components/ui/BackButton";
 
@@ -140,12 +138,6 @@ export default function SharesScreen() {
           message="Did you know? Increasing your holdings by 500 shares could boost your projected dividend by GHS 250."
         />
       </ScrollView>
-
-      <BottomNavBar
-        items={navItems}
-        activeKey="portfolio"
-        onNavigate={(route) => router.push(route)}
-      />
     </View>
   );
 }
