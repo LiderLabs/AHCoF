@@ -58,7 +58,7 @@ def test_unknown_route_returns_standard_error_shape() -> None:
 def test_wrong_login_credentials_returns_standard_error_shape() -> None:
     response = client.post(
         "/api/v1/auth/login",
-        json={"phoneNumber": "0000000000", "password": "definitely-wrong"},
+        json={"identifier": "0000000000", "password": "definitely-wrong"},
     )
 
     assert response.status_code == 401
