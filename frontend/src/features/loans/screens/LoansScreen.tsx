@@ -18,7 +18,7 @@ import {
 import { Header } from "@/src/components/ui/Header";
 import { NotificationBadgeIcon } from "@/src/components/ui/NotificationBadgeIcon";
 import { HeroStatCard } from "../components/HeroStatCard";
-import { QuickActionButton } from "../../dashbaord/components/QuickActionButton";
+import { ActionTile } from "@/src/components/ui/ActionTile";
 import { CategoryCard } from "../components/CategoryCard";
 import { TipCard } from "../components/TipCard";
 import { colors } from "@/src/constants/colors";
@@ -53,7 +53,8 @@ export default function LoansScreen() {
           </>
         }
       />
-
+       
+       {/* where loan info is displayed(eligible amount, oustanding, interest rate, etc...) */}
       <HeroStatCard
         label="Eligible Amount"
         amount="GHS 250,000.00"
@@ -69,23 +70,23 @@ export default function LoansScreen() {
         onActionPress={() => router.push("/loans/pay")}
       />
 
-      <View className="flex-row justify-between">
-        <QuickActionButton
+      <View className="flex-row" style={{ gap: 12 }}>
+        <ActionTile
           icon={<PlusCircle size={22} color={colors.primary} />}
           label="Apply Now"
-          backgroundColor="#F0FDF4"
+          iconBackgroundColor="#F0FDF4"
           onPress={() => router.push("/loans/apply")}
         />
-        <QuickActionButton
+        <ActionTile
           icon={<BarChart3 size={22} color="#92400E" />}
           label="Track App"
-          backgroundColor="#FEF3C7"
+          iconBackgroundColor="#FEF3C7"
           onPress={() => router.push("/loans/track")}
         />
-        <QuickActionButton
+        <ActionTile
           icon={<CalendarClock size={22} color="#374151" />}
           label="Schedule"
-          backgroundColor="#F3F4F6"
+          iconBackgroundColor="#F3F4F6"
           onPress={() => router.push("/loans/schedule")}
         />
       </View>

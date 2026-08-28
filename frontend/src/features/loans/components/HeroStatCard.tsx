@@ -35,7 +35,7 @@ export function HeroStatCard({
     <Card backgroundColor={backgroundColor} className="p-5">
       <View className="flex-row justify-between items-start mb-4">
         <View>
-          <Text className="text-sm" style={{ color: "#D1FAE5" }}>{label}</Text>
+          <Text className="text-lg" style={{ color: "#D1FAE5" }}>{label}</Text>
           <Text className="text-2xl font-bold text-white mt-1">{amount}</Text>
         </View>
         <View
@@ -53,7 +53,7 @@ export function HeroStatCard({
             className="flex-1 rounded-xl p-3"
             style={{ backgroundColor: "rgba(255,255,255,0.1)" }}
           >
-            <Text className="text-xs" style={{ color: "#D1FAE5" }}>{stat.label}</Text>
+            <Text className="text-md" style={{ color: "#D1FAE5" }}>{stat.label}</Text>
             <Text className="text-white font-semibold mt-1">{stat.value}</Text>
           </View>
         ))}
@@ -64,10 +64,10 @@ export function HeroStatCard({
         style={{ backgroundColor: "rgba(255,255,255,0.1)" }}
       >
         <View>
-          <Text className="text-xs" style={{ color: "#D1FAE5" }}>{dueLabel}</Text>
+          <Text className="text-md" style={{ color: "#D1FAE5" }}>{dueLabel}</Text>
           <Text className="text-white font-semibold mt-1">{dueValue}</Text>
         </View>
-        <Button label={actionLabel} onPress={onActionPress} fullWidth={false} variant="secondary" />
+        <Button label={actionLabel} onPress={onActionPress} fullWidth={false} className="py-2 px-6" variant="primary" />
       </View>
     </Card>
   );

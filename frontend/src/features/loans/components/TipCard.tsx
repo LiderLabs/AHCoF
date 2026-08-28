@@ -22,10 +22,10 @@ export function TipCard({ icon, iconBackground, title, subtitle, onPress }: TipC
           {icon}
         </View>
         <View className="flex-1">
-          <Text className="font-semibold text-sm">{title}</Text>
-          <Text className="text-xs" style={{ color: "#6B7280" }}>{subtitle}</Text>
+          <Text className="font-semibold text-lg">{title}</Text>
+          <Text className="text-sm" style={{ color: "#6B7280" }}>{subtitle}</Text>
         </View>
-        <ChevronRight size={20} color="#9CA3AF" />
+        <ChevronRight size={24} color="#9CA3AF" />
       </Card>
     </Pressable>
   );
