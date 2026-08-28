@@ -1,4 +1,3 @@
-// src/features/auth/validation.ts
 import { z } from "zod";
 
 const passwordRule = z
@@ -12,7 +11,10 @@ export const signupFormSchema = z
   .object({
     firstName: z.string().min(1, "First name is required"),
     lastName: z.string().min(1, "Last name is required"),
-    email: z.string().email("Enter a valid email").optional().or(z.literal("")),
+    email: z.preprocess(
+      (val) => (val === "" ? undefined : val),
+      z.email({ message: "Enter a valid email" }).optional()
+    ),
     phoneNumber: z.string().min(10, "Enter a valid phone number"),
     password: passwordRule,
     confirmPassword: z.string(),
@@ -23,7 +25,20 @@ export const signupFormSchema = z
   });
 
 export const loginFormSchema = z.object({
-  identifier: z.string().min(1, "Enter your email or phone number"),
+  identifier: z
+    .string()
+    .min(1, "Enter your email or phone number")
+    .refine(
+      (value) => {
+        const looksLikeEmail = value.includes("@");
+        if (looksLikeEmail) {
+          return z.email().safeParse(value).success;
+        }
+        // if it doesn't look like an email, treat it as a phone number
+        return value.length >= 10;
+      },
+      { message: "Enter a valid email or phone number" }
+    ),
   password: z.string().min(1, "Password is required"),
 });
 
