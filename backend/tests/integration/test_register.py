@@ -4,10 +4,8 @@ from app.main import app
 client = TestClient(app)
 
 NEW_MEMBER = {
-    "membershipId": "AHCOF-000999",
     "firstName": "Test",
     "lastName": "User",
-    "membershipType": "Standard",
     "phoneNumber": "0209999999",
     "emailAddress": "test.user@example.com",
     "password": "securepassword123",
@@ -19,6 +17,10 @@ def test_register_new_member_succeeds():
     body = response.json()
     assert body["tokenType"] == "bearer"
     assert isinstance(body["accessToken"], str) and body["accessToken"]
+    assert body["member"] is not None
+    assert body["member"]["firstName"] == "Test"
+    assert body["member"]["phoneNumber"] == "0209999999"
+    assert body["expiresIn"] == 300
 
 def test_register_duplicate_phone_fails():
     response = client.post("/api/v1/auth/register", json=NEW_MEMBER)

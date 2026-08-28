@@ -11,10 +11,8 @@ from app.core.exceptions import (
 from app.core.security import create_access_token, verify_password
 from app.modules.auth.dependencies import get_current_member
 from app.modules.members.model import Member
-
-from app.modules.members.service import create_member
-
 from app.modules.members.schema import CurrentMemberResponse, LoginRequest, MemberCreate, MemberResponse, TokenResponse
+from app.modules.members.service import create_member
 
 router = APIRouter(
     prefix="/auth",
@@ -61,8 +59,9 @@ def login(
         member=MemberResponse.model_validate(member, from_attributes=True),
         access_token=token,
         token_type="bearer",
-        expires_in=settings.access_token_expire_minutes * 5,
+        expires_in=settings.access_token_expire_minutes * 60,
     )
+
 
 @router.get(
     "/me",
@@ -95,11 +94,9 @@ def register(
         expires_minutes=settings.access_token_expire_minutes,
     )
 
-    return TokenResponse(access_token=token, token_type="bearer")
-
     return TokenResponse(
-    member=MemberResponse.model_validate(member, from_attributes=True),
-    access_token=token,
-    token_type="bearer",
-    expires_in=300,
-)
+        member=MemberResponse.model_validate(member, from_attributes=True),
+        access_token=token,
+        token_type="bearer",
+        expires_in=settings.access_token_expire_minutes * 60,
+    )
