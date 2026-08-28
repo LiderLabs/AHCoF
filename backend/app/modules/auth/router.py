@@ -59,7 +59,7 @@ def login(
     )
 
     return TokenResponse(
-        member=MemberResponse.model_validate(member),
+        member=MemberResponse.model_validate(member, from_attributes=True),
         access_token=token,
         token_type="bearer",
         expires_in=settings.access_token_expire_minutes * 5,
