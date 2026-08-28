@@ -1,17 +1,19 @@
 from __future__ import annotations
 
-from pydantic import BaseModel, Field
+from pydantic import Field
 from datetime import datetime
 from typing import Literal
 
+from app.core.serialization import AHCoFBase
 
-class DashboardMember(BaseModel):
+
+class DashboardMember(AHCoFBase):
     first_name: str = Field(..., description="Member first name for greeting")
     last_name: str = Field(..., description="Member last name")
     membership_id: str = Field(..., description="AHCoF membership ID")
 
 
-class FinancialSummary(BaseModel):
+class FinancialSummary(AHCoFBase):
     total_savings: str = Field(..., description="Total savings balance as decimal string")
     share_value: str = Field(..., description="Total share value as decimal string")
     active_loan_balance: str = Field(..., description="Outstanding loan balance as decimal string")
@@ -20,14 +22,14 @@ class FinancialSummary(BaseModel):
     currency: str = Field(default="GHS", description="Currency code")
 
 
-class QuickAction(BaseModel):
+class QuickAction(AHCoFBase):
     id: str
     label: str
     route: str
     enabled: bool = True
 
 
-class RecentActivity(BaseModel):
+class RecentActivity(AHCoFBase):
     id: str
     type: Literal[
         "savings_contribution",
@@ -42,7 +44,7 @@ class RecentActivity(BaseModel):
     reference: str
 
 
-class RecentNotification(BaseModel):
+class RecentNotification(AHCoFBase):
     id: str
     category: Literal["financial", "loan", "account", "announcement"]
     title: str
@@ -51,12 +53,9 @@ class RecentNotification(BaseModel):
     is_read: bool
 
 
-class DashboardResponse(BaseModel):
+class DashboardResponse(AHCoFBase):
     member: DashboardMember
     financial_summary: FinancialSummary
     quick_actions: list[QuickAction]
     recent_activities: list[RecentActivity]
     recent_notifications: list[RecentNotification]
-
-    class Config:
-        from_attributes = True

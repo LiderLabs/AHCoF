@@ -1,4 +1,4 @@
-from pydantic import ConfigDict
+from pydantic import BaseModel, ConfigDict
 from pydantic.alias_generators import to_camel
 
 api_model_config = ConfigDict(
@@ -6,3 +6,6 @@ api_model_config = ConfigDict(
     populate_by_name=True,
     from_attributes=True,
 )
+
+class AHCoFBase(BaseModel):
+    model_config = api_model_config
