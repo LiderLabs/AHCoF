@@ -24,6 +24,24 @@ export function SignupForm() {
     setValues((prev) => ({ ...prev, [field]: value }));
   }
 
+  // const handleSignup = () => {
+  //   const result = signupFormSchema.safeParse(values);
+
+  //   if (!result.success) {
+  //     const fieldErrors: Partial<Record<keyof SignupFormValues, string>> = {};
+  //     result.error.issues.forEach((issue) => {
+  //       const field = issue.path[0] as keyof SignupFormValues;
+  //       fieldErrors[field] = issue.message;
+  //     });
+  //     setErrors(fieldErrors);
+  //     return;
+  //   }
+
+  //   setErrors({});
+  //   const { confirmPassword, ...signupPayload } = result.data;
+  //   router.replace("/portfolio");
+  // };
+
   const handleSignup = () => {
     const result = signupFormSchema.safeParse(values);
 
@@ -76,14 +94,14 @@ export function SignupForm() {
         type="password"
         value={values.password}
         onChangeText={(text) => updateField("password", text)}
-         error={errors.password}
+        error={errors.password}
       />
       <Input
         label="Confirm Password"
         type="password"
         value={values.confirmPassword}
         onChangeText={(text) => updateField("confirmPassword", text)}
-         error={errors.confirmPassword}
+        error={errors.confirmPassword}
       />
 
       <View className="mt-2">
