@@ -30,6 +30,7 @@ const palette = {
   gray25: "#EDEEEF",
   gray50: "#F9FAFB",
   gray100: "#F3F4F6",
+  gray200: "#e5e7eb",
   gray300: "#D1D5DB",
   gray500: "#6B7280",
   gray600: "#4B5563",
@@ -62,6 +63,7 @@ export const colors = {
           "rgba(255,255,255,0.7)",
   ],
   splashGradientLocations: [0, 0.25, 0.45, 0.6, 0.75, 0.9, 1],
+  backgroundlightGray: palette.gray200,
 
   //Text
   textLogo: palette.green700,

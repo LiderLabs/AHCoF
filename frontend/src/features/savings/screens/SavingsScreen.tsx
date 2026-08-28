@@ -30,11 +30,11 @@ export default function SavingsScreen() {
 
       <View>
         <Text className="text-2xl font-bold" style={{ color: colors.primary }}>Savings Module</Text>
-        <Text className="text-sm" style={{ color: "#6B7280" }}>Manage and track your wealth growth journey.</Text>
+        <Text className="text-md" style={{ color: "#6B7280" }}>Manage and track your wealth growth journey.</Text>
       </View>
 
       <AccountCard
-        icon={<PiggyBank size={20} color="white" />}
+        icon={<PiggyBank size={25} color="white" />}
         title="Regular Savings"
         tag="Primary Account"
         balance="GHS 12,450.00"
@@ -44,7 +44,7 @@ export default function SavingsScreen() {
       />
 
       <GoalProgressCard
-        icon={<Home size={18} color="white" />}
+        icon={<Home size={25} color="white" />}
         title="Purpose Driven: Housing"
         percentLabel="75% Achieved"
         currentValue="GHS 150,000"
@@ -64,14 +64,14 @@ export default function SavingsScreen() {
       />
 
       <View className="flex-row gap-3">
-        <Button label="Add Contribution" onPress={() => router.push("/savings/contribute")} className="flex-1" fullWidth={false} />
-        <Button label="View History" variant="secondary" onPress={() => router.push("/savings/history")} className="flex-1" fullWidth={false} />
+        <Button label="Add Contribution" onPress={() => router.push("/savings/contribute")} className="flex-1 py-4" fullWidth={false} />
+        <Button label="View History" variant="secondary" onPress={() => router.push("/savings/history")} className="flex-1 py-4" fullWidth={false} />
       </View>
 
       <View>
         <View className="flex-row justify-between items-center mb-3">
-          <Text className="text-lg font-bold">Investment Challenges</Text>
-          <Text className="text-sm font-semibold" style={{ color: colors.primary }} onPress={() => router.push("/savings/challenges")}>
+          <Text className="text-xl font-bold">Investment Challenges</Text>
+          <Text className="text-md font-semibold self-end" style={{ color: colors.primary }} onPress={() => router.push("/savings/challenges")}>
             View all
           </Text>
         </View>
