@@ -1,4 +1,3 @@
-// src/components/ui/ConfirmationModal.tsx
 import { Modal, View, Text, Pressable } from "react-native";
 import { ReactNode } from "react";
 import { Button } from "./Button";
@@ -42,13 +41,13 @@ export function ConfirmationModal({
           {icon && <View className="items-center mb-3">{icon}</View>}
 
           <Text
-            className="text-lg font-bold text-center mb-2"
+            className="text-2xl font-bold text-center mb-2"
             style={{ color: colors.textPrimary }}
           >
             {title}
           </Text>
           <Text
-            className="text-sm text-center mb-5"
+            className="text-lg text-center mb-5"
             style={{ color: "#6B7280" }}
           >
             {message}
@@ -59,14 +58,14 @@ export function ConfirmationModal({
               label={cancelLabel}
               variant="secondary"
               fullWidth={false}
-              className="flex-1"
+              className="flex-1 py-3"
               onPress={onCancel}
             />
             <Button
               label={confirmLabel}
               variant={destructive ? "danger" : "primary"}
               fullWidth={false}
-              className="flex-1"
+              className="flex-1 py-3"
               onPress={onConfirm}
             />
           </View>
