@@ -9,50 +9,16 @@ from app.core.serialization import api_model_config
 class MemberCreate(BaseModel):
     model_config = api_model_config
 
-    membership_id: str = Field(
-        min_length=3,
-        max_length=50,
-        examples=["AHCOF-000123"],
-    )
-    first_name: str = Field(
-        min_length=1,
-        max_length=100,
-        examples=["Elder"],
-    )
-    last_name: str = Field(
-        min_length=1,
-        max_length=100,
-        examples=["Mensah"],
-    )
-    membership_type: str = Field(
-        min_length=1,
-        max_length=100,
-        examples=["Standard"],
-    )
-    email_address: EmailStr | None = Field(
-        default=None,
-        examples=["elder.mensah@example.com"],
-    )
-    phone_number: str = Field(
-        min_length=10,
-        max_length=20,
-        examples=["0241234567"],
-    )
-    church_branch: str | None = Field(
-        default=None,
-        max_length=150,
-        examples=["Kumasi Central SDA Church"],
-    )
-    conference: str | None = Field(
-        default=None,
-        max_length=150,
-        examples=["Mid-Central Ghana Conference"],
-    )
-    gps_address: str | None = Field(
-        default=None,
-        max_length=255,
-        examples=["Kumasi, Ashanti Region, Ghana"],
-    )
+    membership_id: str = Field(min_length=3, max_length=50, examples=["AHCOF-000123"])
+    first_name: str = Field(min_length=1, max_length=100, examples=["Elder"])
+    last_name: str = Field(min_length=1, max_length=100, examples=["Mensah"])
+    membership_type: str = Field(min_length=1, max_length=100, examples=["Standard"])
+    email_address: EmailStr | None = Field(default=None, examples=["elder.mensah@example.com"])
+    phone_number: str = Field(min_length=10, max_length=20, examples=["0241234567"])
+    church_branch: str | None = Field(default=None, max_length=150)
+    conference: str | None = Field(default=None, max_length=150)
+    gps_address: str | None = Field(default=None, max_length=255)
+    password: str = Field(min_length=8, examples=["securepassword123"])  # ADD THIS
 
 
 class MemberResponse(BaseModel):
@@ -78,9 +44,12 @@ class MemberResponse(BaseModel):
 class LoginRequest(BaseModel):
     model_config = api_model_config
 
-    phone_number: str
+    identifier: str = Field(
+        min_length=3,
+        examples=["0241234567", "elder.mensah@example.com"],
+        description="The member's phone number or email address.",
+    )
     password: str
-
 
 class TokenResponse(BaseModel):
     model_config = api_model_config
