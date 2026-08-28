@@ -4,7 +4,7 @@ import { colors } from "@/src/constants/colors";
 
 interface ButtonProps extends PressableProps {
   label: string;
-  variant?: "primary" | "secondary";
+  variant?: "primary" | "secondary" | "danger";
   onPress?: () => void;
   icon?: ReactNode;
   iconPosition?: "left" | "right";
@@ -29,6 +29,7 @@ export function Button({
       borderColor: colors.primary,
       borderWidth: 2,
     },
+    danger: {backgroundColor: "#DC2626"},
   };
 
   const textStyles = {
