@@ -22,7 +22,7 @@ interface AuthResponse {
 }
 
 export function signup(payload: SignupPayload): Promise<AuthResponse> {
-  return apiRequest<AuthResponse>("/signup", {
+  return apiRequest<AuthResponse>("/register", {
     method: "POST",
     body: JSON.stringify(payload),
   });
