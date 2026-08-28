@@ -4,10 +4,12 @@ import { Input } from "@/src/components/ui/Input";
 import { Button } from "@/src/components/ui/Button";
 import { FormLayout } from "@/src/components/ui/FormLayout";
 import { LoginFormValues, loginFormSchema } from "../validation";
+import { AlertBanner } from "@/src/components/ui/AlertBanner";
 
 export function LoginForm() {
   const [values, setValues] = useState({identifier: "", password: ""});
   const [errors, setErrors] = useState<Partial<Record<keyof LoginFormValues, string>>>({});
+  const [formError, setFormError] = useState<string | null>(null);
   const router = useRouter();
 
   function updateField(field: keyof typeof values, value: string) {
@@ -15,10 +17,11 @@ export function LoginForm() {
   }
 
   const handleLogin = () => {
+    setFormError(null);
     const result = loginFormSchema.safeParse(values);
 
     if(!result.success) {
-       const fieldErrors: Partial<Record<keyof LoginFormValues, string>> = {};
+        const fieldErrors: Partial<Record<keyof LoginFormValues, string>> = {};
         result.error.issues.forEach((issue) => {
         const field = issue.path[0] as keyof LoginFormValues;
         fieldErrors[field] = issue.message;
@@ -34,6 +37,7 @@ export function LoginForm() {
 
   return (
     <FormLayout title="AHCoF Login">
+      <AlertBanner message={formError}/>
       <Input 
       label="Email or Phone Number" 
       type="text" 
