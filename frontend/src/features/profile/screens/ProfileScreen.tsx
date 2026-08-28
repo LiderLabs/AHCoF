@@ -22,8 +22,11 @@ import { navItems } from "@/src/constants/navItems";
 import { colors } from "@/src/constants/colors";
 import { ProfileHeader } from "../components/ProfileHeader";
 import { ReferralBanner } from "../components/ReferralBanner";
+import { ConfirmationModal } from "@/src/components/ui/ConfirmationModal";
+import { useState } from "react";
 
 export default function ProfileScreen() {
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
   const activeKey =
@@ -41,6 +44,21 @@ export default function ProfileScreen() {
           memberId="#CUA-00921-GH"
           avatar={<Smartphone size={22} color="#374151" />}
           actions={<Bell size={22} color="#374151" onPress={() => {}} />}
+        />
+
+          {/* Confirmation modal here */}
+        <ConfirmationModal
+         visible={showLogoutConfirm}
+         title="Sign Out?"
+         message="You will need to sign in again to access your account."
+         confirmLabel="Sign Out"
+         cancelLabel="Stay Signed In"
+         destructive
+         onCancel={() => setShowLogoutConfirm(false)}
+         onConfirm={() => {
+          setShowLogoutConfirm(false);
+          router.replace("/(auth)/login");
+         }}
         />
 
         {/* Referral banner */}
@@ -131,7 +149,7 @@ export default function ProfileScreen() {
         {/* Sign out */}
         <Pressable
           className="flex-row items-center justify-center py-3"
-          onPress={() => {}}
+          onPress={() => setShowLogoutConfirm(true)}
         >
           <LogOut size={18} color="#DC2626" style={{ marginRight: 6 }} />
           <Text className="font-semibold" style={{ color: "#DC2626" }}>
