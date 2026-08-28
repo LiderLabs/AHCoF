@@ -15,6 +15,8 @@ from app.modules.members.schema import CurrentMemberResponse, LoginRequest, Memb
 
 from app.modules.members.service import create_member
 
+from app.modules.members.schema import CurrentMemberResponse, LoginRequest, MemberCreate, MemberResponse, TokenResponse
+
 router = APIRouter(
     prefix="/auth",
     tags=["Authentication"],
@@ -31,8 +33,11 @@ def login(
     db: Session = Depends(get_db),
 ) -> TokenResponse:
     member = db.scalar(
-    select(Member).where(
-        Member.phone_number == payload.phone_number
+        select(Member).where(
+            or_(
+                Member.phone_number == payload.identifier,
+                Member.email_address == payload.identifier,
+            )
         )
     )
 
@@ -54,10 +59,11 @@ def login(
     )
 
     return TokenResponse(
+        member=MemberResponse.model_validate(member),
         access_token=token,
         token_type="bearer",
+        expires_in=settings.access_token_expire_minutes * 5,
     )
-
 
 @router.get(
     "/me",

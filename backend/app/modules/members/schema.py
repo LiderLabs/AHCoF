@@ -9,16 +9,11 @@ from app.core.serialization import api_model_config
 class MemberCreate(BaseModel):
     model_config = api_model_config
 
-    membership_id: str = Field(min_length=3, max_length=50, examples=["AHCOF-000123"])
     first_name: str = Field(min_length=1, max_length=100, examples=["Elder"])
     last_name: str = Field(min_length=1, max_length=100, examples=["Mensah"])
-    membership_type: str = Field(min_length=1, max_length=100, examples=["Standard"])
     email_address: EmailStr | None = Field(default=None, examples=["elder.mensah@example.com"])
     phone_number: str = Field(min_length=10, max_length=20, examples=["0241234567"])
-    church_branch: str | None = Field(default=None, max_length=150)
-    conference: str | None = Field(default=None, max_length=150)
-    gps_address: str | None = Field(default=None, max_length=255)
-    password: str = Field(min_length=8, examples=["securepassword123"])  # ADD THIS
+    password: str = Field(min_length=8, examples=["securepassword123"])
 
 
 class MemberResponse(BaseModel):
@@ -54,8 +49,11 @@ class LoginRequest(BaseModel):
 class TokenResponse(BaseModel):
     model_config = api_model_config
 
+    member: MemberResponse | None = None
     access_token: str
+    refresh_token: str | None = None
     token_type: str = "bearer"
+    expires_in: int = 300
 
 
 class CurrentMemberResponse(MemberResponse):
