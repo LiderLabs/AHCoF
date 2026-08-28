@@ -11,7 +11,6 @@ from app.core.exceptions import (
 from app.core.security import create_access_token, verify_password
 from app.modules.auth.dependencies import get_current_member
 from app.modules.members.model import Member
-from app.modules.members.schema import CurrentMemberResponse, LoginRequest, MemberCreate, TokenResponse
 
 from app.modules.members.service import create_member
 
@@ -97,3 +96,10 @@ def register(
     )
 
     return TokenResponse(access_token=token, token_type="bearer")
+
+    return TokenResponse(
+    member=MemberResponse.model_validate(member, from_attributes=True),
+    access_token=token,
+    token_type="bearer",
+    expires_in=300,
+)
