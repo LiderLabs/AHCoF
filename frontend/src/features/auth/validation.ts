@@ -11,7 +11,7 @@ export const signupFormSchema = z
   .object({
     firstName: z.string().min(1, "First name is required"),
     lastName: z.string().min(1, "Last name is required"),
-    email: z.preprocess(
+    emailAddress: z.preprocess(
       (val) => (val === "" ? undefined : val),
       z.email({ message: "Enter a valid email" }).optional()
     ),

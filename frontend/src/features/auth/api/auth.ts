@@ -1,9 +1,10 @@
-import { apiRequest } from "@/src/lib/api";
+import { api } from "@/src/lib/api";
+import { AuthResponse } from "../schema";
 
 interface SignupPayload {
   firstName: string;
   lastName: string;
-  email?: string;
+  emailAddress?: string;
   phoneNumber: string;
   password: string;
 }
@@ -13,23 +14,16 @@ interface LoginPayload {
   password: string;
 }
 
-interface AuthResponse {
-  member: any;
-  accessToken: string;
-  refreshToken: string | null;
-  tokenType: string;
-  expiresIn: number;
-}
 
 export function signup(payload: SignupPayload): Promise<AuthResponse> {
-  return apiRequest<AuthResponse>("/register", {
+  return api<AuthResponse>("/register", {
     method: "POST",
     body: JSON.stringify(payload),
   });
 }
 
 export function login(payload: LoginPayload): Promise<AuthResponse> {
-  return apiRequest<AuthResponse>("/login", {
+  return api<AuthResponse>("/login", {
     method: "POST",
     body: JSON.stringify(payload),
   });
