@@ -6,12 +6,14 @@ import { FormLayout } from "@/src/components/ui/FormLayout";
 import { LoginFormValues, loginFormSchema } from "../validation";
 import { AlertBanner } from "@/src/components/ui/AlertBanner";
 import { login } from "../api/auth";
+import { useAuth } from "../context/AuthContext";
 
 export function LoginForm() {
   const [values, setValues] = useState({identifier: "", password: ""});
   const [errors, setErrors] = useState<Partial<Record<keyof LoginFormValues, string>>>({});
   const [formError, setFormError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const {setAuth} = useAuth();
   const router = useRouter();
 
   function updateField(field: keyof typeof values, value: string) {
@@ -37,6 +39,7 @@ export function LoginForm() {
      try {
       setIsSubmitting(true);
       const response = await login(result.data);
+      setAuth(response.member, response.accessToken);
       router.replace("/portfolio");
     } catch (err) {
       setFormError(err instanceof Error ? err.message : "Login failed. Try again.");
