@@ -8,6 +8,7 @@ import { SignupFormValues, signupFormSchema } from "../validation";
 import { signup } from "../api/auth";
 import { saveToken } from "@/src/lib/storage";
 import { AlertBanner } from "@/src/components/ui/AlertBanner";
+import { useAuth } from "../context/AuthContext";
 
 export function SignupForm() {
   const [values, setValues] = useState({
@@ -24,6 +25,7 @@ export function SignupForm() {
   const router = useRouter();
   const [formError, setFormError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const {setAuth} = useAuth();
 
   function updateField(field: keyof typeof values, value: string) {
     setValues((prev) => ({ ...prev, [field]: value }));
@@ -50,6 +52,7 @@ export function SignupForm() {
     try {
       setIsSubmitting(true);
       const response = await signup(signupPayload);
+      setAuth(response.member, response.accessToken);
       await saveToken(response.accessToken);
       router.replace("/portfolio");
     } catch (err) {
