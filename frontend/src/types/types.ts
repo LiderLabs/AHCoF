@@ -37,7 +37,7 @@ export interface Account {
 export interface SignupRequest {
   firstName: string;
   lastName: string;
-  email?: string;
+  emailAddress?: string;
   password: string;
   phoneNumber: string;
 }
