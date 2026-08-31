@@ -5,34 +5,44 @@ import { Button } from "@/src/components/ui/Button";
 import { FormLayout } from "@/src/components/ui/FormLayout";
 import { LoginFormValues, loginFormSchema } from "../validation";
 import { AlertBanner } from "@/src/components/ui/AlertBanner";
+import { login } from "../api/auth";
 
 export function LoginForm() {
   const [values, setValues] = useState({identifier: "", password: ""});
   const [errors, setErrors] = useState<Partial<Record<keyof LoginFormValues, string>>>({});
   const [formError, setFormError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
   function updateField(field: keyof typeof values, value: string) {
     setValues((prev) => ({...prev, [field]: value}));
   }
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     setFormError(null);
     const result = loginFormSchema.safeParse(values);
 
     if(!result.success) {
         const fieldErrors: Partial<Record<keyof LoginFormValues, string>> = {};
         result.error.issues.forEach((issue) => {
-        const field = issue.path[0] as keyof LoginFormValues;
-        fieldErrors[field] = issue.message;
+          const field = issue.path[0] as keyof LoginFormValues;
+          fieldErrors[field] = issue.message;
       });
       setErrors(fieldErrors);
       return;
     }
 
      setErrors({});
-    //i will call login func here later
-    router.replace("/portfolio");
+     
+     try {
+      setIsSubmitting(true);
+      const response = await login(result.data);
+      router.replace("/portfolio");
+    } catch (err) {
+      setFormError(err instanceof Error ? err.message : "Login failed. Try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -52,7 +62,11 @@ export function LoginForm() {
       onChangeText={(text) => updateField("password", text)}
       error={errors.password}
        />
-      <Button label="Log In" onPress={handleLogin} />
+      <Button 
+      label={isSubmitting ? "Logging in..." : "Log In"} 
+      onPress={handleLogin}
+      disabled={isSubmitting} 
+      />
     </FormLayout>
   );
 }
