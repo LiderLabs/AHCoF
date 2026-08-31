@@ -2,6 +2,7 @@ import { z } from "zod";
 
 const passwordRule = z
   .string()
+  .min(1, "Password is required")
   .min(8, "Password must be at least 8 characters")
   .regex(/[A-Z]/, "Must include at least one uppercase letter")
   .regex(/[a-z]/, "Must include at least one lowercase letter")
@@ -15,7 +16,7 @@ export const signupFormSchema = z
       (val) => (val === "" ? undefined : val),
       z.email({ message: "Enter a valid email" }).optional()
     ),
-    phoneNumber: z.string().min(10, "Enter a valid phone number"),
+    phoneNumber: z.string().regex(/^0(2[0-8]|5[0-9])\d{7}$/, "Enter a valid phone number"),
     password: passwordRule,
     confirmPassword: z.string(),
   })
