@@ -4,8 +4,6 @@ export async function api<T>(
   path: string,
   options: RequestInit = {}
 ): Promise<T> {
-  console.log("REQUEST URL:", `${API_URL}${path}`);
-   console.log("REQUEST BODY:", options.body);
   const response = await fetch(`${API_URL}${path}`, {
     ...options,
     headers: {
