@@ -39,7 +39,7 @@ class UserAlreadyExistsError(AppException):
 class InvalidCredentialsError(AppException):
     error_code = "INVALID_CREDENTIALS"
     status_code = status.HTTP_401_UNAUTHORIZED
-    message = "Invalid phone number or password"
+    message = "Invalid phone number, email address, or password"
 
 
 class AccountInactiveError(AppException):

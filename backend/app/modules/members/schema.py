@@ -1,7 +1,7 @@
 from datetime import datetime
 from uuid import UUID
 
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, EmailStr, Field, field_validator
 
 from app.core.serialization import api_model_config
 
@@ -14,6 +14,14 @@ class MemberCreate(BaseModel):
     email_address: EmailStr | None = Field(default=None, examples=["elder.mensah@example.com"])
     phone_number: str = Field(min_length=10, max_length=20, examples=["0241234567"])
     password: str = Field(min_length=8, examples=["securepassword123"])
+
+    @field_validator("phone_number")
+    @classmethod
+    def validate_phone_number(cls, v: str) -> str:
+        digits = "".join(filter(str.isdigit, v))
+        if len(digits) != 10:
+            raise ValueError("Phone number must be exactly 10 digits")
+        return digits
 
 
 class MemberResponse(BaseModel):
