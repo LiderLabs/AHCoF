@@ -32,7 +32,6 @@ def test_register_duplicate_phone_fails():
     assert response.json()["error"] == "USER_ALREADY_EXISTS"
 
 
-
 def test_register_two_members_without_email_does_not_conflict():
     """Regression test: Member.email_address == None compiles to
     'email_address IS NULL' in SQLAlchemy, so the duplicate check must not

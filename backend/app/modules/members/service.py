@@ -37,6 +37,22 @@ def create_member(db: Session, payload: MemberCreate) -> Member:
         raise UserAlreadyExistsError(
             message="A member with this email address already exists"
         )
+# def create_member(db: Session, payload: MemberCreate) -> Member:
+#     conflict_conditions = [Member.phone_number == payload.phone_number]
+
+#     if payload.email_address is not None:
+#         conflict_conditions.append(Member.email_address == payload.email_address)
+
+#     existing = db.scalar(select(Member).where(or_(*conflict_conditions)))
+
+#     if existing is not None:
+#         if existing.phone_number == payload.phone_number:
+#             raise UserAlreadyExistsError(
+#                 message="A member with this phone number already exists"
+#             )
+#         raise UserAlreadyExistsError(
+#             message="A member with this email address already exists"
+#         )
 
     member = Member(
         membership_id=f"AHCOF-{str(uuid_lib.uuid4())[:8].upper()}",
