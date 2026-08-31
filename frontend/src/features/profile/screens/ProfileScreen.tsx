@@ -43,7 +43,11 @@ export default function ProfileScreen() {
         {/* Header */}
         <ProfileHeader
           name={member?.firstName}
+<<<<<<< HEAD
           memberId={member?.membershipId}
+=======
+          memberId="#CUA-00921-GH"
+>>>>>>> 935d73a (feat(auth): add auth context wiring to login and sign up forms)
           avatar={<Smartphone size={22} color="#374151" />}
           actions={<Bell size={22} color="#374151" onPress={() => {}} />}
         />
