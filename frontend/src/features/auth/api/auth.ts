@@ -17,7 +17,6 @@ interface LoginPayload {
   password: string;
 }
 
-
 export function signup(payload: SignupPayload): Promise<AuthResponse> {
   return api<AuthResponse>("/register", {
     method: "POST",
@@ -39,20 +38,37 @@ export function refreshAccessToken(payload: RefreshRequest): Promise<AuthRespons
   });
 }
 export function sendOtp(payload: SendOtpRequest): Promise<SendOtpResponse> {
-  return api<SendOtpResponse>("/otp/send", {
-    method: "POST",
-    body: JSON.stringify(payload),
+  // return api<SendOtpResponse>("/otp/send", {
+  //   method: "POST",
+  //   body: JSON.stringify(payload),
+  // });
+
+  console.log("MOCK sendOtp called with:", payload);
+  return Promise.resolve({
+    channelsSent: payload.emailAddress ? ["phone", "email"] : ["phone"],
+    message: "Mock OTP sent",
   });
 }
 
-export function verifyOtp(payload: VerifyOtpRequest): Promise<VerifyOtpResponse> {
-  return api<VerifyOtpResponse>("/otp/verify", {
-    method: "POST",
-    body: JSON.stringify(payload),
+export function verifyOtp(
+  payload: VerifyOtpRequest,
+): Promise<VerifyOtpResponse> {
+  // return api<VerifyOtpResponse>("/otp/verify", {
+  //   method: "POST",
+  //   body: JSON.stringify(payload),
+  // });
+
+  console.log("MOCK verifyOtp called with:", payload);
+  return Promise.resolve({
+    channel: payload.channel,
+    verified: payload.code === "123456", // any code except 123456 will show "invalid"
+    message: payload.code === "123456" ? "Verified" : "Invalid code",
   });
 }
 
-export function completeProfile(payload: CompleteProfileRequest): Promise<Member> {
+export function completeProfile(
+  payload: CompleteProfileRequest,
+): Promise<Member> {
   return api<Member>("/member/profile", {
     method: "PATCH",
     body: JSON.stringify(payload),

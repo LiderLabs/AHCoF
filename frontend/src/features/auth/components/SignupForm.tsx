@@ -5,7 +5,7 @@ import { Input } from "@/src/components/ui/Input";
 import { Button } from "@/src/components/ui/Button";
 import { FormLayout } from "@/src/components/ui/FormLayout";
 import { SignupFormValues, signupFormSchema } from "../validation";
-import { signup } from "../api/auth";
+import { sendOtp, signup } from "../api/auth";
 import { saveToken } from "@/src/lib/storage";
 import { AlertBanner } from "@/src/components/ui/AlertBanner";
 import { useAuth } from "../context/AuthContext";
@@ -25,7 +25,7 @@ export function SignupForm() {
   const router = useRouter();
   const [formError, setFormError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const {setAuth} = useAuth();
+  const { setAuth } = useAuth();
 
   function updateField(field: keyof typeof values, value: string) {
     setValues((prev) => ({ ...prev, [field]: value }));
@@ -47,13 +47,28 @@ export function SignupForm() {
 
     setErrors({});
     const { confirmPassword, ...signupPayload } = result.data;
-    console.log("PAYLOAD:", JSON.stringify(signupPayload, null, 2));
+    //console.log("PAYLOAD:", JSON.stringify(signupPayload, null, 2));
 
     try {
       setIsSubmitting(true);
       const response = await signup(signupPayload);
       setAuth(response.member, response.accessToken, response.refreshToken);
       await saveToken(response.accessToken);
+
+      const otpResponse = await sendOtp({
+        phoneNumber: signupPayload.phoneNumber,
+        emailAddress: signupPayload.emailAddress,
+      });
+
+      router.replace({
+        pathname: "/otp",
+        params: {
+          channels: otpResponse.channelsSent.join(","),
+          phoneNumber: signupPayload.phoneNumber,
+          emailAddress: signupPayload.emailAddress,
+        },
+      });
+
       router.replace("/portfolio");
     } catch (err) {
       setFormError(
