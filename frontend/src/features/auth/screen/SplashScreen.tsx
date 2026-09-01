@@ -5,7 +5,6 @@ import {
   ImageBackground,
 } from "react-native";
 import { useRouter } from "expo-router";
-import { ShieldCheck, Users, Leaf } from "lucide-react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { BlurView } from "expo-blur";
 import { Button } from "@/src/components/ui/Button";
@@ -91,21 +90,6 @@ export default function SplashScreen() {
             <Button key={key} {...buttonProps}/>
           ))}
         </View>
-
-        {/* <View className="flex-row items-center gap-3 mt-3 text-gray-400">
-          <View className="flex-row gap-1 items-center">
-            <ShieldCheck size={20} />
-            <Text className="text-md">Secure</Text>
-          </View>
-          <View className="flex-row gap-1 items-center">
-            <Users size={20} />
-            <Text className="text-md">Community-Driven</Text>
-          </View>
-          <View className="flex-row gap-1 items-center">
-            <Leaf size={20} />
-            <Text className="text-md">Ethical</Text>
-          </View>
-        </View> */}
       </BlurView>
     </ImageBackground>
   );
