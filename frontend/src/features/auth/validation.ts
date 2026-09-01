@@ -43,5 +43,18 @@ export const loginFormSchema = z.object({
   password: z.string().min(1, "Password is required"),
 });
 
+export const otpSchema = z.object({
+  code: z.string().length(6, "Enter the 6-digit code"), // adjust length if backend uses a different code length
+});
+
+export const completeProfileSchema = z.object({
+  gender: z.enum(["male", "female"], { message: "Select a gender" }),
+  churchBranch: z.string().min(1, "Church branch is required"),
+  conference: z.string().min(1, "Conference is required"),
+  gpsAddress: z.string().min(1, "GPS address is required"),
+});
+
 export type SignupFormValues = z.infer<typeof signupFormSchema>;
 export type LoginFormValues = z.infer<typeof loginFormSchema>;
+export type OtpFormValues = z.infer<typeof otpSchema>;
+export type CompleteProfileFormValues = z.infer<typeof completeProfileSchema>;
