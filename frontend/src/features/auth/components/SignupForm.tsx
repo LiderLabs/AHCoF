@@ -5,12 +5,16 @@ import { Input } from "@/src/components/ui/Input";
 import { Button } from "@/src/components/ui/Button";
 import { FormLayout } from "@/src/components/ui/FormLayout";
 import { SignupFormValues, signupFormSchema } from "../validation";
+import { signup } from "../api/auth";
+import { saveToken } from "@/src/lib/storage";
+import { AlertBanner } from "@/src/components/ui/AlertBanner";
+import { useAuth } from "../context/AuthContext";
 
 export function SignupForm() {
   const [values, setValues] = useState({
     firstName: "",
     lastName: "",
-    email: "",
+    emailAddress: "",
     phoneNumber: "",
     password: "",
     confirmPassword: "",
@@ -19,30 +23,16 @@ export function SignupForm() {
     Partial<Record<keyof SignupFormValues, string>>
   >({});
   const router = useRouter();
+  const [formError, setFormError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const {setAuth} = useAuth();
 
   function updateField(field: keyof typeof values, value: string) {
     setValues((prev) => ({ ...prev, [field]: value }));
   }
 
-  // const handleSignup = () => {
-  //   const result = signupFormSchema.safeParse(values);
-
-  //   if (!result.success) {
-  //     const fieldErrors: Partial<Record<keyof SignupFormValues, string>> = {};
-  //     result.error.issues.forEach((issue) => {
-  //       const field = issue.path[0] as keyof SignupFormValues;
-  //       fieldErrors[field] = issue.message;
-  //     });
-  //     setErrors(fieldErrors);
-  //     return;
-  //   }
-
-  //   setErrors({});
-  //   const { confirmPassword, ...signupPayload } = result.data;
-  //   router.replace("/portfolio");
-  // };
-
-  const handleSignup = () => {
+  const handleSignup = async () => {
+    setFormError(null);
     const result = signupFormSchema.safeParse(values);
 
     if (!result.success) {
@@ -57,11 +47,26 @@ export function SignupForm() {
 
     setErrors({});
     const { confirmPassword, ...signupPayload } = result.data;
-    router.replace("/portfolio");
+    console.log("PAYLOAD:", JSON.stringify(signupPayload, null, 2));
+
+    try {
+      setIsSubmitting(true);
+      const response = await signup(signupPayload);
+      setAuth(response.member, response.accessToken);
+      await saveToken(response.accessToken);
+      router.replace("/portfolio");
+    } catch (err) {
+      setFormError(
+        err instanceof Error ? err.message : "Signup failed. Try again.",
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
     <FormLayout title="Create Account">
+      <AlertBanner message={formError} />
       <Input
         label="First Name"
         value={values.firstName}
@@ -77,9 +82,9 @@ export function SignupForm() {
       <Input
         label="Email (optional)"
         type="email"
-        value={values.email}
-        onChangeText={(text) => updateField("email", text)}
-        error={errors.email}
+        value={values.emailAddress}
+        onChangeText={(text) => updateField("emailAddress", text)}
+        error={errors.emailAddress}
       />
       <Input
         label="Phone Number"
@@ -105,7 +110,11 @@ export function SignupForm() {
       />
 
       <View className="mt-2">
-        <Button label="Sign Up" onPress={handleSignup} />
+        <Button
+          label={isSubmitting ? "Signing up..." : "Sign Up"}
+          onPress={handleSignup}
+          disabled={isSubmitting}
+        />
       </View>
     </FormLayout>
   );

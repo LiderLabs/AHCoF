@@ -32,8 +32,10 @@ import { BottomNavBar } from "@/src/components/ui/BottomNav";
 import { NotificationBadgeIcon } from "@/src/components/ui/NotificationBadgeIcon";
 import { colors } from "@/src/constants/colors";
 import { navItems } from "@/src/constants/navItems";
+import { useAuth } from "../auth/context/AuthContext";
 
 export function Dashboard() {
+  const {member} = useAuth();
   const router = useRouter();
 
   return (
@@ -44,7 +46,7 @@ export function Dashboard() {
       >
         {/* Header */}
             <Header
-        name="Elder Mensah"
+        name={member?.firstName}
         status="Achiever"
         avatar={require("@/assets/icon.png")}
         actions={

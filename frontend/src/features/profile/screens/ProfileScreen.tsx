@@ -24,8 +24,10 @@ import { ProfileHeader } from "../components/ProfileHeader";
 import { ReferralBanner } from "../components/ReferralBanner";
 import { ConfirmationModal } from "@/src/components/ui/ConfirmationModal";
 import { useState } from "react";
+import { useAuth } from "../../auth/context/AuthContext";
 
 export default function ProfileScreen() {
+  const {member} = useAuth();
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
@@ -40,8 +42,8 @@ export default function ProfileScreen() {
       >
         {/* Header */}
         <ProfileHeader
-          name="Elder Mensah"
-          memberId="#CUA-00921-GH"
+          name={member?.firstName}
+          memberId={member?.membershipId}
           avatar={<Smartphone size={22} color="#374151" />}
           actions={<Bell size={22} color="#374151" onPress={() => {}} />}
         />
@@ -101,9 +103,9 @@ export default function ProfileScreen() {
             value="Bethany Central, Central Conference"
           />
           <Divider />
-          <InfoField label="Phone Number" value="+233 24 555 0192" />
+          <InfoField label="Phone Number" value={member.phoneNumber} />
           <Divider />
-          <InfoField label="Email Address" value="e.mensah@church-cua.org" />
+          <InfoField label="Email Address" value={member.emailAddress} />
           <Divider />
           <InfoField label="GPS Address" value="GA-183-9921, Accra, Ghana" />
         </Card>

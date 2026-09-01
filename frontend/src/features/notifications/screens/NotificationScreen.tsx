@@ -18,6 +18,7 @@ import { AnnouncementBanner } from "../components/AnnouncementBanner";
 import { BottomNavBar } from "@/src/components/ui/BottomNav";
 import { navItems } from "@/src/constants/navItems";
 import { colors } from "@/src/constants/colors";
+import { useAuth } from "../../auth/context/AuthContext";
 
 const notifications = [
   {
@@ -70,6 +71,7 @@ const notifications = [
 ];
 
 export default function NotificationsScreen() {
+  const {member} = useAuth();
   const router = useRouter();
 
   return (
@@ -79,7 +81,7 @@ export default function NotificationsScreen() {
         contentContainerStyle={{ padding: 18, paddingBottom: 100 }}
       >
         <Header
-          name="Elder Mensah"
+          name={member.firstName}
           status="Achiever"
           avatar={require("@/assets/logo_icon.png")}
           actions={
