@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { getToken, saveToken, deleteToken } from "@/src/lib/storage";
-import { Member } from "../types";
+import { Member } from "@/src/types/types";
 
 interface AuthContextValue {
   member: Member | null;
