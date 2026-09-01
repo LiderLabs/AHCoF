@@ -1,4 +1,5 @@
 export type MembershipType = string; 
+import { MembershipTypeId } from "../constants/membershipTypes";
 
 export interface Member {
   id: string;
@@ -54,4 +55,12 @@ export interface AuthResponse {
   refreshToken: string | null; 
   tokenType: string;
   expiresIn: number;
+}
+
+export interface CompleteProfileRequest {
+  gender: "male" | "female";
+  churchBranch: string;
+  conference: string;
+  membershipType: MembershipTypeId;
+  gpsAddress: string;
 }
