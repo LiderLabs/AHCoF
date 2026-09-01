@@ -13,6 +13,21 @@ import { Logo } from "@/src/components/ui/Logo";
 export default function SplashScreen() {
   const router = useRouter();
 
+  const actions = [
+  {
+    key: 'get-started',
+    label: 'Get Started',
+    variant: 'primary' as const,
+    onPress: () => router.push('/(auth)/login'),
+  },
+  {
+    key: 'learn-more',
+    label: 'Learn More',
+    variant: 'secondary' as const,
+    onPress: () => router.push(''),
+  },
+]
+
   return (
     <ImageBackground
       source={require("@/assets/bg-splash-screen.png")}
