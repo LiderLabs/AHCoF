@@ -23,8 +23,10 @@ import { CategoryCard } from "../components/CategoryCard";
 import { TipCard } from "../components/TipCard";
 import { colors } from "@/src/constants/colors";
 import { BackButton } from "@/src/components/ui/BackButton";
+import { useAuth } from "../../auth/context/AuthContext";
 
 export default function LoansScreen() {
+  const {member} = useAuth();
   const router = useRouter();
 
   return (
@@ -39,7 +41,7 @@ export default function LoansScreen() {
 
       {/* Header */}
       <Header
-        name="Elder Mensah"
+        name={member.firstName}
         status="Achiever"
         avatar={require("@/assets/logo_icon.png")}
         actions={

@@ -20,6 +20,7 @@ import { BarChart } from "../components/BarChart";
 import { Card } from "@/src/components/ui/Card";
 import { colors } from "@/src/constants/colors";
 import { BackButton } from "@/src/components/ui/BackButton";
+import { useAuth } from "../../auth/context/AuthContext";
 
 const dividendProjectionData = [
   { label: "2021", value: 1250 },
@@ -29,6 +30,7 @@ const dividendProjectionData = [
 ];
 
 export default function SharesScreen() {
+  const {member} = useAuth();
   const router = useRouter();
 
   return (
@@ -44,7 +46,7 @@ export default function SharesScreen() {
         
         {/* Header */}
         <Header
-          name="Elder Mensah"
+          name={member.firstName}
           status="Achiever"
           avatar={require("@/assets/logo_icon.png")}
           actions={<Bell size={24} color={colors.primary} />}
