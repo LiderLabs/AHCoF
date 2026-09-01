@@ -43,7 +43,7 @@ export default function ProfileScreen() {
         {/* Header */}
         <ProfileHeader
           name={member?.firstName}
-          memberId="#CUA-00921-GH"
+          memberId={member?.membershipId}
           avatar={<Smartphone size={22} color="#374151" />}
           actions={<Bell size={22} color="#374151" onPress={() => {}} />}
         />
@@ -103,9 +103,9 @@ export default function ProfileScreen() {
             value="Bethany Central, Central Conference"
           />
           <Divider />
-          <InfoField label="Phone Number" value="+233 24 555 0192" />
+          <InfoField label="Phone Number" value={member.phoneNumber} />
           <Divider />
-          <InfoField label="Email Address" value="e.mensah@church-cua.org" />
+          <InfoField label="Email Address" value={member.emailAddress} />
           <Divider />
           <InfoField label="GPS Address" value="GA-183-9921, Accra, Ghana" />
         </Card>

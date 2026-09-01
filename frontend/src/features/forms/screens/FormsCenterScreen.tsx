@@ -22,6 +22,7 @@ import { BottomNavBar } from "@/src/components/ui/BottomNav";
 import { navItems } from "@/src/constants/navItems";
 import { colors } from "@/src/constants/colors";
 import { FeaturePromoCard } from "../components/FeaturePromoCard";
+import { useAuth } from "../../auth/context/AuthContext";
 
 const forms = [
   {
@@ -69,6 +70,7 @@ const forms = [
 ];
 
 export function FormsCenterScreen() {
+  const {member} = useAuth();
   const router = useRouter();
   const pathname = usePathname();
   const activeKey = navItems.find((item) => item.route === pathname)?.key ?? "explore";
@@ -80,7 +82,7 @@ export function FormsCenterScreen() {
         contentContainerStyle={{ padding: 18, gap: 20, paddingBottom: 100 }}
       >
         <Header
-          name="Elder Mensah"
+          name={member.firstName}
           status="Achiever"
           avatar={require("@/assets/icon.png")}
           actions={
