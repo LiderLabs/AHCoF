@@ -15,6 +15,7 @@ export interface Member {
   id: string;
   firstName: string;
   lastName: string;
+  gender: "female" | "male";
   membershipType: string;
   emailAddress: string;
   phoneNumber: string;
@@ -25,7 +26,7 @@ export interface Member {
   isDemo: boolean;
   createdAt: string;
   updatedAt: string;
-//   accounts: Account[];
+  //accounts: Account[];
   gpsAddress: string;
 }
 

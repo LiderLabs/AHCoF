@@ -4,6 +4,7 @@ export interface Member {
   id: string;
   firstName: string;
   lastName: string;
+  gender: "female" | "male";
   membershipType: MembershipType;
   emailAddress: string;
   phoneNumber: string;
