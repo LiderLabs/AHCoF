@@ -69,7 +69,6 @@ export function SignupForm() {
         },
       });
 
-      router.replace("/portfolio");
     } catch (err) {
       setFormError(
         err instanceof Error ? err.message : "Signup failed. Try again.",
