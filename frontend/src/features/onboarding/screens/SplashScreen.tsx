@@ -13,21 +13,6 @@ import { Logo } from "@/src/components/ui/Logo";
 export default function SplashScreen() {
   const router = useRouter();
 
-  const actions = [
-  {
-    key: 'get-started',
-    label: 'Get Started',
-    variant: 'primary' as const,
-    onPress: () => router.push('/(auth)/login'),
-  },
-  {
-    key: 'learn-more',
-    label: 'Learn More',
-    variant: 'secondary' as const,
-    onPress: () => router.push(''),
-  },
-]
-
   return (
     <ImageBackground
       source={require("@/assets/bg-splash-screen.png")}
@@ -85,10 +70,8 @@ export default function SplashScreen() {
         </View>
 
           {/* Buttons */}
-        <View className="w-full flex gap-2 mt-6">
-          {actions.map(({key, ...buttonProps}) => (
-            <Button key={key} {...buttonProps}/>
-          ))}
+        <View className="w-full mt-6">
+         <Button label="Get Started" onPress={() => router.push("/onboardingpage")} />
         </View>
       </BlurView>
     </ImageBackground>

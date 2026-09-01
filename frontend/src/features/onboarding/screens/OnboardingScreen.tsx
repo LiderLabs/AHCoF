@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { View, Text, FlatList, Dimensions, ViewToken } from "react-native";
+import { View, Text, FlatList, Dimensions, ViewToken, Pressable } from "react-native";
 import { useRouter } from "expo-router";
 import { Button } from "@/src/components/ui/Button";
 import { onboardingSlides } from "../data";
@@ -29,8 +29,18 @@ export function OnboardingScreen() {
     flatListRef.current?.scrollToIndex({ index: activeIndex + 1 });
   };
 
+  const handleSkip = () => {
+    router.replace("/signup");
+  };
+
   return (
     <View className="flex-1 bg-white">
+      {!isLastSlide && (
+        <Pressable onPress={handleSkip} className="self-end px-6 pt-4">
+          <Text className="text-gray-500 font-medium">Skip</Text>
+        </Pressable>
+      )}
+
       <FlatList
         ref={flatListRef}
         data={onboardingSlides}
@@ -68,7 +78,7 @@ export function OnboardingScreen() {
 
       <View className="px-6 mb-8">
         <Button
-          label={isLastSlide ? "Get Started" : "Next"}
+          label={isLastSlide ? "Continue to Sign Up" : "Next"}
           onPress={handleNext}
         />
       </View>
