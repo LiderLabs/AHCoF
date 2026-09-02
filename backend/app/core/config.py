@@ -14,6 +14,15 @@ class Settings(BaseSettings):
     jwt_algorithm: str = "HS256"
     access_token_expire_minutes: int = 5
 
+    otp_length: int = 6
+    otp_expire_minutes: int = 5
+
+    arkesel_api_key: str | None = None
+    arkesel_sender_id: str = "AHCoF"
+
+    resend_api_key: str | None = None
+    resend_from_email: str = "onboarding@resend.dev"
+
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",

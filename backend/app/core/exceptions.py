@@ -52,3 +52,15 @@ class InsufficientBalanceError(AppException):
     error_code = "INSUFFICIENT_BALANCE"
     status_code = status.HTTP_400_BAD_REQUEST
     message = "Insufficient balance for this operation"
+
+
+class InvalidOtpError(AppException):
+    error_code = "INVALID_OTP"
+    status_code = status.HTTP_400_BAD_REQUEST
+    message = "The OTP code is invalid"
+
+
+class OtpExpiredError(AppException):
+    error_code = "OTP_EXPIRED"
+    status_code = status.HTTP_400_BAD_REQUEST
+    message = "The OTP code has expired. Request a new one."

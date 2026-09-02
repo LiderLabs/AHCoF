@@ -34,8 +34,10 @@ class MemberResponse(BaseModel):
     email_address: EmailStr | None
     phone_number: str
     church_branch: str | None
+    gender: str | None
     conference: str | None
     is_active: bool
+    is_verified: bool
     membership_id: str
     is_demo: bool
     created_at: datetime
@@ -62,7 +64,6 @@ class TokenResponse(BaseModel):
     refresh_token: str | None = None
     token_type: str = "bearer"
     expires_in: int = 300
-
 
 class CurrentMemberResponse(MemberResponse):
     pass

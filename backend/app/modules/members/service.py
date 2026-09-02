@@ -1,15 +1,25 @@
+import uuid as uuid_lib
 from uuid import UUID
 
 from sqlalchemy import or_, select
 from sqlalchemy.orm import Session
 
-from app.modules.members.model import Member
-
 from app.core.exceptions import UserAlreadyExistsError
 from app.core.security import hash_password
+from app.modules.members.model import Member
 from app.modules.members.schema import MemberCreate
 
-import uuid as uuid_lib
+
+def get_member_by_identifier(db: Session, identifier: str) -> Member | None:
+    return db.scalar(
+        select(Member).where(
+            or_(
+                Member.phone_number == identifier,
+                Member.email_address == identifier,
+            )
+        )
+    )
+
 
 def create_member(db: Session, payload: MemberCreate) -> Member:
     conflict_conditions = [Member.phone_number == payload.phone_number]
@@ -36,6 +46,7 @@ def create_member(db: Session, payload: MemberCreate) -> Member:
         phone_number=payload.phone_number,
         password_hash=hash_password(payload.password),
         is_active=True,
+        is_verified=False,
         is_demo=False,
         accounts=[],
     )
