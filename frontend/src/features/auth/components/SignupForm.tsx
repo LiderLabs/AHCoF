@@ -9,6 +9,7 @@ import { sendOtp, signup } from "../api/auth";
 import { saveToken } from "@/src/lib/storage";
 import { AlertBanner } from "@/src/components/ui/AlertBanner";
 import { useAuth } from "../context/AuthContext";
+import { limitPhoneInput } from "../utils/limitPhoneInput";
 
 export function SignupForm() {
   const [values, setValues] = useState({
@@ -104,7 +105,7 @@ export function SignupForm() {
         label="Phone Number"
         type="number"
         value={values.phoneNumber}
-        onChangeText={(text) => updateField("phoneNumber", text)}
+        onChangeText={(text) => updateField("phoneNumber", limitPhoneInput(text))}
         error={errors.phoneNumber}
       />
 
