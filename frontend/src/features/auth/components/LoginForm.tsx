@@ -7,6 +7,7 @@ import { LoginFormValues, loginFormSchema } from "../validation";
 import { AlertBanner } from "@/src/components/ui/AlertBanner";
 import { login } from "../api/auth";
 import { useAuth } from "../context/AuthContext";
+import { limitIdentifierInput } from "../utils/limitIdentifierInput";
 
 export function LoginForm() {
   const [values, setValues] = useState({identifier: "", password: ""});
@@ -55,7 +56,7 @@ export function LoginForm() {
       label="Email or Phone Number" 
       type="text" 
       value={values.identifier} 
-      onChangeText={(text) => updateField("identifier", text)}
+      onChangeText={(text) => updateField("identifier", limitIdentifierInput(text))}
       error={errors.identifier}
        />
       <Input 
