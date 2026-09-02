@@ -33,6 +33,14 @@ import re
 from pathlib import Path
 
 from app.core.redis import redis_client
+# ---------------------------------------------------------------------------
+# Point the app at a test database BEFORE importing anything from `app`.
+#
+# app/core/config.py reads DATABASE_URL the first time it's imported, and
+# app/core/database.py binds a SQLAlchemy engine to that URL at import time
+# too. Both need to see the test URL on that first import, so this block
+# has to run before any `from app...` import below.
+# ---------------------------------------------------------------------------
 
 
 def _resolve_test_database_url() -> str:
@@ -72,6 +80,10 @@ _TEST_DATABASE_URL = _resolve_test_database_url()
 os.environ["DATABASE_URL"] = _TEST_DATABASE_URL
 
 import pytest
+
+# from sqlalchemy import create_engine, text
+# from sqlalchemy.engine.url import make_url
+
 from app.core.database import Base, engine
 from app.modules.members.model import Member
 from app.modules.otp.model import OtpCode  # noqa: F401  (populates Base.metadata)

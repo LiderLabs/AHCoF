@@ -3,6 +3,7 @@ from fastapi.testclient import TestClient
 from app.core.config import settings
 from app.main import app
 from app.core.config import settings
+from app.main import app
 
 client = TestClient(app)
 
@@ -30,6 +31,7 @@ def test_register_duplicate_phone_fails():
     response = client.post("/api/v1/auth/register", json=NEW_MEMBER)
     assert response.status_code == 409
     assert response.json()["error"] == "USER_ALREADY_EXISTS"
+
 
 
 def test_register_two_members_without_email_does_not_conflict():
