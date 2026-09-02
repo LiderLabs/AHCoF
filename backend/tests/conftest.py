@@ -79,13 +79,12 @@ _TEST_DATABASE_URL = _resolve_test_database_url()
 os.environ["DATABASE_URL"] = _TEST_DATABASE_URL
 
 import pytest
-from sqlalchemy import create_engine, text
-from sqlalchemy.engine.url import make_url
-
 from app.core.database import Base, engine
 from app.modules.members.model import Member
 from app.modules.otp.model import OtpCode  # noqa: F401  (populates Base.metadata)
 from app.scripts.seed_demo_data import seed_demo_member
+from sqlalchemy import create_engine, text
+from sqlalchemy.engine.url import make_url
 
 assert Member  # keep the import from being flagged as unused
 
