@@ -29,7 +29,26 @@ export function SignupForm() {
   const { setAuth } = useAuth();
 
   function updateField(field: keyof typeof values, value: string) {
-    setValues((prev) => ({ ...prev, [field]: value }));
+    setValues((prev) => {
+      const updated = { ...prev, [field]: value };
+      validateField(field, updated);
+      return updated;
+    });
+  }
+
+  function validateField(
+    field: keyof typeof values,
+    currentValues: typeof values,
+  ) {
+    const result = signupFormSchema.safeParse(currentValues);
+
+    if (result.success) {
+      setErrors((prev) => ({ ...prev, [field]: undefined }));
+      return;
+    }
+
+    const issue = result.error.issues.find((i) => i.path[0] === field);
+    setErrors((prev) => ({ ...prev, [field]: issue?.message }));
   }
 
   const handleSignup = async () => {
@@ -69,7 +88,6 @@ export function SignupForm() {
           emailAddress: signupPayload.emailAddress,
         },
       });
-
     } catch (err) {
       setFormError(
         err instanceof Error ? err.message : "Signup failed. Try again.",
@@ -105,7 +123,9 @@ export function SignupForm() {
         label="Phone Number"
         type="number"
         value={values.phoneNumber}
-        onChangeText={(text) => updateField("phoneNumber", limitPhoneInput(text))}
+        onChangeText={(text) =>
+          updateField("phoneNumber", limitPhoneInput(text))
+        }
         error={errors.phoneNumber}
       />
 
