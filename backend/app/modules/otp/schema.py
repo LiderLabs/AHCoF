@@ -1,6 +1,13 @@
+<<<<<<< HEAD
 from app.core.serialization import api_model_config
 from pydantic import BaseModel, Field
 
+=======
+from pydantic import BaseModel, Field
+
+from app.core.serialization import api_model_config
+
+>>>>>>> ef3904a (Add channel/channelsSent/verified fields to OTP endpoints to match Data_shapes.docx)
 
 class VerifySignupOtpRequest(BaseModel):
     model_config = api_model_config
@@ -60,6 +67,7 @@ class VerifyOtpResponse(BaseModel):
     verified: bool
     message: str
 
+<<<<<<< HEAD
 class SendOtpResponse(BaseModel):
     model_config = api_model_config
 
@@ -73,3 +81,18 @@ class SendOtpResponse(BaseModel):
             "present when DEMO_MODE is off."
         ),
     )
+=======
+
+class SendOtpResponse(BaseModel):
+    model_config = api_model_config
+
+    channels_sent: list[str] = Field(
+        examples=[["phone"], ["phone", "email"]],
+        description=(
+            "Which channels the code was actually sent to. Always includes "
+            "'phone' — every member has one on file. Includes 'email' only if "
+            "the member has one registered."
+        ),
+    )
+    message: str
+>>>>>>> ef3904a (Add channel/channelsSent/verified fields to OTP endpoints to match Data_shapes.docx)

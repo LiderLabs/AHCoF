@@ -27,6 +27,7 @@ from app.modules.members.service import (
     get_member_by_identifier,
     update_member_profile,
 )
+# from app.modules.members.service import create_member, get_member_by_identifier
 from app.modules.otp.model import OtpPurpose
 from app.modules.otp.schema import (
     ForgotPasswordRequest,
@@ -38,6 +39,8 @@ from app.modules.otp.schema import (
 )
 from app.modules.otp.senders import send_otp_to_member
 from app.modules.otp.service import create_otp, enforce_otp_rate_limit, verify_otp
+# from app.modules.otp.senders import channels_for_member, send_otp_to_member
+# from app.modules.otp.service import create_otp, verify_otp
 
 router = APIRouter(
     prefix="/auth",
@@ -189,6 +192,11 @@ def verify_signup_otp(
         "whether or not the identifier matches a member and regardless of "
         "the real member's actual channels — reporting the true channel "
         "list would itself reveal whether an email is on file."
+        # "the same generic message and a channelsSent list whether or not the "
+        # "identifier matches a member — an unrecognized identifier reports "
+        # "channelsSent: ['phone'], identical to what a real member with no "
+        # "email on file would see, so this endpoint can't be used to check "
+        # "which phone numbers or emails are registered."
     ),
 )
 def forgot_password(
@@ -208,6 +216,16 @@ def forgot_password(
         channels_sent=["phone"],
         message="If that phone number or email is registered, a reset code has been sent.",
     )
+        channels_sent = channels_for_member(member)
+    # else:
+    #     channels_sent = ["phone"]
+
+    # return SendOtpResponse(
+    #     channels_sent=channels_sent,
+    #     message="If that phone number or email is registered, a reset code has been sent.",
+    # )
+
+
 @router.post(
     "/reset-password",
     response_model=MessageResponse,
