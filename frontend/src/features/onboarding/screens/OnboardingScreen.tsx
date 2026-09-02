@@ -102,13 +102,13 @@ export function OnboardingScreen() {
             style={{
               width: index === activeIndex ? 24 : 8,
               height: 8,
-              backgroundColor: index === activeIndex ? "#059669" : "#D1D5DB",
+              backgroundColor: index === activeIndex ? colors.primary : "#D1D5DB",
             }}
           />
         ))}
       </View>
 
-      <View className="px-6 mb-8">
+      <View className="px-6 mb-9">
         <Button
           icon={isLastSlide ?  <ArrowBigRight size={22} style={{color: colors.textInverted, marginLeft: 6}}/> : undefined}
           iconPosition="right"
