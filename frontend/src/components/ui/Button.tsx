@@ -39,7 +39,7 @@ export function Button({
 
   return (
     <Pressable
-      className={`rounded-xl py-1 items-center justify-center mb-4 ${icon ? "flex-row" : ""} ${fullWidth ? "w-full py-3" : ""} ${className} `}
+      className={`rounded-xl items-center justify-center mb-4 ${icon ? "flex-row" : ""} ${fullWidth ? "w-full py-4" : ""} ${className} `}
       style={variantStyles[variant]}
       onPress={onPress}
       {...rest}
