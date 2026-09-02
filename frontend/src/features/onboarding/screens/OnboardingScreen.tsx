@@ -47,12 +47,6 @@ export function OnboardingScreen() {
 
   return (
     <View className="flex-1 bg-white">
-      {!isLastSlide && (
-        <Pressable onPress={handleSkip} className="self-end px-6 pt-4">
-          <Text className="text-gray-500 font-medium">Skip</Text>
-        </Pressable>
-      )}
-
       <FlatList
         ref={flatListRef}
         data={onboardingSlides}
