@@ -28,6 +28,7 @@ class Settings(BaseSettings):
     resend_api_key: str | None = None
     resend_from_email: str = "onboarding@resend.dev"
 
+
     @field_validator("database_url", mode="before")
     @classmethod
     def assemble_database_url(cls, v: str) -> str:
@@ -38,16 +39,16 @@ class Settings(BaseSettings):
                 return v.replace("postgresql://", "postgresql+psycopg://", 1)
         return v
 
-    model_config = SettingsConfigDict(
-        env_file=".env",
-        env_file_encoding="utf-8",
-        case_sensitive=False,
-        extra="ignore",
-    )
+
+    # model_config = SettingsConfigDict(
+    #     env_file=".env",
+    #     env_file_encoding="utf-8",
+    #     case_sensitive=False,
+    #     extra="ignore",
+    # )
 
 
 @lru_cache
 def get_settings() -> Settings:
     return Settings()
-
-settings = get_settings()
+# settings = get_settings()

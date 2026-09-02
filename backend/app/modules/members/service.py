@@ -7,6 +7,7 @@ from sqlalchemy.orm import Session
 from app.core.exceptions import UserAlreadyExistsError
 from app.core.security import hash_password
 from app.modules.members.model import Member
+
 from app.modules.members.schema import CompleteProfileRequest, MemberCreate
 
 
@@ -19,6 +20,20 @@ def get_member_by_identifier(db: Session, identifier: str) -> Member | None:
             )
         )
     )
+
+
+from app.modules.members.schema import MemberCreate
+
+
+# def get_member_by_identifier(db: Session, identifier: str) -> Member | None:
+#     return db.scalar(
+#         select(Member).where(
+#             or_(
+#                 Member.phone_number == identifier,
+#                 Member.email_address == identifier,
+#             )
+#         )
+#     )
 
 
 def create_member(db: Session, payload: MemberCreate) -> Member:

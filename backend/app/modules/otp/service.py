@@ -4,6 +4,10 @@ from datetime import datetime, timedelta, timezone
 import redis
 from app.core.config import settings
 from app.core.exceptions import InvalidOtpError, OtpExpiredError, OtpRateLimitedError
+
+# from app.core.config import settings
+# from app.core.exceptions import InvalidOtpError, OtpExpiredError
+
 from app.core.security import hash_password, verify_password
 from app.modules.members.model import Member
 from app.modules.otp.model import OtpCode
@@ -67,6 +71,7 @@ def verify_otp(db: Session, member: Member, code: str, purpose: str) -> None:
         raise InvalidOtpError()
 
     otp.consumed_at = datetime.now(timezone.utc)
+
     db.commit()
 
 def enforce_otp_rate_limit(redis_client: redis.Redis, identifier: str, purpose: str) -> None:
@@ -98,3 +103,6 @@ def enforce_otp_rate_limit(redis_client: redis.Redis, identifier: str, purpose: 
         )
 
     redis_client.set(cooldown_key, "1", ex=settings.otp_resend_cooldown_seconds)
+
+    # db.commit()
+
