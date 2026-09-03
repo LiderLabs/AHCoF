@@ -42,6 +42,9 @@ from app.modules.otp.service import create_otp, enforce_otp_rate_limit, verify_o
 # from app.modules.otp.senders import channels_for_member, send_otp_to_member
 # from app.modules.otp.service import create_otp, verify_otp
 
+# from app.modules.otp.service import create_otp, verify_otp
+
+
 router = APIRouter(
     prefix="/auth",
     tags=["Authentication"],
@@ -207,7 +210,6 @@ def forgot_password(
     enforce_otp_rate_limit(redis_client, payload.identifier, OtpPurpose.PASSWORD_RESET)
 
     member = get_member_by_identifier(db, payload.identifier)
-    debug_otp_code = None
 
     if member is not None:
         code = create_otp(db, member, OtpPurpose.PASSWORD_RESET)
@@ -218,7 +220,6 @@ def forgot_password(
     return SendOtpResponse(
         channels_sent=["phone"],
         message="If that phone number or email is registered, a reset code has been sent.",
-        debug_otp_code=debug_otp_code,
     )
         channels_sent = channels_for_member(member)
     # else:
@@ -228,7 +229,6 @@ def forgot_password(
     #     channels_sent=channels_sent,
     #     message="If that phone number or email is registered, a reset code has been sent.",
     # )
-
 
 @router.post(
     "/reset-password",

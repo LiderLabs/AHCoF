@@ -91,14 +91,7 @@ class SendOtpResponse(BaseModel):
 class SendOtpResponse(BaseModel):
     model_config = api_model_config
 
-    channels_sent: list[str] = Field(
-        examples=[["phone"], ["phone", "email"]],
-        description=(
-            "Which channels the code was actually sent to. Always includes "
-            "'phone' — every member has one on file. Includes 'email' only if "
-            "the member has one registered."
-        ),
-    )
+    channels_sent: list[str]
     message: str
 # <<<<<<< HEAD
 # >>>>>>> ef3904a (Add channel/channelsSent/verified fields to OTP endpoints to match Data_shapes.docx)
