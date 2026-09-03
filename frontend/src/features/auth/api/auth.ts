@@ -1,8 +1,6 @@
 import { api } from "@/src/lib/api";
 import { AuthResponse } from "../schema";
-<<<<<<< HEAD
 import { RefreshRequest } from "../types";
-=======
 import {
   SendOtpRequest,
   SendOtpResponse,
@@ -11,7 +9,6 @@ import {
   Member,
 } from "../types";
 import { CompleteProfileRequest } from "@/src/types/types";
->>>>>>> origin/dev
 
 interface SignupPayload {
   firstName: string;
