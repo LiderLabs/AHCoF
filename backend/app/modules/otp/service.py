@@ -1,8 +1,9 @@
 import secrets
 from datetime import datetime, timedelta, timezone
 
+import redis
 from app.core.config import settings
-from app.core.exceptions import InvalidOtpError, OtpExpiredError
+from app.core.exceptions import InvalidOtpError, OtpExpiredError, OtpRateLimitedError
 from app.core.security import hash_password, verify_password
 from app.modules.members.model import Member
 from app.modules.otp.model import OtpCode
@@ -67,3 +68,33 @@ def verify_otp(db: Session, member: Member, code: str, purpose: str) -> None:
 
     otp.consumed_at = datetime.now(timezone.utc)
     db.commit()
+
+def enforce_otp_rate_limit(redis_client: redis.Redis, identifier: str, purpose: str) -> None:
+    """Blocks OTP generation if this identifier+purpose is on cooldown or has
+    hit the hourly cap. Keyed on the raw identifier and checked unconditionally
+    — before we know whether it belongs to a real member — so a 429 here can't
+    be used to tell a real identifier apart from a fake one. Protects SMS/email
+    credit from being drained by repeated requests; a frontend cooldown timer
+    alone does nothing against someone calling the API directly."""
+    cooldown_key = f"otp:cooldown:{purpose}:{identifier}"
+    hourly_key = f"otp:hourly:{purpose}:{identifier}"
+
+    if redis_client.exists(cooldown_key):
+        retry_after = redis_client.ttl(cooldown_key)
+        raise OtpRateLimitedError(
+            message=f"Please wait {retry_after} seconds before requesting another code.",
+            details={"retry_after_seconds": retry_after},
+        )
+
+    request_count = redis_client.incr(hourly_key)
+    if request_count == 1:
+        redis_client.expire(hourly_key, 3600)
+
+    if request_count > settings.otp_max_requests_per_hour:
+        retry_after = redis_client.ttl(hourly_key)
+        raise OtpRateLimitedError(
+            message="Too many OTP requests this hour. Please try again later.",
+            details={"retry_after_seconds": retry_after},
+        )
+
+    redis_client.set(cooldown_key, "1", ex=settings.otp_resend_cooldown_seconds)

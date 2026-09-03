@@ -1,4 +1,4 @@
-from typing import Any, Optional
+from typing import Any
 
 from fastapi import status
 
@@ -11,12 +11,12 @@ class AppException(Exception):
     message: str = "An unexpected error occurred"
 
     def __init__(
-        self,
-        message: Optional[str] = None,
-        error_code: Optional[str] = None,
-        status_code: Optional[int] = None,
-        details: Optional[dict[str, Any]] = None,
-    ) -> None:
+    self,
+    message: str | None = None,
+    error_code: str | None = None,
+    status_code: int | None = None,
+    details: dict[str, Any] | None = None,
+) -> None:
         self.message = message or self.message
         self.error_code = error_code or self.error_code
         self.status_code = status_code or self.status_code
@@ -64,3 +64,8 @@ class OtpExpiredError(AppException):
     error_code = "OTP_EXPIRED"
     status_code = status.HTTP_400_BAD_REQUEST
     message = "The OTP code has expired. Request a new one."
+
+class OtpRateLimitedError(AppException):
+    error_code = "OTP_RATE_LIMITED"
+    status_code = status.HTTP_429_TOO_MANY_REQUESTS
+    message = "Too many OTP requests. Please wait before requesting another code."    
