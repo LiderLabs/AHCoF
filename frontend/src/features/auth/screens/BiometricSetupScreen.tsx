@@ -1,17 +1,17 @@
 import { useState } from "react";
 import { useRouter } from "expo-router";
 import * as LocalAuthentication from "expo-local-authentication";
-import * as SecureStore from "expo-secure-store";
 import { Button } from "@/src/components/ui/Button";
 import { FormLayout } from "@/src/components/ui/FormLayout";
 import { AlertBanner } from "@/src/components/ui/AlertBanner";
 import { useAuth } from "../context/AuthContext";
+import { setBiometricEnabled } from "@/src/lib/storage";
 
 export function BiometricSetupScreen() {
   const [error, setError] = useState<string | null>(null);
   const [isEnabling, setIsEnabling] = useState(false);
   const router = useRouter();
-  const { accessToken } = useAuth();
+  const { refreshToken } = useAuth();
 
   const handleEnable = async () => {
     setError(null);
@@ -35,11 +35,12 @@ export function BiometricSetupScreen() {
         return;
       }
 
-      if (refreshToken) {
-        await SecureStore.setItemAsync("refreshToken", refreshToken);
-        await SecureStore.setItemAsync("biometricEnabled", "true");
+      if (!refreshToken) {
+         setError("Something went wrong. Please try logging in again.");
+         return;
       }
 
+      await setBiometricEnabled(true);
       router.replace("/portfolio");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong.");
