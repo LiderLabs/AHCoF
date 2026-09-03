@@ -1,6 +1,5 @@
-from pydantic import BaseModel, Field
-
 from app.core.serialization import api_model_config
+from pydantic import BaseModel, Field
 
 
 class VerifySignupOtpRequest(BaseModel):
@@ -74,3 +73,11 @@ class SendOtpResponse(BaseModel):
         ),
     )
     message: str
+    debug_otp_code: str | None = Field(
+        default=None,
+        description=(
+            "The OTP code, included only when DEMO_MODE is enabled so "
+            "testers aren't blocked on real SMS/email delivery. Never "
+            "present when DEMO_MODE is off."
+        ),
+    )    

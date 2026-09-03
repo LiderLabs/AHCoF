@@ -64,6 +64,7 @@ class TokenResponse(BaseModel):
     refresh_token: str | None = None
     token_type: str = "bearer"
     expires_in: int = 300
+    description: str = "signup-verification OTP code"
 
 class CurrentMemberResponse(MemberResponse):
     pass
