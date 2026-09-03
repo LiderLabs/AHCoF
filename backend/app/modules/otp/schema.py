@@ -60,18 +60,10 @@ class VerifyOtpResponse(BaseModel):
     verified: bool
     message: str
 
-
 class SendOtpResponse(BaseModel):
     model_config = api_model_config
 
-    channels_sent: list[str] = Field(
-        examples=[["phone"], ["phone", "email"]],
-        description=(
-            "Which channels the code was actually sent to. Always includes "
-            "'phone' — every member has one on file. Includes 'email' only if "
-            "the member has one registered."
-        ),
-    )
+    channels_sent: list[str]
     message: str
     debug_otp_code: str | None = Field(
         default=None,
@@ -80,4 +72,4 @@ class SendOtpResponse(BaseModel):
             "testers aren't blocked on real SMS/email delivery. Never "
             "present when DEMO_MODE is off."
         ),
-    )    
+    )

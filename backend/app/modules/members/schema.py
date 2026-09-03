@@ -65,6 +65,14 @@ class TokenResponse(BaseModel):
     token_type: str = "bearer"
     expires_in: int = 300
     description: str = "signup-verification OTP code"
+debug_otp_code: str | None = Field(
+        default=None,
+        description=(
+            "The signup-verification OTP code, included only when DEMO_MODE "
+            "is enabled so testers aren't blocked on real SMS/email delivery. "
+            "Never present when DEMO_MODE is off."
+        ),
+    )
 
 class CurrentMemberResponse(MemberResponse):
     pass

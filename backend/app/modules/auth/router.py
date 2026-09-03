@@ -29,7 +29,7 @@ from app.modules.otp.schema import (
     VerifyOtpResponse,
     VerifySignupOtpRequest,
 )
-from app.modules.otp.senders import channels_for_member, send_otp_to_member
+from app.modules.otp.senders import send_otp_to_member
 from app.modules.otp.service import create_otp, verify_otp
 
 router = APIRouter(
@@ -169,20 +169,15 @@ def forgot_password(
     db: Session = Depends(get_db),
 ) -> SendOtpResponse:
     member = get_member_by_identifier(db, payload.identifier)
-    debug_otp_code = None
 
     if member is not None:
         code = create_otp(db, member, OtpPurpose.PASSWORD_RESET)
         send_otp_to_member(member, code)
-        if settings.demo_mode:
-            debug_otp_code = code
 
     return SendOtpResponse(
         channels_sent=["phone"],
         message="If that phone number or email is registered, a reset code has been sent.",
-        debug_otp_code=debug_otp_code,
     )
-
 
 @router.post(
     "/reset-password",
