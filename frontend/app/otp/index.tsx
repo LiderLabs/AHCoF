@@ -1,4 +1,4 @@
-import { OtpVerificationScreen } from "@/src/features/auth/screen/OtpVerificationScreen";
+import { OtpVerificationScreen } from "@/src/features/auth/screens/OtpVerificationScreen";
 
 export default function Otp() {
   return <OtpVerificationScreen />;
