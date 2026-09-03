@@ -52,7 +52,7 @@ export function SignupForm() {
     try {
       setIsSubmitting(true);
       const response = await signup(signupPayload);
-      setAuth(response.member, response.accessToken);
+      setAuth(response.member, response.accessToken, response.refreshToken);
       await saveToken(response.accessToken);
       router.replace("/portfolio");
     } catch (err) {
