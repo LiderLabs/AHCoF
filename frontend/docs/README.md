@@ -6,3 +6,4 @@ Documentation for developers working on the AHCoF member mobile app (frontend).
 - [Project Overview](./overview.md)
 - [Tech Stack](./tech-stack.md)
 - [Getting Started](./setup.md)
+- [User Flow](./user-flow.md)
