@@ -47,6 +47,10 @@ export interface LoginRequest {
   password: string; 
 }
 
+export interface RefreshRequest {
+  refreshToken: string;
+}
+
 export interface AuthResponse {
   member: Member | null; 
   accessToken: string;

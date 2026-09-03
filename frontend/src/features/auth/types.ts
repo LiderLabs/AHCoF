@@ -11,6 +11,10 @@ export interface LoginRequest {
   password: string;
 }
 
+export interface RefreshRequest {
+  refreshToken: string;
+}
+
 export interface Member {
   id: string;
   firstName: string;
