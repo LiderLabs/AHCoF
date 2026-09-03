@@ -32,14 +32,7 @@ import os
 import re
 from pathlib import Path
 
-# ---------------------------------------------------------------------------
-# Point the app at a test database BEFORE importing anything from `app`.
-#
-# app/core/config.py reads DATABASE_URL the first time it's imported, and
-# app/core/database.py binds a SQLAlchemy engine to that URL at import time
-# too. Both need to see the test URL on that first import, so this block
-# has to run before any `from app...` import below.
-# ---------------------------------------------------------------------------
+from app.core.redis import redis_client
 
 
 def _resolve_test_database_url() -> str:
@@ -142,3 +135,13 @@ def _clean_database():
     seed_demo_member()
 
     yield
+
+@pytest.fixture(autouse=True)
+def _clean_redis():
+    """Flushes Redis before each test. Postgres gets truncated by
+    _clean_database above, but that fixture only touches Postgres — Redis
+    state (OTP rate-limit counters) would otherwise persist across tests
+    within a run and cause unrelated tests to start hitting 429s if they
+    happen to reuse the same phone number or email."""
+    redis_client.flushdb()
+    yield    

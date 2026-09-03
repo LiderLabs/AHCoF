@@ -1,3 +1,4 @@
+import redis
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
@@ -9,6 +10,7 @@ from app.core.exceptions import (
     InvalidOtpError,
     MemberNotFoundError,
 )
+from app.core.redis import get_redis
 from app.core.security import create_access_token, hash_password, verify_password
 from app.modules.auth.dependencies import get_current_member
 from app.modules.members.model import Member
@@ -30,7 +32,7 @@ from app.modules.otp.schema import (
     VerifySignupOtpRequest,
 )
 from app.modules.otp.senders import send_otp_to_member
-from app.modules.otp.service import create_otp, verify_otp
+from app.modules.otp.service import create_otp, enforce_otp_rate_limit, verify_otp
 
 router = APIRouter(
     prefix="/auth",
@@ -167,7 +169,10 @@ def verify_signup_otp(
 def forgot_password(
     payload: ForgotPasswordRequest,
     db: Session = Depends(get_db),
+    redis_client: redis.Redis = Depends(get_redis),
 ) -> SendOtpResponse:
+    enforce_otp_rate_limit(redis_client, payload.identifier, OtpPurpose.PASSWORD_RESET)
+
     member = get_member_by_identifier(db, payload.identifier)
 
     if member is not None:
@@ -178,7 +183,6 @@ def forgot_password(
         channels_sent=["phone"],
         message="If that phone number or email is registered, a reset code has been sent.",
     )
-
 @router.post(
     "/reset-password",
     response_model=MessageResponse,
