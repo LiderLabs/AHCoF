@@ -1,13 +1,18 @@
-<<<<<<< HEAD
+# <<<<<<< HEAD
+# <<<<<<< HEAD
+# this one is your own merge conflict you might have not resolved yet
 from app.core.serialization import api_model_config
 from pydantic import BaseModel, Field
 
-=======
+# =======
 from pydantic import BaseModel, Field
 
+# =======
+# >>>>>>> 5667952 (fix: channelsSent leak)
 from app.core.serialization import api_model_config
+from pydantic import BaseModel, Field
 
->>>>>>> ef3904a (Add channel/channelsSent/verified fields to OTP endpoints to match Data_shapes.docx)
+# >>>>>>> ef3904a (Add channel/channelsSent/verified fields to OTP endpoints to match Data_shapes.docx)
 
 class VerifySignupOtpRequest(BaseModel):
     model_config = api_model_config
@@ -67,7 +72,7 @@ class VerifyOtpResponse(BaseModel):
     verified: bool
     message: str
 
-<<<<<<< HEAD
+# <<<<<<< HEAD
 class SendOtpResponse(BaseModel):
     model_config = api_model_config
 
@@ -81,7 +86,7 @@ class SendOtpResponse(BaseModel):
             "present when DEMO_MODE is off."
         ),
     )
-=======
+# =======
 
 class SendOtpResponse(BaseModel):
     model_config = api_model_config
@@ -95,4 +100,15 @@ class SendOtpResponse(BaseModel):
         ),
     )
     message: str
->>>>>>> ef3904a (Add channel/channelsSent/verified fields to OTP endpoints to match Data_shapes.docx)
+# <<<<<<< HEAD
+# >>>>>>> ef3904a (Add channel/channelsSent/verified fields to OTP endpoints to match Data_shapes.docx)
+# =======
+    debug_otp_code: str | None = Field(
+        default=None,
+        description=(
+            "The OTP code, included only when DEMO_MODE is enabled so "
+            "testers aren't blocked on real SMS/email delivery. Never "
+            "present when DEMO_MODE is off."
+        ),
+    )    
+# >>>>>>> 5667952 (fix: channelsSent leak)

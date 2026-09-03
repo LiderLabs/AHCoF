@@ -207,14 +207,18 @@ def forgot_password(
     enforce_otp_rate_limit(redis_client, payload.identifier, OtpPurpose.PASSWORD_RESET)
 
     member = get_member_by_identifier(db, payload.identifier)
+    debug_otp_code = None
 
     if member is not None:
         code = create_otp(db, member, OtpPurpose.PASSWORD_RESET)
         send_otp_to_member(member, code)
+        # if settings.demo_mode:
+        #     debug_otp_code = code
 
     return SendOtpResponse(
         channels_sent=["phone"],
         message="If that phone number or email is registered, a reset code has been sent.",
+        debug_otp_code=debug_otp_code,
     )
         channels_sent = channels_for_member(member)
     # else:
