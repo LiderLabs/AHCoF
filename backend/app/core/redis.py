@@ -181,4 +181,11 @@ redis_client: ResilientRedis = ResilientRedis(settings.redis_url)
 
 
 def get_redis() -> ResilientRedis:
+
+# redis_client: redis.Redis = redis.Redis.from_url(
+#     settings.redis_url, decode_responses=True
+# )
+
+
+# def get_redis() -> redis.Redis:
     return redis_client

@@ -71,7 +71,6 @@ def verify_otp(db: Session, member: Member, code: str, purpose: str) -> None:
         raise InvalidOtpError()
 
     otp.consumed_at = datetime.now(timezone.utc)
-
     db.commit()
 
 def enforce_otp_rate_limit(redis_client: redis.Redis, identifier: str, purpose: str) -> None:
