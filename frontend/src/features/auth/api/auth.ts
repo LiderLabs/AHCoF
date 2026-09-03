@@ -1,7 +1,13 @@
 import { api } from "@/src/lib/api";
 import { AuthResponse } from "../schema";
 import { RefreshRequest } from "../types";
-import { SendOtpRequest, SendOtpResponse, VerifyOtpRequest, VerifyOtpResponse, Member } from "../types";
+import {
+  SendOtpRequest,
+  SendOtpResponse,
+  VerifyOtpRequest,
+  VerifyOtpResponse,
+  Member,
+} from "../types";
 import { CompleteProfileRequest } from "@/src/types/types";
 
 interface SignupPayload {
