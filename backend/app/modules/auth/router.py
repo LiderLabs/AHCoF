@@ -113,12 +113,13 @@ def register(
         algorithm=settings.jwt_algorithm,
         expires_minutes=settings.access_token_expire_minutes,
     )
-
+    
     return TokenResponse(
         member=MemberResponse.model_validate(member, from_attributes=True),
         access_token=token,
         token_type="bearer",
         expires_in=settings.access_token_expire_minutes * 60,
+        debug_otp_code=code if settings.demo_mode else None,
     )
 
 
@@ -157,11 +158,10 @@ def verify_signup_otp(
     description=(
         "Sends a reset OTP to whichever contact channels the member has on "
         "file (SMS always, plus email if one is registered). Always returns "
-        "the same generic message and a channelsSent list whether or not the "
-        "identifier matches a member — an unrecognized identifier reports "
-        "channelsSent: ['phone'], identical to what a real member with no "
-        "email on file would see, so this endpoint can't be used to check "
-        "which phone numbers or emails are registered."
+        "the same generic message and a fixed channelsSent: ['phone'], "
+        "whether or not the identifier matches a member and regardless of "
+        "the real member's actual channels — reporting the true channel "
+        "list would itself reveal whether an email is on file."
     ),
 )
 def forgot_password(
@@ -169,17 +169,18 @@ def forgot_password(
     db: Session = Depends(get_db),
 ) -> SendOtpResponse:
     member = get_member_by_identifier(db, payload.identifier)
+    debug_otp_code = None
 
     if member is not None:
         code = create_otp(db, member, OtpPurpose.PASSWORD_RESET)
         send_otp_to_member(member, code)
-        channels_sent = channels_for_member(member)
-    else:
-        channels_sent = ["phone"]
+        if settings.demo_mode:
+            debug_otp_code = code
 
     return SendOtpResponse(
-        channels_sent=channels_sent,
+        channels_sent=["phone"],
         message="If that phone number or email is registered, a reset code has been sent.",
+        debug_otp_code=debug_otp_code,
     )
 
 
