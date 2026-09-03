@@ -17,7 +17,7 @@ export const onboardingSlides: OnboardingSlide[] = [
   },
   {
     id: "2",
-     image: require("@/assets/onboarding/img_man.png"),
+     image: require("@/assets/onboarding/img_man.jpeg"),
     title: "From savings to loans, all in one place",
     description:
       "Once you've saved for a while, you can access loans at moderate rates, for church projects, a home, or personal needs.",
