@@ -1,5 +1,6 @@
 import { api } from "@/src/lib/api";
 import { AuthResponse } from "../schema";
+import { RefreshRequest } from "../types";
 
 interface SignupPayload {
   firstName: string;
@@ -24,6 +25,13 @@ export function signup(payload: SignupPayload): Promise<AuthResponse> {
 
 export function login(payload: LoginPayload): Promise<AuthResponse> {
   return api<AuthResponse>("/login", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
+export function refreshAccessToken(payload: RefreshRequest): Promise<AuthResponse> {
+  return api<AuthResponse>("/refresh", { 
     method: "POST",
     body: JSON.stringify(payload),
   });
