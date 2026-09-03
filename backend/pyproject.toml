@@ -17,6 +17,7 @@ dependencies = [
     "pwdlib[argon2]",
     "PyJWT",
     "python-multipart",
+    "redis",
 ]
 
 [build-system]

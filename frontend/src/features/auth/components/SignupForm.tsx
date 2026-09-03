@@ -5,10 +5,11 @@ import { Input } from "@/src/components/ui/Input";
 import { Button } from "@/src/components/ui/Button";
 import { FormLayout } from "@/src/components/ui/FormLayout";
 import { SignupFormValues, signupFormSchema } from "../validation";
-import { signup } from "../api/auth";
+import { sendOtp, signup } from "../api/auth";
 import { saveToken } from "@/src/lib/storage";
 import { AlertBanner } from "@/src/components/ui/AlertBanner";
 import { useAuth } from "../context/AuthContext";
+import { limitPhoneInput } from "../utils/limitPhoneInput";
 
 export function SignupForm() {
   const [values, setValues] = useState({
@@ -25,10 +26,29 @@ export function SignupForm() {
   const router = useRouter();
   const [formError, setFormError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const {setAuth} = useAuth();
+  const { setAuth } = useAuth();
 
   function updateField(field: keyof typeof values, value: string) {
-    setValues((prev) => ({ ...prev, [field]: value }));
+    setValues((prev) => {
+      const updated = { ...prev, [field]: value };
+      validateField(field, updated);
+      return updated;
+    });
+  }
+
+  function validateField(
+    field: keyof typeof values,
+    currentValues: typeof values,
+  ) {
+    const result = signupFormSchema.safeParse(currentValues);
+
+    if (result.success) {
+      setErrors((prev) => ({ ...prev, [field]: undefined }));
+      return;
+    }
+
+    const issue = result.error.issues.find((i) => i.path[0] === field);
+    setErrors((prev) => ({ ...prev, [field]: issue?.message }));
   }
 
   const handleSignup = async () => {
@@ -47,14 +67,27 @@ export function SignupForm() {
 
     setErrors({});
     const { confirmPassword, ...signupPayload } = result.data;
-    console.log("PAYLOAD:", JSON.stringify(signupPayload, null, 2));
+    //console.log("PAYLOAD:", JSON.stringify(signupPayload, null, 2));
 
     try {
       setIsSubmitting(true);
       const response = await signup(signupPayload);
       setAuth(response.member, response.accessToken, response.refreshToken);
       await saveToken(response.accessToken);
-      router.replace("/portfolio");
+
+      const otpResponse = await sendOtp({
+        phoneNumber: signupPayload.phoneNumber,
+        emailAddress: signupPayload.emailAddress,
+      });
+
+      router.replace({
+        pathname: "/otp",
+        params: {
+          channels: otpResponse.channelsSent.join(","),
+          phoneNumber: signupPayload.phoneNumber,
+          emailAddress: signupPayload.emailAddress,
+        },
+      });
     } catch (err) {
       setFormError(
         err instanceof Error ? err.message : "Signup failed. Try again.",
@@ -90,7 +123,9 @@ export function SignupForm() {
         label="Phone Number"
         type="number"
         value={values.phoneNumber}
-        onChangeText={(text) => updateField("phoneNumber", text)}
+        onChangeText={(text) =>
+          updateField("phoneNumber", limitPhoneInput(text))
+        }
         error={errors.phoneNumber}
       />
 

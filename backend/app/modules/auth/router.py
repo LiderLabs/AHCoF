@@ -1,5 +1,5 @@
+import redis
 from fastapi import APIRouter, Depends
-from sqlalchemy import or_, select
 from sqlalchemy.orm import Session
 
 from app.core.config import settings
@@ -7,12 +7,32 @@ from app.core.database import get_db
 from app.core.exceptions import (
     AccountInactiveError,
     InvalidCredentialsError,
+    InvalidOtpError,
+    MemberNotFoundError,
 )
-from app.core.security import create_access_token, verify_password
+from app.core.redis import get_redis
+from app.core.security import create_access_token, hash_password, verify_password
 from app.modules.auth.dependencies import get_current_member
 from app.modules.members.model import Member
-from app.modules.members.schema import CurrentMemberResponse, LoginRequest, MemberCreate, MemberResponse, TokenResponse
-from app.modules.members.service import create_member
+from app.modules.members.schema import (
+    CurrentMemberResponse,
+    LoginRequest,
+    MemberCreate,
+    MemberResponse,
+    TokenResponse,
+)
+from app.modules.members.service import create_member, get_member_by_identifier
+from app.modules.otp.model import OtpPurpose
+from app.modules.otp.schema import (
+    ForgotPasswordRequest,
+    MessageResponse,
+    ResetPasswordRequest,
+    SendOtpResponse,
+    VerifyOtpResponse,
+    VerifySignupOtpRequest,
+)
+from app.modules.otp.senders import send_otp_to_member
+from app.modules.otp.service import create_otp, enforce_otp_rate_limit, verify_otp
 
 router = APIRouter(
     prefix="/auth",
@@ -29,14 +49,7 @@ def login(
     payload: LoginRequest,
     db: Session = Depends(get_db),
 ) -> TokenResponse:
-    member = db.scalar(
-        select(Member).where(
-            or_(
-                Member.phone_number == payload.identifier,
-                Member.email_address == payload.identifier,
-            )
-        )
-    )
+    member = get_member_by_identifier(db, payload.identifier)
 
     if (
         member is None
@@ -80,6 +93,12 @@ def get_me(
     response_model_by_alias=True,
     status_code=201,
     summary="Register a new member",
+    description=(
+        "Creates the member and immediately sends a signup-verification OTP "
+        "to their phone (and email, if provided). The member can log in "
+        "right away — `isVerified` starts false and is set true by "
+        "POST /auth/verify-signup-otp. Verification does not gate login."
+    ),
 )
 def register(
     payload: MemberCreate,
@@ -87,16 +106,101 @@ def register(
 ) -> TokenResponse:
     member = create_member(db, payload)
 
+    code = create_otp(db, member, OtpPurpose.SIGNUP_VERIFICATION)
+    send_otp_to_member(member, code)
+
     token = create_access_token(
         subject=str(member.id),
         secret_key=settings.jwt_secret_key,
         algorithm=settings.jwt_algorithm,
         expires_minutes=settings.access_token_expire_minutes,
     )
-
+    
     return TokenResponse(
         member=MemberResponse.model_validate(member, from_attributes=True),
         access_token=token,
         token_type="bearer",
         expires_in=settings.access_token_expire_minutes * 60,
+        debug_otp_code=code if settings.demo_mode else None,
     )
+
+
+@router.post(
+    "/verify-signup-otp",
+    response_model=VerifyOtpResponse,
+    response_model_by_alias=True,
+    summary="Verify the OTP sent at registration",
+)
+def verify_signup_otp(
+    payload: VerifySignupOtpRequest,
+    db: Session = Depends(get_db),
+) -> VerifyOtpResponse:
+    member = get_member_by_identifier(db, payload.identifier)
+
+    if member is None:
+        raise MemberNotFoundError()
+
+    verify_otp(db, member, payload.code, OtpPurpose.SIGNUP_VERIFICATION)
+
+    member.is_verified = True
+    db.commit()
+
+    return VerifyOtpResponse(
+        channel=payload.channel,
+        verified=True,
+        message="Member verified successfully.",
+    )
+
+
+@router.post(
+    "/forgot-password",
+    response_model=SendOtpResponse,
+    response_model_by_alias=True,
+    summary="Request a password-reset OTP",
+    description=(
+        "Sends a reset OTP to whichever contact channels the member has on "
+        "file (SMS always, plus email if one is registered). Always returns "
+        "the same generic message and a fixed channelsSent: ['phone'], "
+        "whether or not the identifier matches a member and regardless of "
+        "the real member's actual channels — reporting the true channel "
+        "list would itself reveal whether an email is on file."
+    ),
+)
+def forgot_password(
+    payload: ForgotPasswordRequest,
+    db: Session = Depends(get_db),
+    redis_client: redis.Redis = Depends(get_redis),
+) -> SendOtpResponse:
+    enforce_otp_rate_limit(redis_client, payload.identifier, OtpPurpose.PASSWORD_RESET)
+
+    member = get_member_by_identifier(db, payload.identifier)
+
+    if member is not None:
+        code = create_otp(db, member, OtpPurpose.PASSWORD_RESET)
+        send_otp_to_member(member, code)
+
+    return SendOtpResponse(
+        channels_sent=["phone"],
+        message="If that phone number or email is registered, a reset code has been sent.",
+    )
+@router.post(
+    "/reset-password",
+    response_model=MessageResponse,
+    response_model_by_alias=True,
+    summary="Reset password using the OTP from /auth/forgot-password",
+)
+def reset_password(
+    payload: ResetPasswordRequest,
+    db: Session = Depends(get_db),
+) -> MessageResponse:
+    member = get_member_by_identifier(db, payload.identifier)
+
+    if member is None:
+        raise InvalidOtpError()
+
+    verify_otp(db, member, payload.code, OtpPurpose.PASSWORD_RESET)
+
+    member.password_hash = hash_password(payload.new_password)
+    db.commit()
+
+    return MessageResponse(message="Password reset successfully.")

@@ -9,10 +9,23 @@ class Settings(BaseSettings):
     debug: bool = False
     demo_mode: bool = True
     database_url: str
+    redis_url: str = "redis://localhost:6379/0"
 
     jwt_secret_key: str
     jwt_algorithm: str = "HS256"
-    access_token_expire_minutes: int = 30
+    access_token_expire_minutes: int = 5
+
+    otp_length: int = 6
+    otp_expire_minutes: int = 5
+
+    otp_resend_cooldown_seconds: int = 60
+    otp_max_requests_per_hour: int = 5
+
+    arkesel_api_key: str | None = None
+    arkesel_sender_id: str = "AHCoF"
+
+    resend_api_key: str | None = None
+    resend_from_email: str = "onboarding@resend.dev"
 
     model_config = SettingsConfigDict(
         env_file=".env",
@@ -25,6 +38,5 @@ class Settings(BaseSettings):
 @lru_cache
 def get_settings() -> Settings:
     return Settings()
-
 
 settings = get_settings()

@@ -59,6 +59,11 @@ class Member(Base):
         String(150),
         nullable=True,
     )
+    
+    gender: Mapped[str | None] = mapped_column(
+        String(30),
+        nullable=True,
+    )
 
     is_active: Mapped[bool] = mapped_column(
         Boolean,
@@ -70,6 +75,12 @@ class Member(Base):
         Boolean,
         nullable=False,
         default=True,
+    )
+
+    is_verified: Mapped[bool] = mapped_column(
+        Boolean,
+        nullable=False,
+        default=False,
     )
 
     accounts: Mapped[list[str]] = mapped_column(
