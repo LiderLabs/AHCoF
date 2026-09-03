@@ -37,14 +37,12 @@ export function login(payload: LoginPayload): Promise<AuthResponse> {
   });
 }
 
-<<<<<<< HEAD
 export function refreshAccessToken(payload: RefreshRequest): Promise<AuthResponse> {
   return api<AuthResponse>("/refresh", { 
     method: "POST",
     body: JSON.stringify(payload),
   });
 }
-=======
 export function sendOtp(payload: SendOtpRequest): Promise<SendOtpResponse> {
   // return api<SendOtpResponse>("/otp/send", {
   //   method: "POST",
@@ -82,4 +80,3 @@ export function completeProfile(
     body: JSON.stringify(payload),
   });
 }
->>>>>>> origin/dev
