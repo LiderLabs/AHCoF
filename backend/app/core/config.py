@@ -31,7 +31,6 @@ class Settings(BaseSettings):
     resend_api_key: str | None = None
     resend_from_email: str = "onboarding@resend.dev"
 
-
     @field_validator("database_url", mode="before")
     @classmethod
     def assemble_database_url(cls, v: str) -> str:
