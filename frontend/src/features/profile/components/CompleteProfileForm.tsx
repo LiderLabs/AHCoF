@@ -5,20 +5,25 @@ import { Input } from "@/src/components/ui/Input";
 import { Button } from "@/src/components/ui/Button";
 import { FormLayout } from "@/src/components/ui/FormLayout";
 import { AlertBanner } from "@/src/components/ui/AlertBanner";
-import { completeProfileSchema, CompleteProfileFormValues } from "../validation";
-import { completeProfile } from "../api/auth";
-import { useAuth } from "../context/AuthContext";
+import {
+  completeProfileSchema,
+  CompleteProfileFormValues,
+} from "../../auth/validation";
+import { completeProfile } from "../../auth/api/auth";
+import { useAuth } from "../../auth/context/AuthContext";
 
 export function CompleteProfileForm() {
   const router = useRouter();
-  const { accessToken, setAuth } = useAuth();
+  const { accessToken, setAuth, refreshToken } = useAuth();
   const [values, setValues] = useState({
     gender: "" as "male" | "female" | "",
     churchBranch: "",
     conference: "",
     gpsAddress: "",
   });
-  const [errors, setErrors] = useState<Partial<Record<keyof CompleteProfileFormValues, string>>>({});
+  const [errors, setErrors] = useState<
+    Partial<Record<keyof CompleteProfileFormValues, string>>
+  >({});
   const [formError, setFormError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -31,7 +36,9 @@ export function CompleteProfileForm() {
     const result = completeProfileSchema.safeParse(values);
 
     if (!result.success) {
-      const fieldErrors: Partial<Record<keyof CompleteProfileFormValues, string>> = {};
+      const fieldErrors: Partial<
+        Record<keyof CompleteProfileFormValues, string>
+      > = {};
       result.error.issues.forEach((issue) => {
         const field = issue.path[0] as keyof CompleteProfileFormValues;
         fieldErrors[field] = issue.message;
@@ -48,10 +55,14 @@ export function CompleteProfileForm() {
         ...result.data,
         membershipType: "church_member",
       });
-      if (accessToken) setAuth(updatedMember, accessToken);
+      if (accessToken) setAuth(updatedMember, accessToken, refreshToken);
       router.replace("/portfolio");
     } catch (err) {
-      setFormError(err instanceof Error ? err.message : "Could not save profile. Try again.");
+      setFormError(
+        err instanceof Error
+          ? err.message
+          : "Could not save profile. Try again.",
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -77,7 +88,9 @@ export function CompleteProfileForm() {
           </Pressable>
         ))}
       </View>
-      {errors.gender && <Text className="text-red-500 text-sm mb-4">{errors.gender}</Text>}
+      {errors.gender && (
+        <Text className="text-red-500 text-sm mb-4">{errors.gender}</Text>
+      )}
 
       <Input
         label="Church Branch"

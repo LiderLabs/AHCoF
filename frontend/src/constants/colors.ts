@@ -64,6 +64,7 @@ export const colors = {
   ],
   splashGradientLocations: [0, 0.25, 0.45, 0.6, 0.75, 0.9, 1],
   backgroundlightGray: palette.gray200,
+  backgroundLime: palette.mint200,
 
   //Text
   textLogo: palette.green700,
