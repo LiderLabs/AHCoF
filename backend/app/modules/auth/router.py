@@ -15,13 +15,18 @@ from app.core.security import create_access_token, hash_password, verify_passwor
 from app.modules.auth.dependencies import get_current_member
 from app.modules.members.model import Member
 from app.modules.members.schema import (
+    CompleteProfileRequest,
     CurrentMemberResponse,
     LoginRequest,
     MemberCreate,
     MemberResponse,
     TokenResponse,
 )
-from app.modules.members.service import create_member, get_member_by_identifier
+from app.modules.members.service import (
+    create_member,
+    get_member_by_identifier,
+    update_member_profile,
+)
 from app.modules.otp.model import OtpPurpose
 from app.modules.otp.schema import (
     ForgotPasswordRequest,
@@ -85,6 +90,26 @@ def get_me(
     current_member: Member = Depends(get_current_member),
 ) -> Member:
     return current_member
+
+
+@router.patch(
+    "/me",
+    response_model=CurrentMemberResponse,
+    response_model_by_alias=True,
+    summary="Complete or update the logged-in member's profile",
+    description=(
+        "Partial update — send only the fields you're changing. Matches "
+        "Data_shapes.docx §2.6 (completeProfileRequest): gender, churchBranch, "
+        "conference, membershipType, gpsAddress. Any field omitted or left as "
+        "null is untouched on the member record."
+    ),
+)
+def update_me(
+    payload: CompleteProfileRequest,
+    current_member: Member = Depends(get_current_member),
+    db: Session = Depends(get_db),
+) -> Member:
+    return update_member_profile(db, current_member, payload)
 
 
 @router.post(

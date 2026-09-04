@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 from app.core.exceptions import UserAlreadyExistsError
 from app.core.security import hash_password
 from app.modules.members.model import Member
-from app.modules.members.schema import MemberCreate
+from app.modules.members.schema import CompleteProfileRequest, MemberCreate
 
 
 def get_member_by_identifier(db: Session, identifier: str) -> Member | None:
@@ -55,6 +55,21 @@ def create_member(db: Session, payload: MemberCreate) -> Member:
     db.commit()
     db.refresh(member)
     return member
+
+def update_member_profile(
+    db: Session,
+    member: Member,
+    payload: CompleteProfileRequest,
+) -> Member:
+    updates = payload.model_dump(exclude_unset=True)
+
+    for field, value in updates.items():
+        setattr(member, field, value)
+
+    db.commit()
+    db.refresh(member)
+    return member
+
 
 def get_member_by_id(db: Session, member_id: UUID) -> Member | None:
     return db.get(Member, member_id)

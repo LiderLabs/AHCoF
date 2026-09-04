@@ -6,9 +6,8 @@ Covers logging in with either identifier type the demo member has on file
 the protected /auth/me endpoint.
 """
 
-from fastapi.testclient import TestClient
-
 from app.main import app
+from fastapi.testclient import TestClient
 
 client = TestClient(app)
 
@@ -62,3 +61,28 @@ def test_me_without_token_is_unauthorized() -> None:
     response = client.get("/api/v1/auth/me")
 
     assert response.status_code == 401
+
+def test_update_me_persists_profile_fields() -> None:
+    login_response = client.post(
+        "/api/v1/auth/login",
+        json={"identifier": DEMO_PHONE_NUMBER, "password": DEMO_PASSWORD},
+    )
+    token = login_response.json()["accessToken"]
+
+    response = client.patch(
+        "/api/v1/auth/me",
+        headers={"Authorization": f"Bearer {token}"},
+        json={"gender": "male", "churchBranch": "Adenta", "gpsAddress": "GA-123-4567"},
+    )
+
+    assert response.status_code == 200
+    body = response.json()
+    assert body["gender"] == "male"
+    assert body["churchBranch"] == "Adenta"
+    assert body["gpsAddress"] == "GA-123-4567"
+
+
+def test_update_me_requires_auth() -> None:
+    response = client.patch("/api/v1/auth/me", json={"gender": "male"})
+
+    assert response.status_code == 401    

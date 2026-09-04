@@ -46,6 +46,16 @@ class MemberResponse(BaseModel):
     gps_address: str | None
 
 
+class CompleteProfileRequest(BaseModel):
+    model_config = api_model_config
+
+    gender: str | None = Field(default=None, examples=["female"])
+    church_branch: str | None = Field(default=None, examples=["Adenta"])
+    conference: str | None = Field(default=None, examples=["Greater Accra"])
+    membership_type: str | None = Field(default=None, examples=["Standard"])
+    gps_address: str | None = Field(default=None, examples=["GA-123-4567"])
+
+
 class LoginRequest(BaseModel):
     model_config = api_model_config
 
