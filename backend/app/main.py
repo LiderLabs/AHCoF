@@ -2,6 +2,7 @@ import logging
 
 from fastapi import FastAPI, HTTPException, Request, status
 from fastapi.exceptions import RequestValidationError
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
@@ -69,6 +70,14 @@ app = FastAPI(
     ],
 )
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 # ---------------------------------------------------------------------------
 # Error handling
@@ -100,9 +109,6 @@ def app_exception_handler(request: Request, exc: AppException) -> JSONResponse:
 def validation_exception_handler(
     request: Request, exc: RequestValidationError
 ) -> JSONResponse:
-    # exc.errors() can contain non-JSON-serializable values (e.g. bytes),
-    # so we only surface the parts that are safe and useful to a client:
-    # where the bad field was and what was wrong with it.
     field_errors = [
         {
             "field": ".".join(str(part) for part in error["loc"] if part != "body"),
@@ -164,12 +170,6 @@ def unhandled_exception_handler(request: Request, exc: Exception) -> JSONRespons
         ).model_dump(),
     )
 
-
-# ---------------------------------------------------------------------------
-# Health
-# ---------------------------------------------------------------------------
-
-
 @app.get(
     "/health",
     tags=["Health"],
@@ -216,3 +216,39 @@ def readiness_check() -> dict[str, str]:
 
 
 app.include_router(api_router, prefix="/api/v1")
+app.include_router(api_router)
+
+# Root-level convenience endpoints for frontend clients requesting /login or /register directly
+from fastapi import Depends
+from sqlalchemy.orm import Session
+from app.core.database import get_db
+from app.modules.auth.router import login as auth_login, register as auth_register
+from app.modules.members.schema import LoginRequest, MemberCreate, TokenResponse
+
+
+@app.post(
+    "/login",
+    response_model=TokenResponse,
+    response_model_by_alias=True,
+    include_in_schema=False,
+)
+def root_login(
+    payload: LoginRequest,
+    db: Session = Depends(get_db),
+) -> TokenResponse:
+    return auth_login(payload, db)
+
+
+@app.post(
+    "/register",
+    response_model=TokenResponse,
+    response_model_by_alias=True,
+    status_code=201,
+    include_in_schema=False,
+)
+def root_register(
+    payload: MemberCreate,
+    db: Session = Depends(get_db),
+) -> TokenResponse:
+    return auth_register(payload, db)
+
