@@ -47,6 +47,8 @@ export function LoginForm() {
     } finally {
       setIsSubmitting(false);
     }
+
+    // router.replace("/biometriclogin");
   };
 
   return (

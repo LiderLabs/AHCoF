@@ -7,6 +7,9 @@ import { FormLayout } from "@/src/components/ui/FormLayout";
 import { AlertBanner } from "@/src/components/ui/AlertBanner";
 import { refreshAccessToken } from "../api/auth";
 import { useAuth } from "../context/AuthContext";
+import { View } from "react-native";
+import { FingerprintIcon } from "lucide-react-native";
+import { colors } from "@/src/constants/colors";
 
 export function BiometricUnlockScreen() {
   const [error, setError] = useState<string | null>(null);
@@ -50,18 +53,22 @@ export function BiometricUnlockScreen() {
   }, []);
 
   return (
-    <FormLayout title="Welcome back">
-      <AlertBanner message={error} />
-      <Button
-        label={isUnlocking ? "Verifying..." : "Try Again"}
-        onPress={attemptUnlock}
-        disabled={isUnlocking}
-      />
-      <Button
-        label="Use password instead"
-        onPress={() => router.replace("/login")}
-        disabled={isUnlocking}
-      />
+    <FormLayout title="Welcome back" >
+      <View className="flex-col justify-center items-center px-6 h-full">
+        <FingerprintIcon size={80} style={{color: colors.iconColor}} />
+        <Button
+          className="mx-10 mt-10"
+          label={isUnlocking ? "Verifying..." : "Try Again"}
+          onPress={attemptUnlock}
+          disabled={isUnlocking}
+        />
+        <Button
+          label="Use password instead"
+          onPress={() => router.replace("/login")}
+          disabled={isUnlocking}
+        />
+        <AlertBanner message={error} />
+      </View>
     </FormLayout>
   );
 }
