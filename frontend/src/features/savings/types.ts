@@ -60,13 +60,16 @@ export interface CreateRegularAccountPayload {
 
 // ---- API response envelopes ----
 
+//response depending on the account type, the data field will contain the corresponding account details
 export interface SavingsApiResponse<T> {
   status: "success" | "error";
   data: T;
 }
 
+// response for creating a new regular savings account
 export type GetRegularAccountResponse = SavingsApiResponse<RegularSavingsAccount>;
 
+// response for fetching a list of all savings accounts for a member
 export interface AccountsListData {
   accounts: RegularSavingsAccount[];
 }

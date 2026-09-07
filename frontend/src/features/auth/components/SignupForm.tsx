@@ -100,18 +100,22 @@ export function SignupForm() {
   return (
     <FormLayout title="Create Account">
       <AlertBanner message={formError} />
-      <Input
-        label="First Name"
-        value={values.firstName}
-        onChangeText={(text) => updateField("firstName", text)}
-        error={errors.firstName}
-      />
-      <Input
-        label="Last Name"
-        value={values.lastName}
-        onChangeText={(text) => updateField("lastName", text)}
-        error={errors.lastName}
-      />
+     <View className="flex flex-row gap-2">
+  <Input
+    label="First Name"
+    value={values.firstName}
+    onChangeText={(text) => updateField("firstName", text)}
+    error={errors.firstName}
+    containerClassName="flex-1"
+  />
+  <Input
+    label="Last Name"
+    value={values.lastName}
+    onChangeText={(text) => updateField("lastName", text)}
+    error={errors.lastName}
+    containerClassName="flex-1"
+  />
+</View>
       <Input
         label="Email (optional)"
         type="email"

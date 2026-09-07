@@ -7,9 +7,10 @@ interface InputProps extends TextInputProps {
   label?: string;
   error?: string;
   type?: "text" | "email" | "password" | "number";
+  containerClassName?: string;
 }
 
-export function Input({ label, error, type = "text", ...rest }: InputProps) {
+export function Input({ label, error, type = "text", containerClassName, ...rest }: InputProps) {
   const [showPassword, setShowPassword] = useState(false);
   const isPassword = type === "password"; //to check if value of type is password
 
@@ -22,7 +23,7 @@ export function Input({ label, error, type = "text", ...rest }: InputProps) {
         : "default";
 
   return (
-    <View className="w-full mb-4">
+    <View className={`w-full mb-4 ${containerClassName ?? ""}`}>
       {label && <Text className="mb-1 font-semibold">{label}</Text>}
 
       <View className="relative justify-center"> 

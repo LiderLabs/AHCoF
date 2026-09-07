@@ -45,7 +45,7 @@ export default function SignupScreen() {
         {/* Already have an account */}
         <Pressable
           onPress={() => router.push("/(auth)/login")}
-          className="flex-row justify-center mt-2"
+          className="flex-row justify-center -mt-5"
         >
           <Text style={{ color: colors.textSecondary }}>
             Already have an account?{" "}
