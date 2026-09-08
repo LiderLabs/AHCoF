@@ -84,6 +84,7 @@ export const colors = {
   //Icons
   iconColor: palette.gray600,
   iconColorLight: palette.gray300,
+  iconRegularSavings: palette.amber300,
 
   //Overlays
    overlay: 'rgba(13, 59, 16, 0.3)',

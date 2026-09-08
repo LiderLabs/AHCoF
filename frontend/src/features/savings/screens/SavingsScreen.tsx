@@ -41,11 +41,11 @@ export default function SavingsScreen() {
 
         <View>
           <Text className="text-2xl font-bold" style={{ color: colors.primary }}>Savings Module</Text>
-          <Text className="text-md" style={{ color: "#6B7280" }}>Manage and track your wealth growth journey.</Text>
+          <Text className="text-lg" style={{ color: "#6B7280" }}>Manage and track your wealth growth journey.</Text>
         </View>
 
        {!loading && !hasAccounts && (
-  <EmptyAccountsState onCreatePress={() => setCreateButtonOpen(true)} />
+  <EmptyAccountsState onCreatePress={() => setCreateButtonOpen(true)} backgroundColor="#eeececff"/>
 )}
 
 {hasAccounts && accounts.map((account) => (
