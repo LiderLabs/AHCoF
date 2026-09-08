@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ScrollView, View, Text } from "react-native";
+import { ScrollView, View, Text , Pressable} from "react-native";
 import { useRouter } from "expo-router";
 import { PiggyBank, Home, Bell } from "lucide-react-native";
 
@@ -44,46 +44,26 @@ export default function SavingsScreen() {
           <Text className="text-md" style={{ color: "#6B7280" }}>Manage and track your wealth growth journey.</Text>
         </View>
 
-        {!loading && !hasAccounts && (
-          <EmptyAccountsState onCreatePress={() => setCreateButtonOpen(true)} />
-        )}
+       {!loading && !hasAccounts && (
+  <EmptyAccountsState onCreatePress={() => setCreateButtonOpen(true)} />
+)}
 
-        {/* once accounts is a real mixed-type array, map over it and
-            render AccountCard / GoalProgressCard / BoostAccountCard based on
-            each account's accountType, instead of these hardcoded examples. */}
-        {hasAccounts && (
-          <>
-            <AccountCard
-              icon={<PiggyBank size={25} color="white" />}
-              title="Regular Savings"
-              tag="Primary Account"
-              balance="GHS 12,450.00"
-              monthlyContribution="GHS 1,200.00"
-              interestEarned="GHS 425.10"
-              refreshedLabel="Refreshed 2m ago"
-            />
-
-            <GoalProgressCard
-              icon={<Home size={25} color="white" />}
-              title="Purpose Driven: Housing"
-              percentLabel="75% Achieved"
-              currentValue="GHS 150,000"
-              goalValue="GHS 200,000"
-              progress={0.75}
-              maturityDate="Oct 24, 2025"
-              autoTransferStatus="Active"
-            />
-
-            <BoostAccountCard
-              title="Kidi Account: Samuel"
-              nextTransferLabel="Next transfer: Oct 01, 2023"
-              balance="GHS 5,230.50"
-              fundLabel="Education Fund"
-              fundTier="Tier 1"
-              onBoostPress={() => router.push("/savings/kidi/boost")}
-            />
-          </>
-        )}
+{hasAccounts && accounts.map((account) => (
+  <Pressable
+    key={account.accountId}
+    onPress={() => router.push(`/savings/account/${account.accountId}`)}
+  >
+    <AccountCard
+      icon={<PiggyBank size={25} color="white" />}
+      title="Regular Savings"
+      tag={account.accountDetails.isPrimary ? "Primary Account" : undefined}
+      balance={`GHS ${(account.currentBalance / 100).toFixed(2)}`}
+      monthlyContribution={`GHS ${(account.accountDetails.amountContributedThatMonth / 100).toFixed(2)}`}
+      interestEarned={`GHS ${(account.interestEarned / 100).toFixed(2)}`}
+      refreshedLabel="Just now"
+    />
+  </Pressable>
+))}
 
         <View>
           <View className="flex-row justify-between items-center mb-3">
