@@ -30,7 +30,7 @@ export function CreateAccountButton({ open, onOpenChange }: CreateAccountButtonP
       <Pressable
         onPress={() => onOpenChange(true)}
         accessibilityLabel="Create savings account"
-        className="absolute right-5 bottom-6 w-14 h-14 rounded-full items-center justify-center"
+        className="absolute right-5 bottom-12 w-16 h-16 rounded-full items-center justify-center"
         style={{
           backgroundColor: colors.primary,
           shadowColor: "#000",
@@ -40,7 +40,7 @@ export function CreateAccountButton({ open, onOpenChange }: CreateAccountButtonP
           elevation: 6,
         }}
       >
-        <Plus size={26} color={colors.buttonTextPrimary} strokeWidth={2} />
+        <Plus size={35} color={colors.buttonTextPrimary} strokeWidth={2} />
       </Pressable>
 
       <AccountTypePickerModal visible={open} onClose={() => onOpenChange(false)} onSelect={handleSelect} />
