@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Pressable } from "react-native";
 import { Plus } from "lucide-react-native";
 import { useRouter } from "expo-router";
@@ -13,19 +12,23 @@ const ROUTES: Record<AccountType, string> = {
   purpose_driven: "/savings/create/purpose-driven",
 };
 
-export function CreateAccountButton() {
-  const [open, setOpen] = useState(false);
+interface CreateAccountButtonProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}
+
+export function CreateAccountButton({ open, onOpenChange }: CreateAccountButtonProps) {
   const router = useRouter();
 
   const handleSelect = (type: AccountType) => {
-    setOpen(false);
+    onOpenChange(false);
     router.push(ROUTES[type]);
   };
 
   return (
     <>
       <Pressable
-        onPress={() => setOpen(true)}
+        onPress={() => onOpenChange(true)}
         accessibilityLabel="Create savings account"
         className="absolute right-5 bottom-6 w-14 h-14 rounded-full items-center justify-center"
         style={{
@@ -40,7 +43,7 @@ export function CreateAccountButton() {
         <Plus size={26} color={colors.buttonTextPrimary} strokeWidth={2} />
       </Pressable>
 
-      <AccountTypePickerModal visible={open} onClose={() => setOpen(false)} onSelect={handleSelect} />
+      <AccountTypePickerModal visible={open} onClose={() => onOpenChange(false)} onSelect={handleSelect} />
     </>
   );
 }
