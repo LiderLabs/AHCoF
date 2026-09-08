@@ -1,6 +1,7 @@
 from app.modules.auth.router import router as auth_router
 from app.modules.dashboard.router import router as dashboard_router
 from app.modules.members.router import router as members_router
+from app.modules.savings.router import router as savings_router
 from fastapi import APIRouter
 
 api_router = APIRouter()
@@ -8,3 +9,4 @@ api_router = APIRouter()
 api_router.include_router(auth_router)
 api_router.include_router(members_router)
 api_router.include_router(dashboard_router)
+api_router.include_router(savings_router)
