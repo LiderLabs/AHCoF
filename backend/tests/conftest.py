@@ -32,8 +32,6 @@ import os
 import re
 from pathlib import Path
 
-from app.core.redis import redis_client
-
 
 def _resolve_test_database_url() -> str:
     explicit = os.environ.get("TEST_DATABASE_URL")
@@ -71,15 +69,52 @@ def _resolve_test_database_url() -> str:
 _TEST_DATABASE_URL = _resolve_test_database_url()
 os.environ["DATABASE_URL"] = _TEST_DATABASE_URL
 
+# Everything under `app/` must be imported *after* the DATABASE_URL override
+# above, and not before. `app.core.config.settings` is a process-wide
+# lru_cache'd singleton — whichever DATABASE_URL is in os.environ the first
+# time any app module (even an unrelated one like app.core.redis) gets
+# imported is the one that sticks for the rest of the test run. Importing
+# anything from `app` earlier than this line silently rebinds the test
+# suite onto your real dev/production database instead of the `_test` one.
 import pytest
 from app.core.database import Base, engine
+from app.core.redis import redis_client
 from app.modules.members.model import Member
 from app.modules.otp.model import OtpCode  # noqa: F401  (populates Base.metadata)
+from app.modules.savings.model import (  # noqa: F401  (populates Base.metadata)
+    AccountContributor,
+    ContributionHistoryEntry,
+    SavingsAccount,
+)
 from app.scripts.seed_demo_data import seed_demo_member
 from sqlalchemy import create_engine, text
 from sqlalchemy.engine.url import make_url
 
 assert Member  # keep the import from being flagged as unused
+
+
+def _refuse_if_not_test_database(bound_engine) -> None:
+    """Hard stop before any destructive fixture runs.
+
+    This is a second, independent line of defense on top of the import-order
+    fix above. If a future change (a new top-level import, a plugin, a
+    different `.env`, anything) ever causes `engine` to bind to a database
+    whose name doesn't end in `_test`, this raises immediately instead of
+    letting `_clean_database` truncate whatever it's pointed at. A test
+    suite that refuses to run is fine. A test suite that silently wipes a
+    production database is not.
+    """
+    db_name = bound_engine.url.database or ""
+    if not db_name.endswith("_test"):
+        raise RuntimeError(
+            "Refusing to run tests: the SQLAlchemy engine is bound to "
+            f"database {db_name!r}, which does not end in '_test'. This "
+            "almost certainly means the test suite is pointed at a real "
+            "dev/production database. Aborting before any table is "
+            "touched. Check for an `app.*` import above the "
+            "os.environ['DATABASE_URL'] override in this file, and check "
+            "TEST_DATABASE_URL / DATABASE_URL in your environment and .env."
+        )
 
 
 def _create_test_database_if_missing(test_url: str) -> None:
@@ -115,6 +150,7 @@ def _test_database():
     real migrations programmatically here would add a lot of ceremony for
     no benefit to this suite.
     """
+    _refuse_if_not_test_database(engine)
     _create_test_database_if_missing(_TEST_DATABASE_URL)
 
     Base.metadata.drop_all(bind=engine)
@@ -128,6 +164,7 @@ def _test_database():
 @pytest.fixture(autouse=True)
 def _clean_database():
     """Truncates every table and reseeds the demo member before each test."""
+    _refuse_if_not_test_database(engine)
     with engine.begin() as conn:
         for table in reversed(Base.metadata.sorted_tables):
             conn.execute(table.delete())
@@ -144,4 +181,4 @@ def _clean_redis():
     within a run and cause unrelated tests to start hitting 429s if they
     happen to reuse the same phone number or email."""
     redis_client.flushdb()
-    yield    
+    yield

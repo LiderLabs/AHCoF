@@ -74,8 +74,7 @@ class TokenResponse(BaseModel):
     refresh_token: str | None = None
     token_type: str = "bearer"
     expires_in: int = 300
-    description: str = "signup-verification OTP code"
-debug_otp_code: str | None = Field(
+    debug_otp_code: str | None = Field(
         default=None,
         description=(
             "The signup-verification OTP code, included only when DEMO_MODE "

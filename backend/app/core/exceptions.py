@@ -68,4 +68,17 @@ class OtpExpiredError(AppException):
 class OtpRateLimitedError(AppException):
     error_code = "OTP_RATE_LIMITED"
     status_code = status.HTTP_429_TOO_MANY_REQUESTS
-    message = "Too many OTP requests. Please wait before requesting another code."    
+    message = "Too many OTP requests. Please wait before requesting another code."
+
+
+class SavingsAccountNotFoundError(AppException):
+    error_code = "SAVINGS_ACCOUNT_NOT_FOUND"
+    status_code = status.HTTP_404_NOT_FOUND
+    message = "Savings account not found"
+
+
+class SavingsAccountAccessDeniedError(AppException):
+    error_code = "SAVINGS_ACCOUNT_ACCESS_DENIED"
+    status_code = status.HTTP_403_FORBIDDEN
+    message = "This savings account does not belong to you"
+
