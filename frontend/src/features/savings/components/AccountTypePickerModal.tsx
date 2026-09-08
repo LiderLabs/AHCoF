@@ -51,29 +51,29 @@ export function AccountTypePickerModal({ visible, onClose, onSelect }: AccountTy
                 className="w-8 h-8 rounded-full items-center justify-center"
                 style={{ backgroundColor: colors.buttonTransparent, borderWidth: 1, borderColor: colors.primary }}
               >
-                <X size={16} color={colors.buttonTextPrimary} />
+                <X size={16} color={colors.textPrimary} />
               </Pressable>
             </View>
 
             <View className="mt-5" style={{ gap: 12 }}>
               {ACCOUNT_TYPES.map(({ type, label, description, icon: Icon }) => (
                 <Pressable key={type} onPress={() => onSelect(type)}>
-                  <Card className="flex-row items-center" backgroundColor="#FFFFFF">
+                  <Card className="flex-row items-center border border-gray-300" >
                     <View
                       className="w-11 h-11 rounded-xl items-center justify-center mr-4"
-                      style={{ backgroundColor: colors.buttonTransparent }}
+                      style={{ backgroundColor: colors.backgroundLime }}
                     >
                       <Icon size={20} color={colors.primary} strokeWidth={1.75} />
                     </View>
                     <View className="flex-1">
-                      <Text className="text-base font-semibold" style={{ color: colors.buttonTextPrimary }}>
+                      <Text className="text-base font-semibold" style={{ color: colors.textPrimary }}>
                         {label}
                       </Text>
-                      <Text className="text-sm mt-0.5 opacity-60" style={{ color: colors.buttonTextPrimary }}>
+                      <Text className="text-sm mt-0.5 opacity-60" style={{ color: colors.textPrimary }}>
                         {description}
                       </Text>
                     </View>
-                    <ChevronRight size={18} color={colors.buttonTextPrimary} style={{ opacity: 0.5 }} />
+                    <ChevronRight size={18} color={colors.textPrimary} style={{ opacity: 0.5 }} />
                   </Card>
                 </Pressable>
               ))}

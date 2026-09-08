@@ -24,10 +24,10 @@ function ToggleRow({
   return (
     <View className="flex-row items-center justify-between py-4">
       <View className="flex-1 pr-4">
-        <Text className="text-base font-semibold" style={{ color: colors.buttonTextPrimary }}>
+        <Text className="text-base font-semibold" style={{ color: colors.textPrimary }}>
           {label}
         </Text>
-        <Text className="text-sm mt-0.5 opacity-60" style={{ color: colors.buttonTextPrimary }}>
+        <Text className="text-sm mt-0.5 opacity-60" style={{ color: colors.textPrimary }}>
           {description}
         </Text>
       </View>
@@ -48,18 +48,24 @@ export function CreateRegularAccountScreen() {
   const [submitting, setSubmitting] = useState(false);
 
   const handleSubmit = async () => {
-    setSubmitting(true);
-    try {
-      const payload: CreateRegularAccountPayload = { isPrimary, autoTransfer };
-      await createRegularAccount(payload);
+  setSubmitting(true);
+  try {
+    const payload: CreateRegularAccountPayload = { isPrimary, autoTransfer };
+    const res = await createRegularAccount(payload);
+
+    if (res.status === "success") {
       router.replace("/savings");
-    } catch (err) {
-      // add a real error state once the API is wired up
-      console.error("Failed to create account:", err);
-    } finally {
-      setSubmitting(false);
+    } else {
+      // add real error state once the API returns actual error shapes
+      console.error("Account creation failed:", res);
     }
-  };
+  } catch (err) {
+    // add the real error state (inline message) once the API is wired up
+    console.error("Failed to create account:", err);
+  } finally {
+    setSubmitting(false);
+  }
+};
 
   return (
     <ScrollView contentContainerStyle={{ padding: 16, gap: 20, paddingTop: 26 }} className="bg-white flex-1">
