@@ -24,21 +24,21 @@ interface LoginPayload {
 }
 
 export function signup(payload: SignupPayload): Promise<AuthResponse> {
-  return api<AuthResponse>("/register", {
+  return api<AuthResponse>("/auth/register", {
     method: "POST",
     body: JSON.stringify(payload),
   });
 }
 
 export function login(payload: LoginPayload): Promise<AuthResponse> {
-  return api<AuthResponse>("/login", {
+  return api<AuthResponse>("/auth/login", {
     method: "POST",
     body: JSON.stringify(payload),
   });
 }
 
 export function refreshAccessToken(payload: RefreshRequest): Promise<AuthResponse> {
-  return api<AuthResponse>("/refresh", { 
+  return api<AuthResponse>("/auth/refresh", { 
     method: "POST",
     body: JSON.stringify(payload),
   });
@@ -75,7 +75,7 @@ export function verifyOtp(
 export function completeProfile(
   payload: CompleteProfileRequest,
 ): Promise<Member> {
-  return api<Member>("/member/profile", {
+  return api<Member>("/auth/member/profile", {
     method: "PATCH",
     body: JSON.stringify(payload),
   });
