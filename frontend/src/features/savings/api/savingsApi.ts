@@ -3,6 +3,13 @@ import type {
   CreateRegularAccountPayload,
   GetRegularAccountResponse,
   GetAccountsListResponse,
+  CreateKidiAccountPayload,
+  GetKidiAccountResponse,
+  CreateEducationFundPayload,
+  GetEducationFundResponse,
+  CreatePurposeDrivenPayload,
+  GetPurposeDrivenResponse,
+  
 } from "@/src/features/savings/types";
 import { api } from "@/src/lib/api";
 
@@ -23,4 +30,31 @@ export async function getAccountById(
   accountId: string
 ): Promise<GetRegularAccountResponse> {
   return api<GetRegularAccountResponse>(`/savings/accounts/${accountId}`);
+}
+
+export async function createKidiAccount(
+  payload: CreateKidiAccountPayload
+): Promise<GetKidiAccountResponse> {
+  return api<GetKidiAccountResponse>("/savings/accounts/kidi", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
+export async function createEducationFundAccount(
+  payload: CreateEducationFundPayload
+): Promise<GetEducationFundResponse> {
+  return api<GetEducationFundResponse>("/savings/accounts/education-fund", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
+export async function createPurposeDrivenAccount(
+  payload: CreatePurposeDrivenPayload
+): Promise<GetPurposeDrivenResponse> {
+  return api<GetPurposeDrivenResponse>("/savings/accounts/purpose-driven", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
 }
