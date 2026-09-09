@@ -1,7 +1,6 @@
 import logging
 
 import httpx
-
 from app.core.config import settings
 from app.modules.members.model import Member
 
@@ -9,17 +8,6 @@ logger = logging.getLogger(__name__)
 
 ARKESEL_SEND_URL = "https://sms.arkesel.com/api/v2/sms/send"
 RESEND_SEND_URL = "https://api.resend.com/emails"
-
-# Deliberately NOT using Arkesel's own /otp/send + /otp/verify endpoints,
-# even though they exist. Those generate and verify the code entirely on
-# Arkesel's side, tied to a phone number. We also need to deliver the same
-# code by email via Resend for members with both channels on file, and
-# Resend has no equivalent OTP product — Arkesel generating its own code
-# would mean two different codes for one verification action. Generating
-# the code ourselves once (see otp/service.py) and using each provider as a
-# plain delivery channel keeps one code, one verification path, regardless
-# of which channel(s) a member has.
-
 
 def send_sms(phone_number: str, message: str) -> None:
     if settings.demo_mode or not settings.arkesel_api_key:

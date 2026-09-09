@@ -185,4 +185,3 @@ class AccountContributor(Base):
     )
 
     account: Mapped["SavingsAccount"] = relationship(back_populates="contributors")
-

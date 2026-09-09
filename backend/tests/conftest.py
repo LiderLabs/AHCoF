@@ -32,8 +32,6 @@ import os
 import re
 from pathlib import Path
 
-from app.core.redis import redis_client
-
 
 def _resolve_test_database_url() -> str:
     explicit = os.environ.get("TEST_DATABASE_URL")
@@ -42,10 +40,6 @@ def _resolve_test_database_url() -> str:
 
     base_url = os.environ.get("DATABASE_URL")
     if not base_url:
-        # Shell doesn't have DATABASE_URL exported — read .env directly.
-        # (We can't rely on app.core.config/pydantic-settings for this: that
-        # module can't be imported yet, since it would bind to the wrong
-        # database before we get a chance to override it.)
         env_path = Path(__file__).resolve().parent.parent / ".env"
         if env_path.exists():
             for line in env_path.read_text().splitlines():
@@ -71,13 +65,7 @@ def _resolve_test_database_url() -> str:
 _TEST_DATABASE_URL = _resolve_test_database_url()
 os.environ["DATABASE_URL"] = _TEST_DATABASE_URL
 
-# Everything under `app/` must be imported *after* the DATABASE_URL override
-# above, and not before. `app.core.config.settings` is a process-wide
-# lru_cache'd singleton — whichever DATABASE_URL is in os.environ the first
-# time any app module (even an unrelated one like app.core.redis) gets
-# imported is the one that sticks for the rest of the test run. Importing
-# anything from `app` earlier than this line silently rebinds the test
-# suite onto your real dev/production database instead of the `_test` one.
+
 import pytest
 
 # from sqlalchemy import create_engine, text
@@ -95,7 +83,7 @@ from app.scripts.seed_demo_data import seed_demo_member
 from sqlalchemy import create_engine, text
 from sqlalchemy.engine.url import make_url
 
-assert Member  # keep the import from being flagged as unused
+assert Member  
 
 
 def _refuse_if_not_test_database(bound_engine) -> None:

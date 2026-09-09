@@ -27,6 +27,7 @@ from app.modules.members.service import (
     get_member_by_identifier,
     update_member_profile,
 )
+
 # from app.modules.members.service import create_member, get_member_by_identifier
 from app.modules.otp.model import OtpPurpose
 from app.modules.otp.schema import (
@@ -39,6 +40,7 @@ from app.modules.otp.schema import (
 )
 from app.modules.otp.senders import send_otp_to_member
 from app.modules.otp.service import create_otp, enforce_otp_rate_limit, verify_otp
+
 # from app.modules.otp.senders import channels_for_member, send_otp_to_member
 # from app.modules.otp.service import create_otp, verify_otp
 
@@ -214,21 +216,11 @@ def forgot_password(
     if member is not None:
         code = create_otp(db, member, OtpPurpose.PASSWORD_RESET)
         send_otp_to_member(member, code)
-        # if settings.demo_mode:
-        #     debug_otp_code = code
 
     return SendOtpResponse(
         channels_sent=["phone"],
         message="If that phone number or email is registered, a reset code has been sent.",
     )
-        channels_sent = channels_for_member(member)
-    # else:
-    #     channels_sent = ["phone"]
-
-    # return SendOtpResponse(
-    #     channels_sent=channels_sent,
-    #     message="If that phone number or email is registered, a reset code has been sent.",
-    # )
 
 @router.post(
     "/reset-password",

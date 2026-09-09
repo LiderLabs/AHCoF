@@ -14,8 +14,8 @@ def get_dashboard_for_demo_member() -> DashboardResponse:
     """
     # Import here to avoid circular imports at module load time
     from app.modules.dashboard.schema import (
-        DashboardResponse,
         DashboardMember,
+        DashboardResponse,
         FinancialSummary,
         QuickAction,
         RecentActivity,
