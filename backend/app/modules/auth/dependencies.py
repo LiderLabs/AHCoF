@@ -10,7 +10,6 @@ from app.core.config import settings
 from app.core.database import get_db
 from app.modules.members.model import Member
 
-
 oauth2_scheme = OAuth2PasswordBearer(
     tokenUrl="/api/v1/auth/login"
 )
@@ -54,3 +53,4 @@ def get_current_member(
         )
 
     return member
+

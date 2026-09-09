@@ -7,7 +7,6 @@ from app.core.exceptions import InvalidOtpError, OtpExpiredError, OtpRateLimited
 
 # from app.core.config import settings
 # from app.core.exceptions import InvalidOtpError, OtpExpiredError
-
 from app.core.security import hash_password, verify_password
 from app.modules.members.model import Member
 from app.modules.otp.model import OtpCode

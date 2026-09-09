@@ -104,4 +104,3 @@ class ContributionHistoryResponse(AHCoFBase):
     status: Literal["success"] = "success"
     contribution_history: list[ContributionHistoryItem]
     pagination: PaginationMeta
-

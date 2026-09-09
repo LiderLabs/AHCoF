@@ -1,15 +1,6 @@
-# <<<<<<< HEAD
-# <<<<<<< HEAD
-# this one is your own merge conflict you might have not resolved yet
 from app.core.serialization import api_model_config
-from pydantic import BaseModel, Field
 
 # =======
-from pydantic import BaseModel, Field
-
-# =======
-# >>>>>>> 5667952 (fix: channelsSent leak)
-from app.core.serialization import api_model_config
 from pydantic import BaseModel, Field
 
 # >>>>>>> ef3904a (Add channel/channelsSent/verified fields to OTP endpoints to match Data_shapes.docx)

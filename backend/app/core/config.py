@@ -13,8 +13,6 @@ class Settings(BaseSettings):
 
     redis_url: str | None = "redis://localhost:6379/0"
 
-    # redis_url: str = "redis://localhost:6379/0"
-
     jwt_secret_key: str
     jwt_algorithm: str = "HS256"
     access_token_expire_minutes: int = 5
@@ -41,14 +39,12 @@ class Settings(BaseSettings):
                 return v.replace("postgresql://", "postgresql+psycopg://", 1)
         return v
 
-
-    # model_config = SettingsConfigDict(
-    #     env_file=".env",
-    #     env_file_encoding="utf-8",
-    #     case_sensitive=False,
-    #     extra="ignore",
-    # )
-
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
+        case_sensitive=False,
+        extra="ignore",
+    )
 
 @lru_cache
 def get_settings() -> Settings:

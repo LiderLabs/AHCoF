@@ -78,20 +78,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
-# ---------------------------------------------------------------------------
-# Error handling
-#
-# Every error response returned by this API — whether it comes from an
-# explicit AppException, a FastAPI/Starlette HTTPException, a request
-# validation failure, or an unhandled exception — is normalized to the same
-# ErrorResponse shape: {error, message, status_code, details}.
-#
-# This matches PRD section 15 (Error Handling): messages shown to members
-# must be understandable and must never expose internal/technical detail.
-# ---------------------------------------------------------------------------
-
-
 @app.exception_handler(AppException)
 def app_exception_handler(request: Request, exc: AppException) -> JSONResponse:
     return JSONResponse(
@@ -132,9 +118,6 @@ def validation_exception_handler(
 def http_exception_handler(
     request: Request, exc: StarletteHTTPException
 ) -> JSONResponse:
-    # Covers plain `raise HTTPException(...)` calls (e.g. auth 401/403) and
-    # framework-raised HTTPExceptions (e.g. 404 for an unknown route),
-    # normalizing them into the same error shape as AppException.
     error_codes = {
         status.HTTP_401_UNAUTHORIZED: "UNAUTHORIZED",
         status.HTTP_403_FORBIDDEN: "FORBIDDEN",
@@ -156,9 +139,6 @@ def http_exception_handler(
 
 @app.exception_handler(Exception)
 def unhandled_exception_handler(request: Request, exc: Exception) -> JSONResponse:
-    # Last resort for anything we didn't anticipate. Log the real error
-    # server-side for debugging, but never leak internals (stack traces,
-    # exception messages, library details) to the client.
     logger.exception("Unhandled exception on %s %s", request.method, request.url.path)
 
     return JSONResponse(
@@ -218,11 +198,12 @@ def readiness_check() -> dict[str, str]:
 app.include_router(api_router, prefix="/api/v1")
 app.include_router(api_router)
 
-# Root-level convenience endpoints for frontend clients requesting /login or /register directly
 from fastapi import Depends
 from sqlalchemy.orm import Session
+
 from app.core.database import get_db
-from app.modules.auth.router import login as auth_login, register as auth_register
+from app.modules.auth.router import login as auth_login
+from app.modules.auth.router import register as auth_register
 from app.modules.members.schema import LoginRequest, MemberCreate, TokenResponse
 
 

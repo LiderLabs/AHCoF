@@ -8,7 +8,6 @@ from app.core.exceptions import MemberNotFoundError
 from app.modules.members.schema import MemberResponse
 from app.modules.members.service import get_all_members, get_member_by_id
 
-
 router = APIRouter(
     prefix="/members",
     tags=["Members"],

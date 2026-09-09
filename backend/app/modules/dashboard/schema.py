@@ -1,8 +1,9 @@
 from __future__ import annotations
 
-from pydantic import Field
 from datetime import datetime
 from typing import Literal
+
+from pydantic import Field
 
 from app.core.serialization import AHCoFBase
 

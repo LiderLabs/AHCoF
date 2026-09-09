@@ -36,8 +36,6 @@ class OtpCode(Base):
         nullable=False,
     )
 
-    # Never store the plaintext code — same hashing scheme as passwords
-    # (see app.core.security), so a leaked DB doesn't leak usable OTPs.
     code_hash: Mapped[str] = mapped_column(
         String(255),
         nullable=False,

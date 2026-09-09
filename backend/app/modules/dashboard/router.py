@@ -5,9 +5,9 @@ from sqlalchemy.orm import Session
 
 from app.core.database import get_db
 from app.modules.auth.dependencies import get_current_member
-from app.modules.members.model import Member
-from app.modules.dashboard.service import get_dashboard_for_demo_member
 from app.modules.dashboard.schema import DashboardResponse
+from app.modules.dashboard.service import get_dashboard_for_demo_member
+from app.modules.members.model import Member
 
 router = APIRouter(prefix="/dashboard", tags=["dashboard"])
 

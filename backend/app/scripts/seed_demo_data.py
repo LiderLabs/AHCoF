@@ -1,8 +1,7 @@
-from sqlalchemy import select
-
 from app.core.database import SessionLocal
 from app.core.security import hash_password
 from app.modules.members.model import Member
+from sqlalchemy import select
 
 
 def seed_demo_member() -> None:
