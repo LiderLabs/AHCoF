@@ -13,7 +13,7 @@ export function ChallengeCard({ image, badge, title, subtitle, onPress }: Challe
     <Pressable onPress={onPress} style={{ width: 185 }}>
       <ImageBackground
         source={image}
-        style={{ height: 97, borderRadius: 12, overflow: "hidden", padding: 8, justifyContent: "flex-start" }}
+        style={{ height: 120, borderRadius: 12, overflow: "hidden", padding: 8, justifyContent: "flex-start" }}
         imageStyle={{ resizeMode: "cover" }}
       >
         <Text className="text-white font-bold text-sm">{badge}</Text>

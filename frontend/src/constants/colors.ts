@@ -1,6 +1,6 @@
 const palette = {
   //Brand greens
-  green50: "#E8F5E9",
+  green50: "#f3fcf4ff",
   green100: "#C8E6C9",
   green300: "#81C784",
   green500: "#4C8C4A",
@@ -23,6 +23,7 @@ const palette = {
   charcaol900: "#41493E",
 
   //Blue
+  blue100: "#DBEAFE",
   blue500: "#2563EB",
   blue700: "#00529B",
 
@@ -38,7 +39,7 @@ const palette = {
   gray900: "#111827",
 
   //Amber
-  amber300: "#FFA857",
+  amber200: "#FEF3C7",
   amber500: "#FB923C",
   amber900: "#8E4E00",
 
@@ -65,6 +66,7 @@ export const colors = {
   splashGradientLocations: [0, 0.25, 0.45, 0.6, 0.75, 0.9, 1],
   backgroundlightGray: palette.gray200,
   backgroundLime: palette.mint200,
+  backgroundModalItem: palette.green50,
 
   //Text
   textLogo: palette.green700,
@@ -80,11 +82,18 @@ export const colors = {
   buttonTransparent: 'transparent',
   buttonTextPrimary: palette.white,
   buttonTextSecondary: palette.green700,
+  buttonBackButton: palette.green50,
 
   //Icons
   iconColor: palette.gray600,
   iconColorLight: palette.gray300,
-  iconRegularSavings: palette.amber300,
+  
+
+  //icon backgrounds(savings account)
+  iconRegular: palette.amber200,
+  iconKidi: palette.blue100,
+  iconEducation: palette.green100,
+  iconPurpose: palette.teal100,
 
   //Overlays
    overlay: 'rgba(13, 59, 16, 0.3)',

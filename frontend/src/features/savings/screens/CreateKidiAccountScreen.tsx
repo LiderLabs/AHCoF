@@ -50,14 +50,12 @@ export function CreateKidiAccountScreen() {
 
   return (
     <ScrollView contentContainerStyle={{ padding: 16, gap: 20, paddingTop: 26 }} className="bg-white flex-1">
-      <View className="pt-0 pb-1 -mb-5">
+      <View className="pt-4 pb-1 -mb-5 flex-row items-center">
         <BackButton />
+        <Text className="m-auto text-2xl font-bold" style={{ color: colors.primary }}>Kidi Account</Text>
       </View>
 
       <View>
-        <View className="w-12 h-12 rounded-full items-center justify-center mb-3" style={{ backgroundColor: colors.buttonTransparent }}>
-          <Baby size={22} color={colors.primary} strokeWidth={1.75} />
-        </View>
         <Text className="text-2xl font-bold" style={{ color: colors.primary }}>Open a Kidi account</Text>
         <Text className="text-md mt-1" style={{ color: "#6B7280" }}>
           Save toward a child's future, with scheduled transfers.

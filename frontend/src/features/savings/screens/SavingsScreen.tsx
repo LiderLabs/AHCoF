@@ -26,26 +26,15 @@ export default function SavingsScreen() {
   const hasAccounts = accounts.length > 0;
 
   return (
-    <View className="flex-1 bg-white">
-      <ScrollView contentContainerStyle={{ padding: 16, gap: 20, paddingBottom: 100, paddingTop: 26 }} className="bg-white flex-1">
-        <View className="pt-0 pb-1 -mb-5">
+    <View className="flex-1 bg-white pt-5">
+      <ScrollView contentContainerStyle={{ padding: 16, gap: 20, paddingBottom: 100, paddingTop: 28 }} className="bg-white flex-1">
+        <View className="pt-0 pb-5 -mb-5 flex-row ">
           <BackButton />
-        </View>
-
-        <Header
-          name={member.firstName}
-          status="Achiever"
-          avatar={require("@/assets/logo_icon.png")}
-          actions={<NotificationBadgeIcon icon={<Bell size={24} color={colors.primary} />} count={1} />}
-        />
-
-        <View>
-          <Text className="text-2xl font-bold" style={{ color: colors.primary }}>Savings Module</Text>
-          <Text className="text-lg" style={{ color: "#6B7280" }}>Manage and track your wealth growth journey.</Text>
+          <Text className="text-2xl font-bold text-center m-auto" style={{ color: colors.primary }}>Savings Module</Text>
         </View>
 
        {!loading && !hasAccounts && (
-  <EmptyAccountsState onCreatePress={() => setCreateButtonOpen(true)} backgroundColor="#eeececff"/>
+  <EmptyAccountsState onCreatePress={() => setCreateButtonOpen(true)} backgroundColor="#fbfbfbff"/>
 )}
 
 {hasAccounts && accounts.map((account) => (

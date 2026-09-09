@@ -9,11 +9,12 @@ const ACCOUNT_TYPES: {
   label: string;
   description: string;
   icon: React.ComponentType<{ size?: number; color?: string; strokeWidth?: number }>;
+  backgroundColor?: string;
 }[] = [
-  { type: "regular_account", label: "Regular Savings", description: "Flexible saving, no goal or deadline attached.", icon: PiggyBank },
-  { type: "kidi_account", label: "Kidi Account", description: "Save toward a child's future, with scheduled transfers.", icon: Baby },
-  { type: "education_fund", label: "Education Fund", description: "Track progress toward a specific tuition or school goal.", icon: GraduationCap },
-  { type: "purpose_driven", label: "Purpose Driven", description: "Save toward anything — a target amount and a deadline.", icon: Target },
+  { type: "regular_account", label: "Regular Savings", description: "Flexible saving, no goal or deadline attached anywhere.", icon: PiggyBank, backgroundColor: colors.iconRegular },
+  { type: "kidi_account", label: "Kidi Account", description: "Save toward a child's future, with scheduled transfers.", icon: Baby, backgroundColor: colors.iconKidi },
+  { type: "education_fund", label: "Education Fund", description: "Track progress toward a specific tuition or school goal.", icon: GraduationCap, backgroundColor: colors.iconEducation },
+  { type: "purpose_driven", label: "Purpose Driven", description: "Save toward anything, a target amount and a deadline.", icon: Target, backgroundColor: colors.iconPurpose },
 ];
 
 interface AccountTypePickerModalProps {
@@ -26,7 +27,7 @@ export function AccountTypePickerModal({ visible, onClose, onSelect }: AccountTy
   return (
     <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
       <Pressable
-        className="flex-1 justify-end"
+        className="flex-1 justify-end "
         style={{ backgroundColor: "rgba(27,42,34,0.45)" }}
         onPress={onClose}
       >
@@ -36,12 +37,12 @@ export function AccountTypePickerModal({ visible, onClose, onSelect }: AccountTy
             className="rounded-t-3xl px-5 pt-5 pb-8"
             style={{ backgroundColor: colors.background }}
           >
-            <View className="flex-row items-start justify-between mb-1">
+            <View className="flex-row items-start justify-between mb-1 pl-2">
               <View>
-                <Text className="text-xl font-semibold" style={{ color: colors.buttonTextPrimary }}>
+                <Text className="text-xl font-semibold" style={{ color: colors.primary }}>
                   Choose account type
                 </Text>
-                <Text className="text-sm mt-1 opacity-60" style={{ color: colors.buttonTextPrimary }}>
+                <Text className="text-md mt-1" style={{ color: colors.textPrimary }}>
                   Pick what you're saving toward.
                 </Text>
               </View>
@@ -56,12 +57,12 @@ export function AccountTypePickerModal({ visible, onClose, onSelect }: AccountTy
             </View>
 
             <View className="mt-5" style={{ gap: 12 }}>
-              {ACCOUNT_TYPES.map(({ type, label, description, icon: Icon }) => (
+              {ACCOUNT_TYPES.map(({ type, label, description, icon: Icon, backgroundColor }) => (
                 <Pressable key={type} onPress={() => onSelect(type)}>
-                  <Card className="flex-row items-center border border-gray-300" >
+                  <Card className="flex-row items-center border border-gray-300" style={{ backgroundColor: colors.backgroundModalItem }}>
                     <View
                       className="w-11 h-11 rounded-xl items-center justify-center mr-4"
-                      style={{ backgroundColor: colors.backgroundLime }}
+                      style={{ backgroundColor }}
                     >
                       <Icon size={20} color={colors.primary} strokeWidth={1.75} />
                     </View>
@@ -73,7 +74,7 @@ export function AccountTypePickerModal({ visible, onClose, onSelect }: AccountTy
                         {description}
                       </Text>
                     </View>
-                    <ChevronRight size={18} color={colors.textPrimary} style={{ opacity: 0.5 }} />
+                    <ChevronRight size={18} color={colors.textPrimary}  />
                   </Card>
                 </Pressable>
               ))}

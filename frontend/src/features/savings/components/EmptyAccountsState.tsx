@@ -15,7 +15,7 @@ export function EmptyAccountsState({ onCreatePress, backgroundColor }: EmptyAcco
       <View
         style={{
           padding: 10,
-          backgroundColor: colors.iconRegularSavings,
+          backgroundColor: colors.iconRegular,
           borderRadius: 50,
 
         }}

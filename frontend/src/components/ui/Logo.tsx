@@ -16,13 +16,13 @@ export function Logo({type} : LogoProps) {
                     resizeMode="contain"
                   />
                   <Text
-                    className="text-3xl font-bold mb-2"
+                    className="text-3xl font-bold mb-2 -mt-2"
                     style={{ color: colors.primary }}
                   >
                     AHCoF
                   </Text>
                   <Text 
-                   className= "text-lg font-bold -mt-4"
+                   className= "text-lg font-md -mt-4"
                    style={{color: type === "green" ? colors.textInverted : colors.textSecondary}}
                    >
                     {type === 'white' ? "ADVENTIST HERITAGE" : "GROWTH & STEWARDSHIP"}
