@@ -84,7 +84,7 @@ export function CreateKidiAccountScreen() {
 
         <View className="flex-row items-center justify-between pt-2">
           <View className="flex-1 pr-4">
-            <Text className="text-base font-semibold" style={{ color: colors.textPrimary }}>Enable auto-transfer</Text>
+            <Text className="text-base font-semibold" style={{ color: colors.primary }}>Enable auto-transfer</Text>
             <Text className="text-sm mt-0.5 opacity-60" style={{ color: colors.textPrimary }}>
               Automatically move funds on the scheduled date.
             </Text>

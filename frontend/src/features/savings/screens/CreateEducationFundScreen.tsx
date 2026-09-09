@@ -48,29 +48,29 @@ export function CreateEducationFundScreen() {
 
   return (
     <ScrollView contentContainerStyle={{ padding: 16, gap: 20, paddingTop: 26 }} className="bg-white flex-1">
-      <View className="pt-0 pb-1 -mb-5">
+      <View className="pt-4 pb-1 -mb-5 flex-row items-center">
         <BackButton />
+        <Text className="text-2xl font-bold m-auto" style={{ color: colors.primary }}>
+          Education Fund Account
+        </Text>
       </View>
 
       <View>
-        <View className="w-12 h-12 rounded-full items-center justify-center mb-3" style={{ backgroundColor: colors.buttonTransparent }}>
-          <GraduationCap size={22} color={colors.primary} strokeWidth={1.75} />
-        </View>
-        <Text className="text-2xl font-bold" style={{ color: colors.primary }}>Open an Education Fund</Text>
+        <Text className="text-xl pt-2 font-semibold" style={{ color: colors.textPrimary }}>Open an Education Fund</Text>
         <Text className="text-md mt-1" style={{ color: "#6B7280" }}>
           Track progress toward a specific tuition or school goal.
         </Text>
       </View>
 
-      <Card backgroundColor="#FFFFFF">
-        <Text className="text-sm font-semibold mb-2" style={{ color: colors.buttonTextPrimary }}>Goal name</Text>
+      <Card backgroundColor={colors.backgroundForm}>
+        <Text className="text-sm font-semibold mb-2" style={{ color: colors.primary }}>Goal name</Text>
         <TextInput
           value={goalName}
           onChangeText={setGoalName}
           placeholder="e.g. University Tuition"
           placeholderTextColor="#9CA3AF"
           className="rounded-xl px-4 py-3.5 text-base mb-4"
-          style={{ borderWidth: 1, borderColor: "#E7E3D8", color: colors.buttonTextPrimary }}
+          style={{ borderWidth: 1, borderColor: colors.primary, color: colors.buttonTextPrimary, backgroundColor: colors.background }}
         />
 
         <AmountInput label="Target amount" value={targetAmount} onChangeValue={setTargetAmount} />
@@ -79,8 +79,8 @@ export function CreateEducationFundScreen() {
 
         <View className="flex-row items-center justify-between pt-2">
           <View className="flex-1 pr-4">
-            <Text className="text-base font-semibold" style={{ color: colors.buttonTextPrimary }}>Enable auto-transfer</Text>
-            <Text className="text-sm mt-0.5 opacity-60" style={{ color: colors.buttonTextPrimary }}>
+            <Text className="text-base font-semibold" style={{ color: colors.primary }}>Enable auto-transfer</Text>
+            <Text className="text-sm mt-0.5 opacity-60" style={{ color: colors.textPrimary }}>
               Automatically contribute toward this goal monthly.
             </Text>
           </View>
