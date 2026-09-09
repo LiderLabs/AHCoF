@@ -84,3 +84,73 @@ export interface ContributionsListData {
   };
 }
 export type GetContributionsResponse = SavingsApiResponse<ContributionsListData>;
+
+// ---- Kidi Account ----
+
+export interface KidiAccountDetails {
+  childName: string;
+  nextTransferDate: string; // ISO8601
+  nextTransferAmount: number; // minor units
+  maturityDate: string; // ISO8601
+}
+
+export interface KidiAccount extends BaseSavingsAccount {
+  accountType: "kidi_account";
+  accountDetails: KidiAccountDetails;
+}
+
+export interface CreateKidiAccountPayload {
+  childName: string;
+  nextTransferDate: string;
+  nextTransferAmount: number;
+  maturityDate: string;
+  autoTransfer?: boolean;
+}
+
+export type GetKidiAccountResponse = SavingsApiResponse<KidiAccount>;
+
+// ---- Education Fund Account ----
+
+export interface EducationFundDetails {
+  goalName: string;
+  targetAmount: number; // minor units
+  progressPercentage: number; // server-computed, not sent on create
+  maturityDate: string;
+}
+
+export interface EducationFundAccount extends BaseSavingsAccount {
+  accountType: "education_fund";
+  accountDetails: EducationFundDetails;
+}
+
+export interface CreateEducationFundPayload {
+  goalName: string;
+  targetAmount: number;
+  maturityDate: string;
+  autoTransfer?: boolean;
+}
+
+export type GetEducationFundResponse = SavingsApiResponse<EducationFundAccount>;
+
+// ---- Purpose-Driven Account ----
+
+export interface PurposeDrivenDetails {
+  goalName: string;
+  targetAmount: number;
+  progressPercentage: number; // server-computed
+  maturityDate: string;
+}
+
+export interface PurposeDrivenAccount extends BaseSavingsAccount {
+  accountType: "purpose_driven";
+  accountDetails: PurposeDrivenDetails;
+}
+
+export interface CreatePurposeDrivenPayload {
+  goalName: string;
+  targetAmount: number;
+  maturityDate: string;
+  autoTransfer?: boolean;
+}
+
+export type GetPurposeDrivenResponse = SavingsApiResponse<PurposeDrivenAccount>;
