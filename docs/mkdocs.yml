@@ -1,0 +1,7 @@
+site_name: AHCoF App Documentation
+
+nav:
+  - Home: index.md
+  - Getting Started: setup.md
+  - User Flow: user-flow.md
+  - Folder Structure: folder-structure.md
