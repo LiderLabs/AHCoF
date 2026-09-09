@@ -18,7 +18,7 @@ export function DepositConfirmScreen() {
   const total = Number(amount).toFixed(2);
 
   return (
-    <View className="flex-1 bg-white px-4 pt-6">
+    <View className="flex-1 bg-white px-4 pt-8">
       <TransactionHeader title="Confirm Deposit" />
       <StepIndicator currentStep={2} totalSteps={3} />
 

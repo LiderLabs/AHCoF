@@ -35,26 +35,10 @@ export default function LoansScreen() {
       className="bg-white flex-1 pt-4"
     >
       {/* Back button */}
-      <View className="pt-0 pb-1 -mb-5">
+      <View className="pt-4 pb-1 mb-2 flex-row items-center">
         <BackButton />
+        <Text className="text-2xl font-bold m-auto" style={{ color: colors.primary }}>Loans Module</Text>
       </View>
-
-      {/* Header */}
-      <Header
-        name={member.firstName}
-        status="Achiever"
-        avatar={require("@/assets/logo_icon.png")}
-        actions={
-          <>
-            <HelpCircle size={24} color={colors.primary} />
-            <NotificationBadgeIcon
-              icon={<Bell size={24} color={colors.primary} />}
-              count={1}
-            />
-            <MessageSquare size={24} color={colors.primary} />
-          </>
-        }
-      />
        
        {/* where loan info is displayed(eligible amount, oustanding, interest rate, etc...) */}
       <HeroStatCard

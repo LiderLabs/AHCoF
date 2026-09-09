@@ -13,7 +13,7 @@ export function TransactionHeader({ title, onBackPress, onHelpPress }: Transacti
   return (
     <View className="flex-row items-center justify-between py-3">
       <BackButton onPress={onBackPress} />
-      <Text className="text-lg font-bold" style={{ color: colors.primary }}>
+      <Text className="text-2xl font-bold" style={{ color: colors.primary }}>
         {title}
       </Text>
       <Pressable onPress={onHelpPress} hitSlop={8}>

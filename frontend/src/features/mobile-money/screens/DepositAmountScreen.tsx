@@ -24,7 +24,7 @@ export function DepositAmountScreen() {
   const canContinue = Number(amount) > 0 && !!providerId;
 
   return (
-    <View className="flex-1 bg-white px-4 pt-6">
+    <View className="flex-1 bg-white px-4 pt-8">
       <TransactionHeader title="Deposit Funds" />
 
       <ScrollView contentContainerStyle={{ paddingBottom: 24, gap: 20 }}>

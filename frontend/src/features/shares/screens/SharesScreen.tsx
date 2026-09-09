@@ -40,26 +40,19 @@ export default function SharesScreen() {
         contentContainerStyle={{ padding: 18, gap: 20, paddingBottom: 100 }}
       >
         {/* Back button */}
-        <View className="pt-0 pb-1 -mb-5">
+        <View className="pt-0 pb-1 -mb-5 flex-row items-center">
           <BackButton />
-        </View>
-        
-        {/* Header */}
-        <Header
-          name={member.firstName}
-          status="Achiever"
-          avatar={require("@/assets/logo_icon.png")}
-          actions={<Bell size={24} color={colors.primary} />}
-        />
-
-        <View>
           <Text
-            className="text-2xl font-bold mb-2"
+            className="text-2xl font-bold m-auto"
             style={{ color: colors.primary }}
           >
             Shares & Dividends
           </Text>
-          <Text className="text-base" style={{ color: "#6B7280" }}>
+        </View>
+      
+
+        <View className="pt-2">
+          <Text className="text-base font-semibold text-xl" style={{ color: colors.textPrimary }}>
             Track your equity growth and annual returns.
           </Text>
         </View>
@@ -113,7 +106,7 @@ export default function SharesScreen() {
             label="Purchase Shares"
             variant="primary"
             fullWidth={false}
-            className="flex-1"
+            className="flex-1 py-3"
             icon={
               <PlusCircle size={18} color="#fff" style={{ marginRight: 8 }} />
             }
@@ -123,7 +116,7 @@ export default function SharesScreen() {
             label="Prospectus"
             variant="secondary"
             fullWidth={false}
-            className="flex-1"
+            className="flex-1 py-3"
             icon={
               <FileText
                 size={18}
