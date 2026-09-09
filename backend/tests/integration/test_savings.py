@@ -38,11 +38,8 @@ def test_create_regular_account_returns_contract_shape():
 
     response = client.post(
         "/api/v1/savings/accounts/regular",
+        headers=_auth_headers_for(member),
         json={
-            "memberId": str(member.id),
-            "currentBalance": 1000,
-            "interestEarned": 0,
-            "autoTransfer": False,
             "amountContributedThatMonth": 200,
             "isPrimary": True,
         },
@@ -52,15 +49,71 @@ def test_create_regular_account_returns_contract_shape():
     body = response.json()
     assert body["status"] == "success"
     data = body["data"]
+    assert data["memberId"] == str(member.id)
     assert data["accountType"] == "regular_account"
     assert data["accountStatus"] == "active"
-    assert data["currentBalance"] == 1000
+    assert data["currentBalance"] == 200
     assert data["accountDetails"] == {
         "amountContributedThatMonth": 200,
         "isPrimary": True,
     }
     assert data["contributionHistory"] == []
     assert data["contributorsInformation"] == []
+
+
+def test_create_kidi_and_education_and_purpose_driven_accounts():
+    member = _demo_member()
+
+    # Kidi Account
+    kidi_res = client.post(
+        "/api/v1/savings/accounts/kidi",
+        headers=_auth_headers_for(member),
+        json={
+            "childName": "Nana Kwame",
+            "nextTransferDate": "2026-10-01T00:00:00Z",
+            "nextTransferAmount": 500,
+            "maturityDate": "2036-10-01T00:00:00Z",
+            "autoTransfer": True,
+        },
+    )
+    assert kidi_res.status_code == 201
+    kidi_body = kidi_res.json()["data"]
+    assert kidi_body["accountType"] == "kidi_account"
+    assert kidi_body["accountDetails"]["childName"] == "Nana Kwame"
+    assert kidi_body["autoTransfer"] is True
+
+    # Education Fund
+    edu_res = client.post(
+        "/api/v1/savings/accounts/education-fund",
+        headers=_auth_headers_for(member),
+        json={
+            "goalName": "University Fund",
+            "targetAmount": 50000,
+            "maturityDate": "2030-01-01T00:00:00Z",
+            "autoTransfer": True,
+        },
+    )
+    assert edu_res.status_code == 201
+    edu_body = edu_res.json()["data"]
+    assert edu_body["accountType"] == "education_fund"
+    assert edu_body["accountDetails"]["goalName"] == "University Fund"
+
+    # Purpose Driven
+    purpose_res = client.post(
+        "/api/v1/savings/accounts/purpose-driven",
+        headers=_auth_headers_for(member),
+        json={
+            "goalName": "Car Purchase",
+            "targetAmount": 20000,
+            "maturityDate": "2027-06-01T00:00:00Z",
+            "autoTransfer": False,
+        },
+    )
+    assert purpose_res.status_code == 201
+    purpose_body = purpose_res.json()["data"]
+    assert purpose_body["accountType"] == "purpose_driven"
+    assert purpose_body["accountDetails"]["goalName"] == "Car Purchase"
+
 
 
 def test_list_my_accounts_only_returns_my_accounts():
@@ -190,4 +243,3 @@ def test_contribution_history_paginates():
         "pageSize": 10,
         "totalCount": 25,
     }
-

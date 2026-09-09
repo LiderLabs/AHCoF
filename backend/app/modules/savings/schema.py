@@ -17,6 +17,37 @@ class RegularAccountDetails(AHCoFBase):
     is_primary: bool = Field(default=False)
 
 
+class KidiAccountDetails(AHCoFBase):
+    """Data_shapes.docx §2.16 — accountDetails shape when
+    accountType == "kidi_account"."""
+
+    child_name: str
+    child_id: str | None = None
+    next_transfer_date: datetime | None = None
+    next_transfer_amount: int | None = None
+    maturity_date: datetime | None = None
+
+
+class EducationFundDetails(AHCoFBase):
+    """Data_shapes.docx §2.17 — accountDetails shape when
+    accountType == "education_fund"."""
+
+    goal_name: str
+    target_amount: int
+    progress_percentage: int = 0
+    maturity_date: datetime | None = None
+
+
+class PurposeDrivenDetails(AHCoFBase):
+    """Data_shapes.docx §2.18 — accountDetails shape when
+    accountType == "purpose_driven"."""
+
+    goal_name: str
+    target_amount: int
+    progress_percentage: int = 0
+    maturity_date: datetime | None = None
+
+
 class ContributorInformation(AHCoFBase):
     """Data_shapes.docx §2.19."""
 
@@ -34,46 +65,81 @@ class ContributionHistoryItem(AHCoFBase):
     amount_contributed: int
 
 
-class SavingsAccountData(AHCoFBase):
-    """Data_shapes.docx §2.14 — the shared envelope every account type
-    carries. This is what the doc refers to as `data(object)` wherever it
-    shows up in a response.
+AccountType = Literal[
+    "regular_account",
+    "kidi_account",
+    "education_fund",
+    "purpose_driven",
+]
 
-    accountType/accountDetails are scoped to "regular_account" for now.
-    When kidi/education_fund/purpose_driven land, accountType becomes a
-    Literal union and accountDetails becomes a discriminated union keyed
-    on accountType.
-    """
+
+class SavingsAccountData(AHCoFBase):
+    """Data_shapes.docx §2.14 — the shared envelope every account type carries."""
 
     account_id: UUID
     member_id: UUID
     account_number: str
-    account_type: Literal["regular_account"]
+    account_type: AccountType
     account_status: Literal["active", "matured", "closed", "frozen"]
-    current_balance: int
+    current_balance: int = 0
     currency: str = "GHS"
     contribution_history: list[ContributionHistoryItem] = Field(default_factory=list)
     contributors_information: list[ContributorInformation] = Field(default_factory=list)
     created_at: datetime
     updated_at: datetime
-    interest_earned: int
-    auto_transfer: bool
-    account_details: RegularAccountDetails
+    interest_earned: int = 0
+    auto_transfer: bool = False
+    account_details: (
+        RegularAccountDetails
+        | KidiAccountDetails
+        | EducationFundDetails
+        | PurposeDrivenDetails
+        | dict
+    )
 
 
 class CreateRegularSavingsAccountRequest(AHCoFBase):
-    """Admin/seed-style creation payload. Data_shapes.docx has no member-
-    facing "create account" shape yet (account creation/provisioning is
-    still an open question) — this exists so we have real accounts to
-    retrieve through the read endpoints below.
+    """Data_shapes.docx §2.14 & §2.15 — payload when a member creates a regular account.
+
+    Matches the frontend contract exactly: amountContributedThatMonth is the
+    member's initial contribution (required), isPrimary is optional and
+    defaults to False. member_id, current_balance, interest_earned, and
+    auto_transfer are no longer accepted from the client — they're derived
+    server-side (member_id from the auth token; the rest start at zero/false
+    for a brand-new account).
     """
 
-    member_id: UUID
-    current_balance: int = Field(default=0, examples=[0])
-    interest_earned: int = Field(default=0, examples=[0])
-    auto_transfer: bool = Field(default=False)
-    amount_contributed_that_month: int = Field(default=0, examples=[0])
+    amount_contributed_that_month: int = Field(examples=[500])
     is_primary: bool = Field(default=False)
+
+
+class CreateKidiAccountRequest(AHCoFBase):
+    """Data_shapes.docx §2.14 & §2.16 — payload when creating a kidi account."""
+
+    child_name: str
+    child_id: str | None = None
+    next_transfer_date: datetime | None = None
+    next_transfer_amount: int | None = None
+    maturity_date: datetime | None = None
+    auto_transfer: bool = Field(default=False)
+
+
+class CreateEducationFundRequest(AHCoFBase):
+    """Data_shapes.docx §2.14 & §2.17 — payload when creating an education fund account."""
+
+    goal_name: str
+    target_amount: int
+    maturity_date: datetime | None = None
+    auto_transfer: bool = Field(default=False)
+
+
+class CreatePurposeDrivenRequest(AHCoFBase):
+    """Data_shapes.docx §2.14 & §2.18 — payload when creating a purpose-driven account."""
+
+    goal_name: str
+    target_amount: int
+    maturity_date: datetime | None = None
+    auto_transfer: bool = Field(default=False)
 
 
 class SingleAccountResponse(AHCoFBase):
@@ -84,9 +150,7 @@ class SingleAccountResponse(AHCoFBase):
 
 
 class AllAccountsResponse(AHCoFBase):
-    """Data_shapes.docx §2.22. `data(object)` in the doc just describes
-    the shape backing each item in `accounts` — there's no separate
-    literal `data` field in this response (confirmed with Drew)."""
+    """Data_shapes.docx §2.22."""
 
     status: Literal["success"] = "success"
     accounts: list[SavingsAccountData]

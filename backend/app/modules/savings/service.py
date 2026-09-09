@@ -11,7 +11,13 @@ from app.modules.savings.model import SavingsAccount
 from app.modules.savings.schema import (
     ContributionHistoryItem,
     ContributorInformation,
+    CreateEducationFundRequest,
+    CreateKidiAccountRequest,
+    CreatePurposeDrivenRequest,
     CreateRegularSavingsAccountRequest,
+    EducationFundDetails,
+    KidiAccountDetails,
+    PurposeDrivenDetails,
     RegularAccountDetails,
     SavingsAccountData,
 )
@@ -24,18 +30,109 @@ def _generate_account_number() -> str:
 def create_regular_savings_account(
     db: Session,
     payload: CreateRegularSavingsAccountRequest,
+    member_id: UUID,
 ) -> SavingsAccount:
     account = SavingsAccount(
-        member_id=payload.member_id,
+        member_id=member_id,
         account_number=_generate_account_number(),
         account_type="regular_account",
         account_status="active",
-        current_balance=payload.current_balance,
-        interest_earned=payload.interest_earned,
-        auto_transfer=payload.auto_transfer,
+        current_balance=payload.amount_contributed_that_month,
+        interest_earned=0,
+        auto_transfer=False,
         account_details={
             "amountContributedThatMonth": payload.amount_contributed_that_month,
             "isPrimary": payload.is_primary,
+        },
+    )
+
+    db.add(account)
+    db.commit()
+    db.refresh(account)
+    return account
+
+
+def create_kidi_savings_account(
+    db: Session,
+    payload: CreateKidiAccountRequest,
+    member_id: UUID,
+) -> SavingsAccount:
+    account = SavingsAccount(
+        member_id=member_id,
+        account_number=_generate_account_number(),
+        account_type="kidi_account",
+        account_status="active",
+        current_balance=0,
+        interest_earned=0,
+        auto_transfer=payload.auto_transfer,
+        account_details={
+            "childName": payload.child_name,
+            "childId": payload.child_id,
+            "nextTransferDate": payload.next_transfer_date.isoformat()
+            if payload.next_transfer_date
+            else None,
+            "nextTransferAmount": payload.next_transfer_amount,
+            "maturityDate": payload.maturity_date.isoformat()
+            if payload.maturity_date
+            else None,
+        },
+    )
+
+    db.add(account)
+    db.commit()
+    db.refresh(account)
+    return account
+
+
+def create_education_fund_account(
+    db: Session,
+    payload: CreateEducationFundRequest,
+    member_id: UUID,
+) -> SavingsAccount:
+    account = SavingsAccount(
+        member_id=member_id,
+        account_number=_generate_account_number(),
+        account_type="education_fund",
+        account_status="active",
+        current_balance=0,
+        interest_earned=0,
+        auto_transfer=payload.auto_transfer,
+        account_details={
+            "goalName": payload.goal_name,
+            "targetAmount": payload.target_amount,
+            "progressPercentage": 0,
+            "maturityDate": payload.maturity_date.isoformat()
+            if payload.maturity_date
+            else None,
+        },
+    )
+
+    db.add(account)
+    db.commit()
+    db.refresh(account)
+    return account
+
+
+def create_purpose_driven_account(
+    db: Session,
+    payload: CreatePurposeDrivenRequest,
+    member_id: UUID,
+) -> SavingsAccount:
+    account = SavingsAccount(
+        member_id=member_id,
+        account_number=_generate_account_number(),
+        account_type="purpose_driven",
+        account_status="active",
+        current_balance=0,
+        interest_earned=0,
+        auto_transfer=payload.auto_transfer,
+        account_details={
+            "goalName": payload.goal_name,
+            "targetAmount": payload.target_amount,
+            "progressPercentage": 0,
+            "maturityDate": payload.maturity_date.isoformat()
+            if payload.maturity_date
+            else None,
         },
     )
 
@@ -84,12 +181,29 @@ def get_contribution_history(
     return entries, total_count
 
 
+def _deserialize_account_details(
+    account_type: str, details: dict
+) -> (
+    RegularAccountDetails
+    | KidiAccountDetails
+    | EducationFundDetails
+    | PurposeDrivenDetails
+    | dict
+):
+    try:
+        if account_type == "kidi_account":
+            return KidiAccountDetails.model_validate(details)
+        if account_type == "education_fund":
+            return EducationFundDetails.model_validate(details)
+        if account_type == "purpose_driven":
+            return PurposeDrivenDetails.model_validate(details)
+        return RegularAccountDetails.model_validate(details)
+    except Exception:
+        return details
+
+
 def serialize_account(account: SavingsAccount) -> SavingsAccountData:
-    """Assembles the §2.14 envelope from the ORM object. Explicit field-by-
-    field mapping rather than `.model_validate(account, from_attributes=True)`
-    because accountId/accountDetails/contributorsInformation don't map
-    1:1 onto the ORM's column and relationship names.
-    """
+    """Assembles the §2.14 envelope from the ORM object."""
 
     return SavingsAccountData(
         account_id=account.id,
@@ -120,6 +234,7 @@ def serialize_account(account: SavingsAccount) -> SavingsAccountData:
         updated_at=account.updated_at,
         interest_earned=account.interest_earned,
         auto_transfer=account.auto_transfer,
-        account_details=RegularAccountDetails(**account.account_details),
+        account_details=_deserialize_account_details(
+            account.account_type, account.account_details or {}
+        ),
     )
-

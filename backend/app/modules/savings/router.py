@@ -14,11 +14,17 @@ from app.modules.savings.schema import (
     AllAccountsResponse,
     ContributionHistoryItem,
     ContributionHistoryResponse,
+    CreateEducationFundRequest,
+    CreateKidiAccountRequest,
+    CreatePurposeDrivenRequest,
     CreateRegularSavingsAccountRequest,
     PaginationMeta,
     SingleAccountResponse,
 )
 from app.modules.savings.service import (
+    create_education_fund_account,
+    create_kidi_savings_account,
+    create_purpose_driven_account,
     create_regular_savings_account,
     get_account_by_id,
     get_accounts_for_member,
@@ -37,22 +43,71 @@ router = APIRouter(
     response_model=SingleAccountResponse,
     response_model_by_alias=True,
     status_code=201,
-    summary="Create a regular savings account (seed/admin-style)",
+    summary="Create a regular savings account",
     description=(
-        "Not part of the member-facing contract — Data_shapes.docx has no "
-        "'create account' request shape yet. This exists so we have real "
-        "regular savings accounts to exercise the read endpoints below. "
-        "Takes a memberId directly rather than using the current session, "
-        "and has no admin-role check yet since none exists in this "
-        "codebase — do not expose this to real members as-is."
+        "Data_shapes.docx §2.14 & §2.15. Creates a regular savings account for "
+        "the authenticated member."
     ),
 )
 def create_regular_account(
     payload: CreateRegularSavingsAccountRequest,
+    current_member: Member = Depends(get_current_member),
     db: Session = Depends(get_db),
 ) -> SingleAccountResponse:
-    account = create_regular_savings_account(db, payload)
+    account = create_regular_savings_account(db, payload, member_id=current_member.id)
     return SingleAccountResponse(data=serialize_account(account))
+
+
+@router.post(
+    "/accounts/kidi",
+    response_model=SingleAccountResponse,
+    response_model_by_alias=True,
+    status_code=201,
+    summary="Create a Kidi savings account",
+    description="Data_shapes.docx §2.14 & §2.16. Creates a Kidi savings account for the authenticated member.",
+)
+def create_kidi_account(
+    payload: CreateKidiAccountRequest,
+    current_member: Member = Depends(get_current_member),
+    db: Session = Depends(get_db),
+) -> SingleAccountResponse:
+    account = create_kidi_savings_account(db, payload, member_id=current_member.id)
+    return SingleAccountResponse(data=serialize_account(account))
+
+
+@router.post(
+    "/accounts/education-fund",
+    response_model=SingleAccountResponse,
+    response_model_by_alias=True,
+    status_code=201,
+    summary="Create an Education Fund savings account",
+    description="Data_shapes.docx §2.14 & §2.17. Creates an Education Fund savings account for the authenticated member.",
+)
+def create_education_fund(
+    payload: CreateEducationFundRequest,
+    current_member: Member = Depends(get_current_member),
+    db: Session = Depends(get_db),
+) -> SingleAccountResponse:
+    account = create_education_fund_account(db, payload, member_id=current_member.id)
+    return SingleAccountResponse(data=serialize_account(account))
+
+
+@router.post(
+    "/accounts/purpose-driven",
+    response_model=SingleAccountResponse,
+    response_model_by_alias=True,
+    status_code=201,
+    summary="Create a Purpose-Driven savings account",
+    description="Data_shapes.docx §2.14 & §2.18. Creates a Purpose-Driven savings account for the authenticated member.",
+)
+def create_purpose_driven(
+    payload: CreatePurposeDrivenRequest,
+    current_member: Member = Depends(get_current_member),
+    db: Session = Depends(get_db),
+) -> SingleAccountResponse:
+    account = create_purpose_driven_account(db, payload, member_id=current_member.id)
+    return SingleAccountResponse(data=serialize_account(account))
+
 
 
 @router.get(
@@ -139,4 +194,3 @@ def retrieve_contribution_history(
             total_count=total_count,
         ),
     )
-

@@ -35,7 +35,7 @@ Use clear English names that describe purpose. Avoid abbreviations unless they a
 | Resource paths | lowercase plural nouns | `/members`, `/loan_applications`, `/transactions` |
 | Path parameters | snake_case | `/members/{member_id}` |
 | Query parameters | snake_case | `?start_date=...&transaction_type=...` |
-| JSON request/response fields | snake_case | `membership_id`, `phone_number`, `is_demo` |
+| JSON request/response fields | camelCase | `membershipId`, `phoneNumber`, `isDemo` |
 | HTTP headers | standard header names | `Authorization`, `Content-Type`, `X-Request-ID` |
 
 ## Database Naming
