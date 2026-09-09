@@ -67,6 +67,7 @@ export const colors = {
   backgroundlightGray: palette.gray200,
   backgroundLime: palette.mint200,
   backgroundModalItem: palette.green50,
+  backgroundForm: palette.gray100,
 
   //Text
   textLogo: palette.green700,

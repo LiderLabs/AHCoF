@@ -23,7 +23,7 @@ export function Input({ label, error, type = "text", containerClassName, ...rest
         : "default";
 
   return (
-    <View className={`w-full mb-4 ${containerClassName ?? ""}`}>
+    <View className={`w-full mb-4  ${containerClassName ?? ""}`}>
       {label && <Text className="mb-1 font-semibold">{label}</Text>}
 
       <View className="relative justify-center"> 

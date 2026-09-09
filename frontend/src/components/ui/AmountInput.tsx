@@ -20,8 +20,8 @@ export function AmountInput({
 
   
   return (
-    <Card>
-      <Text className="text-xs mb-2" style={{ color: "#9CA3AF" }}>
+    <Card className="mb-3">
+      <Text className="text-sm font-semibold mb-2" style={{ color: colors.primary }}>
         {label}
       </Text>
        <View className={`flex-row items-baseline ${presets.length > 0 ? "mb-4" : ""}`}>

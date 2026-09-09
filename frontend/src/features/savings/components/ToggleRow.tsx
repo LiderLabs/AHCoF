@@ -6,11 +6,13 @@ export function ToggleRow({
   description,
   value,
   onValueChange,
+  styleLabel,
 }: {
   label: string;
   description: string;
   value: boolean;
   onValueChange: (v: boolean) => void;
+  styleLabel?: object;
 }) {
   return (
     <View className="flex-row items-center justify-between py-4">

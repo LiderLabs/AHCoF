@@ -55,22 +55,22 @@ export function CreateKidiAccountScreen() {
         <Text className="m-auto text-2xl font-bold" style={{ color: colors.primary }}>Kidi Account</Text>
       </View>
 
-      <View>
-        <Text className="text-2xl font-bold" style={{ color: colors.primary }}>Open a Kidi account</Text>
+      <View className="ml-5 pt-2">
+        <Text className="text-xl font-semibold" style={{ color: colors.textPrimary }}>Open a Kidi account</Text>
         <Text className="text-md mt-1" style={{ color: "#6B7280" }}>
           Save toward a child's future, with scheduled transfers.
         </Text>
       </View>
 
-      <Card backgroundColor="#FFFFFF">
-        <Text className="text-sm font-semibold mb-2" style={{ color: colors.buttonTextPrimary }}>Child's name</Text>
+      <Card backgroundColor={colors.backgroundForm}>
+        <Text className="text-sm font-semibold mb-2 ml-2" style={{ color: colors.primary }}>Child's name</Text>
         <TextInput
           value={childName}
           onChangeText={setChildName}
           placeholder="e.g. Samuel"
           placeholderTextColor="#9CA3AF"
           className="rounded-xl px-4 py-3.5 text-base mb-4"
-          style={{ borderWidth: 1, borderColor: "#E7E3D8", color: colors.buttonTextPrimary }}
+          style={{ borderWidth: 1, borderColor: colors.primary, color: colors.textPrimary, backgroundColor: colors.background }}
         />
 
         <AmountInput
@@ -84,8 +84,8 @@ export function CreateKidiAccountScreen() {
 
         <View className="flex-row items-center justify-between pt-2">
           <View className="flex-1 pr-4">
-            <Text className="text-base font-semibold" style={{ color: colors.buttonTextPrimary }}>Enable auto-transfer</Text>
-            <Text className="text-sm mt-0.5 opacity-60" style={{ color: colors.buttonTextPrimary }}>
+            <Text className="text-base font-semibold" style={{ color: colors.textPrimary }}>Enable auto-transfer</Text>
+            <Text className="text-sm mt-0.5 opacity-60" style={{ color: colors.textPrimary }}>
               Automatically move funds on the scheduled date.
             </Text>
           </View>

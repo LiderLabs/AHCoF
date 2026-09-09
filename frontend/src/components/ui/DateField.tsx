@@ -26,7 +26,7 @@ export function DateField({ label, value, onChange, minimumDate }: DateFieldProp
 
   return (
     <View className="mb-4">
-      <Text className="text-sm font-semibold mb-2" style={{ color: colors.buttonTextPrimary }}>
+      <Text className="text-sm font-semibold mb-2 ml-2" style={{ color: colors.primary }}>
         {label}
       </Text>
       <Pressable
@@ -34,7 +34,7 @@ export function DateField({ label, value, onChange, minimumDate }: DateFieldProp
         className="flex-row items-center justify-between rounded-xl px-4 py-3.5"
         style={{ borderWidth: 1, borderColor: "#E7E3D8", backgroundColor: "#FFFFFF" }}
       >
-        <Text className="text-base" style={{ color: value ? colors.buttonTextPrimary : "#9CA3AF" }}>
+        <Text className="text-base" style={{ color: value ? colors.textPrimary : "#9CA3AF" }}>
           {formatted}
         </Text>
         <Calendar size={18} color="#6B7280" />

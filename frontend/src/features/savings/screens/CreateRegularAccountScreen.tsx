@@ -65,6 +65,7 @@ export function CreateRegularAccountScreen() {
           description="Your primary account is shown first and used by default."
           value={isPrimary}
           onValueChange={setIsPrimary}
+          styleLabel={{color: colors.primary}}
         />
         <View style={{ height: 1, backgroundColor: "#F0EDE4" }} />
         <ToggleRow
@@ -72,6 +73,7 @@ export function CreateRegularAccountScreen() {
           description="Automatically move a set amount into this account each month."
           value={autoTransfer}
           onValueChange={setAutoTransfer}
+          styleLabel={{color: colors.primary}}
         />
       </Card>
 
