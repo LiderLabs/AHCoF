@@ -39,10 +39,15 @@ export interface BaseSavingsAccount {
   contributorsInformation: ContributorInformation[];
 }
 
+// ---- Shared base for all create payloads ----
+export interface BaseCreateAccountPayload {
+  initialDeposit: number; // minor units (pesewas)
+  autoTransfer: boolean;
+}
+
 // ---- Regular Savings Account (matches doc section 2.15) ----
 
 export interface RegularAccountDetails {
-  amountContributedThatMonth: number; // minor units
   isPrimary: boolean;
 }
 
@@ -53,8 +58,7 @@ export interface RegularSavingsAccount extends BaseSavingsAccount {
 
 // ---- Regular Account request payload ----
 
-export interface CreateRegularAccountPayload {
-  autoTransfer?: boolean;
+export interface CreateRegularAccountPayload extends BaseCreateAccountPayload {
   isPrimary?: boolean;
 }
 
@@ -73,6 +77,7 @@ export type GetRegularAccountResponse = SavingsApiResponse<RegularSavingsAccount
 export interface AccountsListData {
   accounts: RegularSavingsAccount[];
 }
+
 export type GetAccountsListResponse = SavingsApiResponse<AccountsListData>;
 
 export interface ContributionsListData {
@@ -83,14 +88,14 @@ export interface ContributionsListData {
     totalCount: number;
   };
 }
+
 export type GetContributionsResponse = SavingsApiResponse<ContributionsListData>;
 
 // ---- Kidi Account ----
 
 export interface KidiAccountDetails {
+  childId: string;  
   childName: string;
-  nextTransferDate: string; // ISO8601
-  nextTransferAmount: number; // minor units
   maturityDate: string; // ISO8601
 }
 
@@ -99,12 +104,9 @@ export interface KidiAccount extends BaseSavingsAccount {
   accountDetails: KidiAccountDetails;
 }
 
-export interface CreateKidiAccountPayload {
+export interface CreateKidiAccountPayload extends BaseCreateAccountPayload {
   childName: string;
-  nextTransferDate: string;
-  nextTransferAmount: number;
   maturityDate: string;
-  autoTransfer?: boolean;
 }
 
 export type GetKidiAccountResponse = SavingsApiResponse<KidiAccount>;
@@ -114,7 +116,7 @@ export type GetKidiAccountResponse = SavingsApiResponse<KidiAccount>;
 export interface EducationFundDetails {
   goalName: string;
   targetAmount: number; // minor units
-  progressPercentage: number; // server-computed, not sent on create
+  progressPercentage: number; 
   maturityDate: string;
 }
 
@@ -123,11 +125,10 @@ export interface EducationFundAccount extends BaseSavingsAccount {
   accountDetails: EducationFundDetails;
 }
 
-export interface CreateEducationFundPayload {
+export interface CreateEducationFundPayload extends BaseCreateAccountPayload{
   goalName: string;
   targetAmount: number;
   maturityDate: string;
-  autoTransfer?: boolean;
 }
 
 export type GetEducationFundResponse = SavingsApiResponse<EducationFundAccount>;
@@ -146,11 +147,10 @@ export interface PurposeDrivenAccount extends BaseSavingsAccount {
   accountDetails: PurposeDrivenDetails;
 }
 
-export interface CreatePurposeDrivenPayload {
+export interface CreatePurposeDrivenPayload  extends BaseCreateAccountPayload{
   goalName: string;
   targetAmount: number;
   maturityDate: string;
-  autoTransfer?: boolean;
 }
 
 export type GetPurposeDrivenResponse = SavingsApiResponse<PurposeDrivenAccount>;

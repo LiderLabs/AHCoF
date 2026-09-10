@@ -28,6 +28,7 @@ export function CreateEducationFundScreen() {
     setSubmitting(true);
     try {
       const payload: CreateEducationFundPayload = {
+        initialDeposit: 0,
         goalName: goalName.trim(),
         targetAmount: Math.round(parseFloat(targetAmount) * 100),
         maturityDate: maturityDate.toISOString(),
