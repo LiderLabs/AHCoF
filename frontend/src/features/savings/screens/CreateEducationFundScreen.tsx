@@ -92,7 +92,7 @@ export function CreateEducationFundScreen() {
           style={{
             borderWidth: 1,
             borderColor: colors.primary,
-            color: colors.buttonTextPrimary,
+            color: colors.textPrimary,
             backgroundColor: colors.background,
           }}
         />
@@ -119,7 +119,7 @@ export function CreateEducationFundScreen() {
           style={{
             borderWidth: 1,
             borderColor: colors.primary,
-            color: colors.buttonTextPrimary,
+            color: colors.textPrimary,
           }}
         />
 

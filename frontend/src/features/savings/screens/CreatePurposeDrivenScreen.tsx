@@ -100,7 +100,7 @@ export function CreatePurposeDrivenScreen() {
         <AmountInput
           label="Initial deposit"
           value={initialDeposit}
-          onChangeValue={setTargetAmount}
+          onChangeValue={setInitialDeposit}
         />
 
         <Text
@@ -119,7 +119,7 @@ export function CreatePurposeDrivenScreen() {
           style={{
             borderWidth: 1,
             borderColor: colors.primary,
-            color: colors.buttonTextPrimary,
+            color: colors.textPrimary,
           }}
         />
 

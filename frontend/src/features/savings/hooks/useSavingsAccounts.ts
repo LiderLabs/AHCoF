@@ -16,7 +16,7 @@ export function useSavingsAccounts() {
       setAccounts(res.data.accounts);
     }
   } catch (err) {
-    console.error("Failed to fetch savings accounts:", err);
+    console.warn("Failed to fetch savings accounts:", err);
     setAccounts([]); // fall back to empty so the empty state can render
   } finally {
     setLoading(false);

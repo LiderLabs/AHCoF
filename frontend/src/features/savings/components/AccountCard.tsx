@@ -7,7 +7,6 @@ interface AccountCardProps {
   title: string;
   tag: string;
   balance: string;
-  monthlyContribution: string;
   interestEarned: string;
   refreshedLabel: string;
 }
@@ -17,7 +16,6 @@ export function AccountCard({
   title,
   tag,
   balance,
-  monthlyContribution,
   interestEarned,
   refreshedLabel,
 }: AccountCardProps) {
@@ -40,10 +38,6 @@ export function AccountCard({
         <View>
           <Text className="text-md" style={{ color: "#6B7280" }}>CURRENT BALANCE</Text>
           <Text className="text-xl font-bold mt-1" style={{ color: "#1B5E20" }}>{balance}</Text>
-        </View>
-        <View className="items-end">
-          <Text className="text-md" style={{ color: "#6B7280" }}>MONTHLY CONTRIBUTION</Text>
-          <Text className="text-base text-xl font-semibold mt-1">{monthlyContribution}</Text>
         </View>
       </View>
 

@@ -47,7 +47,6 @@ export default function SavingsScreen() {
       title="Regular Savings"
       tag={account.accountDetails.isPrimary ? "Primary Account" : undefined}
       balance={`GHS ${(account.currentBalance / 100).toFixed(2)}`}
-      monthlyContribution={`GHS ${(account.accountDetails.amountContributedThatMonth / 100).toFixed(2)}`}
       interestEarned={`GHS ${(account.interestEarned / 100).toFixed(2)}`}
       refreshedLabel="Just now"
     />
