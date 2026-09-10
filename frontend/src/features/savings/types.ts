@@ -106,7 +106,6 @@ export interface KidiAccount extends BaseSavingsAccount {
 
 export interface CreateKidiAccountPayload extends BaseCreateAccountPayload {
   childName: string;
-  maturityDate: string;
 }
 
 export type GetKidiAccountResponse = SavingsApiResponse<KidiAccount>;
@@ -128,7 +127,6 @@ export interface EducationFundAccount extends BaseSavingsAccount {
 export interface CreateEducationFundPayload extends BaseCreateAccountPayload{
   goalName: string;
   targetAmount: number;
-  maturityDate: string;
 }
 
 export type GetEducationFundResponse = SavingsApiResponse<EducationFundAccount>;
@@ -150,7 +148,6 @@ export interface PurposeDrivenAccount extends BaseSavingsAccount {
 export interface CreatePurposeDrivenPayload  extends BaseCreateAccountPayload{
   goalName: string;
   targetAmount: number;
-  maturityDate: string;
 }
 
 export type GetPurposeDrivenResponse = SavingsApiResponse<PurposeDrivenAccount>;

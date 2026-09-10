@@ -15,22 +15,25 @@ import type { CreatePurposeDrivenPayload } from "@/src/features/savings/types";
 export function CreatePurposeDrivenScreen() {
   const router = useRouter();
   const [goalName, setGoalName] = useState("");
+  const [initialDeposit, setInitialDeposit] = useState("");
   const [targetAmount, setTargetAmount] = useState("");
-  const [maturityDate, setMaturityDate] = useState<Date | null>(null);
   const [autoTransfer, setAutoTransfer] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
   const targetAmountValue = parseFloat(targetAmount) || 0;
-  const isValid = goalName.trim().length > 0 && targetAmountValue > 0 && maturityDate;
+  const isValid =
+    goalName.trim().length > 0 && targetAmountValue > 0;
 
   const handleSubmit = async () => {
-    if (!isValid || !maturityDate) return;
+    if (!isValid) return;
     setSubmitting(true);
     try {
       const payload: CreatePurposeDrivenPayload = {
+        initialDeposit: initialDeposit
+          ? Math.round(parseFloat(initialDeposit) * 100)
+          : undefined,
         goalName: goalName.trim(),
-        targetAmount :  Math.round(parseFloat(targetAmount) * 100),
-        maturityDate: maturityDate.toISOString(),
+        targetAmount: Math.round(parseFloat(targetAmount) * 100),
         autoTransfer,
       };
       const res = await createPurposeDrivenAccount(payload);
@@ -47,46 +50,110 @@ export function CreatePurposeDrivenScreen() {
   };
 
   return (
-    <ScrollView contentContainerStyle={{ padding: 16, gap: 20, paddingTop: 26 }} className="bg-white flex-1">
+    <ScrollView
+      contentContainerStyle={{ padding: 16, gap: 20, paddingTop: 26 }}
+      className="bg-white flex-1"
+    >
       <View className="pt-4 pb-1 -mb-5 flex-row items-center">
         <BackButton />
-        <Text className="text-2xl font-bold m-auto" style={{ color: colors.primary }}>Purpose Driven Account</Text>
+        <Text
+          className="text-2xl font-bold m-auto"
+          style={{ color: colors.primary }}
+        >
+          Purpose Driven Account
+        </Text>
       </View>
 
       <View className="pt-2 ml-5">
-        <Text className="text-xl font-semibold" style={{ color: colors.primary }}>Open a Purpose Driven account</Text>
+        <Text
+          className="text-xl font-semibold"
+          style={{ color: colors.primary }}
+        >
+          Open a Purpose Driven account
+        </Text>
         <Text className="text-md mt-1" style={{ color: "#6B7280" }}>
           Save toward anything: a target amount and a deadline.
         </Text>
       </View>
 
       <Card backgroundColor={colors.backgroundForm}>
-        <Text className="text-md font-semibold mb-2" style={{ color: colors.primary }}>Goal name</Text>
+        <Text
+          className="text-md font-semibold mb-2"
+          style={{ color: colors.primary }}
+        >
+          Goal name
+        </Text>
         <TextInput
           value={goalName}
           onChangeText={setGoalName}
           placeholder="e.g. New Laptop"
           placeholderTextColor="#9CA3AF"
           className="rounded-xl px-4 py-3.5 text-base mb-4"
-          style={{ borderWidth: 1, borderColor: colors.primary, color: colors.textPrimary, backgroundColor: colors.background }}
+          style={{
+            borderWidth: 1,
+            borderColor: colors.primary,
+            color: colors.textPrimary,
+            backgroundColor: colors.background,
+          }}
         />
 
-        <AmountInput label="Target amount" value={targetAmount} onChangeValue={setTargetAmount} />
+        <AmountInput
+          label="Initial deposit"
+          value={initialDeposit}
+          onChangeValue={setTargetAmount}
+        />
 
-        <DateField label="Maturity date" value={maturityDate} onChange={setMaturityDate} minimumDate={new Date()} />
+        <Text
+          className="text-sm font-semibold mb-2"
+          style={{ color: colors.primary }}
+        >
+          Target amount (GHS)
+        </Text>
+        <TextInput
+          value={targetAmount}
+          onChangeText={setTargetAmount}
+          keyboardType="decimal-pad"
+          placeholder="0.00"
+          placeholderTextColor="#9CA3AF"
+          className="rounded-xl px-4 py-3.5 text-base mb-4"
+          style={{
+            borderWidth: 1,
+            borderColor: colors.primary,
+            color: colors.buttonTextPrimary,
+          }}
+        />
 
         <View className="flex-row items-center justify-between pt-2">
           <View className="flex-1 pr-4">
-            <Text className="text-base font-semibold" style={{ color: colors.primary }}>Enable auto-transfer</Text>
-            <Text className="text-sm mt-0.5 opacity-60" style={{ color: colors.textPrimary }}>
+            <Text
+              className="text-base font-semibold"
+              style={{ color: colors.primary }}
+            >
+              Enable auto-transfer
+            </Text>
+            <Text
+              className="text-sm mt-0.5 opacity-60"
+              style={{ color: colors.textPrimary }}
+            >
               Automatically contribute toward this goal monthly.
             </Text>
           </View>
-          <Switch value={autoTransfer} onValueChange={setAutoTransfer} trackColor={{ false: "#D1D5DB", true: colors.primary }} thumbColor="#FFFFFF" />
+          <Switch
+            value={autoTransfer}
+            onValueChange={setAutoTransfer}
+            trackColor={{ false: "#D1D5DB", true: colors.primary }}
+            thumbColor="#FFFFFF"
+          />
         </View>
       </Card>
 
-      <Button label={submitting ? "Creating account…" : "Create Purpose Driven account"} onPress={handleSubmit} disabled={submitting || !isValid} />
+      <Button
+        label={
+          submitting ? "Creating account…" : "Create Purpose Driven account"
+        }
+        onPress={handleSubmit}
+        disabled={submitting || !isValid}
+      />
     </ScrollView>
   );
 }

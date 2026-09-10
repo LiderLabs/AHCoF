@@ -32,12 +32,12 @@ export function DateField({ label, value, onChange, minimumDate }: DateFieldProp
       <Pressable
         onPress={() => setShowPicker(true)}
         className="flex-row items-center justify-between rounded-xl px-4 py-3.5"
-        style={{ borderWidth: 1, borderColor: "#E7E3D8", backgroundColor: "#FFFFFF" }}
+        style={{ borderWidth: 1, borderColor: colors.textPrimary, backgroundColor: "#FFFFFF" }}
       >
         <Text className="text-base" style={{ color: value ? colors.textPrimary : "#9CA3AF" }}>
           {formatted}
         </Text>
-        <Calendar size={18} color="#6B7280" />
+        <Calendar size={18} color={colors.primary} />
       </Pressable>
 
       {showPicker && (
