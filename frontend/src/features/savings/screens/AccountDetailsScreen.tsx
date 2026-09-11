@@ -10,6 +10,9 @@ import { colors } from "@/src/constants/colors";
 import { getAccountById } from "@/src/features/savings/api/savingsApi";
 import type { RegularSavingsAccount } from "@/src/features/savings/types";
 
+import { ACCOUNT_TYPE_LABELS } from "@/src/constants/constants";
+import { ScheduleTransferSection } from "@/src/features/savings/components/ScheduleTransferSection";
+
 interface AccountDetailsScreenProps {
   accountId: string;
 }
@@ -44,42 +47,47 @@ export function AccountDetailsScreen({ accountId }: AccountDetailsScreenProps) {
     );
   }
 
+  const accountTypeLabel = ACCOUNT_TYPE_LABELS[account.accountType];
+
   return (
     <ScrollView contentContainerStyle={{ padding: 16, gap: 20, paddingTop: 26 }} className="bg-white flex-1">
-      <View className="pt-0 pb-1 -mb-5">
+      <View className="pt-4 pb-1 -mb-5 flex-row items-center">
         <BackButton />
+         <Text className="text-xl font-bold m-auto" style={{ color: colors.primary }}>{accountTypeLabel} Account</Text>
       </View>
 
       <View className="flex-row items-center gap-3">
-        <View
-          className="w-12 h-12 rounded-full items-center justify-center"
-          style={{ backgroundColor: colors.primary }}
-        >
-          <PiggyBank size={22} color="white" />
-        </View>
         <View>
-          <Text className="text-xl font-bold" style={{ color: colors.primary }}>Regular Savings</Text>
           {account.accountDetails.isPrimary && (
             <Text className="text-xs" style={{ color: "#6B7280" }}>Primary Account</Text>
           )}
         </View>
       </View>
 
-      <Card backgroundColor="#FFFFFF">
-        <Text className="text-xs uppercase" style={{ color: "#6B7280" }}>Current Balance</Text>
-        <Text className="text-3xl font-bold mt-1" style={{ color: colors.primary }}>
+      <Card backgroundColor={colors.backgroundForm}>
+        <View className="gap-2 flex-row">
+           <Text className="text-xl uppercase flex-1" style={{ color: "#6B7280" }}>Account Number: </Text>
+           <Text className="text-xl font-bold">{account.accountNumber}</Text>
+        </View>
+
+         <Text className="text-xl pt-2" style={{ color: "#6B7280" }}>Account Status</Text>
+        <Text className="text-xl font-bold mt-1" style={{ color: colors.primary }}>
+          {account.accountStatus}
+        </Text>
+       
+        <Text className="text-xl pt-2" style={{ color: "#6B7280" }}>Current Balance</Text>
+        <Text className="text-xl font-bold mt-1" style={{ color: colors.primary }}>
           GHS {(account.currentBalance / 100).toFixed(2)}
+        </Text>
+
+         <Text className="text-xl pt-2" style={{ color: "#6B7280" }}>Account Type</Text>
+        <Text className="text-xl font-bold mt-1" style={{ color: colors.primary }}>
+          {account.accountType}
         </Text>
 
         <View className="flex-row justify-between mt-5">
           <View>
-            <Text className="text-xs" style={{ color: "#6B7280" }}>This month</Text>
-            <Text className="text-base font-semibold">
-              GHS {(account.accountDetails.amountContributedThatMonth / 100).toFixed(2)}
-            </Text>
-          </View>
-          <View>
-            <Text className="text-xs" style={{ color: "#6B7280" }}>Interest earned</Text>
+            <Text className="text-xl" style={{ color: "#6B7280" }}>Interest Earned</Text>
             <Text className="text-base font-semibold" style={{ color: colors.primary }}>
               GHS {(account.interestEarned / 100).toFixed(2)}
             </Text>
@@ -87,12 +95,14 @@ export function AccountDetailsScreen({ accountId }: AccountDetailsScreenProps) {
         </View>
       </Card>
 
+      <ScheduleTransferSection accountId={account.accountId} />
+
       <View className="flex-row gap-3">
         <Button
           label="Add Contribution"
           onPress={() => router.push(`/savings/account/${account.accountId}/contribute`)}
           fullWidth={false}
-          className="flex-1"
+          className="flex-1 py-3"
         />
         <Button
           label="View History"

@@ -1,4 +1,4 @@
-
+import type { ScheduleTransferPayload, ScheduleTransferResponse } from "../types";
 import type {
   CreateRegularAccountPayload,
   GetRegularAccountResponse,
@@ -54,6 +54,17 @@ export async function createPurposeDrivenAccount(
   payload: CreatePurposeDrivenPayload
 ): Promise<GetPurposeDrivenResponse> {
   return api<GetPurposeDrivenResponse>("/savings/accounts/purpose-driven", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
+export async function scheduleTransfer(
+  accountId: string,
+  payload: ScheduleTransferPayload
+): Promise<ScheduleTransferResponse> {
+  // TODO: confirm actual path with backend
+  return api<ScheduleTransferResponse>(`/api/v1/savings/accounts/${accountId}/scheduled-transfers`, {
     method: "POST",
     body: JSON.stringify(payload),
   });

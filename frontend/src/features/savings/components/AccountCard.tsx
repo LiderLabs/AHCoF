@@ -29,9 +29,6 @@ export function AccountCard({
           {icon}
         </View>
         <Text className="font-bold text-base text-lg">{title}</Text>
-        <View className="rounded-full px-2 py-1" style={{ backgroundColor: "#F3F4F6" }}>
-          <Text className="text-xs" style={{ color: "#6B7280" }}>{tag}</Text>
-        </View>
       </View>
 
       <View className="flex-row justify-between mb-4">

@@ -151,3 +151,26 @@ export interface CreatePurposeDrivenPayload  extends BaseCreateAccountPayload{
 }
 
 export type GetPurposeDrivenResponse = SavingsApiResponse<PurposeDrivenAccount>;
+
+//for the scheduling of transactions on the savings account detail page
+export type TransferScheduleType = "one_time" | "recurring";
+export type TransferFrequency = "weekly" | "monthly";
+
+export interface ScheduleTransferPayload {
+  amount: number; // minor units
+  scheduleType: TransferScheduleType;
+  transferDate: string; // ISO8601 
+  frequency?: TransferFrequency; // required when scheduleType is "recurring"
+}
+
+export interface ScheduledTransfer {
+  scheduledTransferId: string;
+  accountId: string;
+  amount: number;
+  scheduleType: TransferScheduleType;
+  frequency?: TransferFrequency;
+  nextTransferDate: string;
+  createdAt: string;
+}
+
+export type ScheduleTransferResponse = SavingsApiResponse<ScheduledTransfer>;
