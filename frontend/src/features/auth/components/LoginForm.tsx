@@ -41,7 +41,7 @@ export function LoginForm() {
       setIsSubmitting(true);
       const response = await login(result.data);
       setAuth(response.member, response.accessToken, response.refreshToken);
-      router.replace("/savings/savingspage");
+      router.replace("/portfolio");
     } catch (err) {
       setFormError(err instanceof Error ? err.message : "Login failed. Try again.");
     } finally {
