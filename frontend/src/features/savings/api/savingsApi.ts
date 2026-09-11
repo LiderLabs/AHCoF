@@ -23,7 +23,7 @@ export async function createRegularAccount(
 }
 
 export async function getSavingsAccounts(): Promise<GetAccountsListResponse> {
-  return api<GetAccountsListResponse>("/accounts");
+  return api<GetAccountsListResponse>("/savings/accounts");
 }
 
 export async function getAccountById(

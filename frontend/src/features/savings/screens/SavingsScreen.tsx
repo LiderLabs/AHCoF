@@ -44,8 +44,16 @@ export default function SavingsScreen() {
   >
     <AccountCard
       icon={<PiggyBank size={25} color="white" />}
-      title="Regular Savings"
-      tag={account.accountDetails.isPrimary ? "Primary Account" : undefined}
+      title={
+        account.accountType === "kidi_account"
+          ? "Kidi Savings"
+          : account.accountType === "education_fund"
+          ? "Education Fund"
+          : account.accountType === "purpose_driven"
+          ? "Purpose-Driven"
+          : "Regular Savings"
+      }
+      tag={account.accountDetails?.isPrimary ? "Primary Account" : undefined}
       balance={`GHS ${(account.currentBalance / 100).toFixed(2)}`}
       interestEarned={`GHS ${(account.interestEarned / 100).toFixed(2)}`}
       refreshedLabel="Just now"

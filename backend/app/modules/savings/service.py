@@ -1,14 +1,17 @@
 import uuid as uuid_lib
+from datetime import datetime, timezone
 from uuid import UUID
 
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
+from app.modules.savings.model import AccountContributor
 from app.modules.savings.model import (
     ContributionHistoryEntry as ContributionHistoryEntryModel,
 )
 from app.modules.savings.model import SavingsAccount
 from app.modules.savings.schema import (
+    ContributeToAccountRequest,
     ContributionHistoryItem,
     ContributorInformation,
     CreateEducationFundRequest,
@@ -27,6 +30,24 @@ def _generate_account_number() -> str:
     return f"SAV-{str(uuid_lib.uuid4())[:8].upper()}"
 
 
+def _generate_child_id() -> str:
+    return f"CHILD-{str(uuid_lib.uuid4())[:8].upper()}"
+
+
+def _as_aware_utc(value: datetime) -> datetime:
+    """Some DB drivers hand back naive datetimes for TIMESTAMPTZ columns.
+    Normalize so duration math against a fresh now() never breaks."""
+    if value.tzinfo is None:
+        return value.replace(tzinfo=timezone.utc)
+    return value
+
+
+def _progress_for(current_balance: int, target_amount: int) -> int:
+    if target_amount <= 0:
+        return 0
+    return min(100, (current_balance * 100) // target_amount)
+
+
 def create_regular_savings_account(
     db: Session,
     payload: CreateRegularSavingsAccountRequest,
@@ -37,11 +58,10 @@ def create_regular_savings_account(
         account_number=_generate_account_number(),
         account_type="regular_account",
         account_status="active",
-        current_balance=payload.amount_contributed_that_month,
+        current_balance=payload.initial_deposit,
         interest_earned=0,
-        auto_transfer=False,
+        auto_transfer=payload.auto_transfer,
         account_details={
-            "amountContributedThatMonth": payload.amount_contributed_that_month,
             "isPrimary": payload.is_primary,
         },
     )
@@ -62,19 +82,12 @@ def create_kidi_savings_account(
         account_number=_generate_account_number(),
         account_type="kidi_account",
         account_status="active",
-        current_balance=0,
+        current_balance=payload.initial_deposit,
         interest_earned=0,
         auto_transfer=payload.auto_transfer,
         account_details={
+            "childId": _generate_child_id(),
             "childName": payload.child_name,
-            "childId": payload.child_id,
-            "nextTransferDate": payload.next_transfer_date.isoformat()
-            if payload.next_transfer_date
-            else None,
-            "nextTransferAmount": payload.next_transfer_amount,
-            "maturityDate": payload.maturity_date.isoformat()
-            if payload.maturity_date
-            else None,
         },
     )
 
@@ -89,21 +102,25 @@ def create_education_fund_account(
     payload: CreateEducationFundRequest,
     member_id: UUID,
 ) -> SavingsAccount:
+    now = datetime.now(timezone.utc)
+    progress = _progress_for(payload.initial_deposit, payload.target_amount)
+    maturity_date = now if progress >= 100 else None
+    days_to_maturity = 0 if progress >= 100 else None
+
     account = SavingsAccount(
         member_id=member_id,
         account_number=_generate_account_number(),
         account_type="education_fund",
         account_status="active",
-        current_balance=0,
+        current_balance=payload.initial_deposit,
         interest_earned=0,
         auto_transfer=payload.auto_transfer,
         account_details={
             "goalName": payload.goal_name,
             "targetAmount": payload.target_amount,
-            "progressPercentage": 0,
-            "maturityDate": payload.maturity_date.isoformat()
-            if payload.maturity_date
-            else None,
+            "progressPercentage": progress,
+            "maturityDate": maturity_date.isoformat() if maturity_date else None,
+            "daysToMaturity": days_to_maturity,
         },
     )
 
@@ -118,23 +135,81 @@ def create_purpose_driven_account(
     payload: CreatePurposeDrivenRequest,
     member_id: UUID,
 ) -> SavingsAccount:
+    now = datetime.now(timezone.utc)
+    progress = _progress_for(payload.initial_deposit, payload.target_amount)
+    maturity_date = now if progress >= 100 else None
+    days_to_maturity = 0 if progress >= 100 else None
+
     account = SavingsAccount(
         member_id=member_id,
         account_number=_generate_account_number(),
         account_type="purpose_driven",
         account_status="active",
-        current_balance=0,
+        current_balance=payload.initial_deposit,
         interest_earned=0,
         auto_transfer=payload.auto_transfer,
         account_details={
             "goalName": payload.goal_name,
             "targetAmount": payload.target_amount,
-            "progressPercentage": 0,
-            "maturityDate": payload.maturity_date.isoformat()
-            if payload.maturity_date
-            else None,
+            "progressPercentage": progress,
+            "maturityDate": maturity_date.isoformat() if maturity_date else None,
+            "daysToMaturity": days_to_maturity,
         },
     )
+
+    db.add(account)
+    db.commit()
+    db.refresh(account)
+    return account
+
+
+def contribute_to_account(
+    db: Session,
+    account: SavingsAccount,
+    payload: ContributeToAccountRequest,
+) -> SavingsAccount:
+    """A loved one / interested party (or the member themselves) topping
+    up an existing account. Updates currentBalance, logs the contribution,
+    logs a named contributor if one was given, and for goal-based account
+    types recomputes progressPercentage and stamps maturityDate/
+    daysToMaturity the moment the target is reached — once set, these
+    never move again even if the balance keeps growing."""
+
+    now = datetime.now(timezone.utc)
+
+    account.current_balance += payload.amount_contributed
+
+    db.add(
+        ContributionHistoryEntryModel(
+            account_id=account.id,
+            contribution_date=now,
+            amount_contributed=payload.amount_contributed,
+        )
+    )
+
+    if payload.contributors_name:
+        db.add(
+            AccountContributor(
+                account_id=account.id,
+                contributors_name=payload.contributors_name,
+                relationship_to_child=payload.relationship_to_child,
+                amount_contributed=payload.amount_contributed,
+                date_of_contribution=now,
+            )
+        )
+
+    if account.account_type in ("education_fund", "purpose_driven"):
+        details = dict(account.account_details or {})
+        target_amount = details.get("targetAmount", 0)
+        progress = _progress_for(account.current_balance, target_amount)
+        details["progressPercentage"] = progress
+
+        if progress >= 100 and not details.get("maturityDate"):
+            created_at = _as_aware_utc(account.created_at)
+            details["maturityDate"] = now.isoformat()
+            details["daysToMaturity"] = (now - created_at).days
+
+        account.account_details = details
 
     db.add(account)
     db.commit()

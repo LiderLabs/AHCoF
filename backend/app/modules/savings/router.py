@@ -12,6 +12,7 @@ from app.modules.auth.dependencies import get_current_member
 from app.modules.members.model import Member
 from app.modules.savings.schema import (
     AllAccountsResponse,
+    ContributeToAccountRequest,
     ContributionHistoryItem,
     ContributionHistoryResponse,
     CreateEducationFundRequest,
@@ -22,6 +23,7 @@ from app.modules.savings.schema import (
     SingleAccountResponse,
 )
 from app.modules.savings.service import (
+    contribute_to_account,
     create_education_fund_account,
     create_kidi_savings_account,
     create_purpose_driven_account,
@@ -54,7 +56,8 @@ def create_regular_account(
     current_member: Member = Depends(get_current_member),
     db: Session = Depends(get_db),
 ) -> SingleAccountResponse:
-    account = create_regular_savings_account(db, payload, member_id=current_member.id)
+    target_member_id = payload.member_id or current_member.id
+    account = create_regular_savings_account(db, payload, member_id=target_member_id)
     return SingleAccountResponse(data=serialize_account(account))
 
 
@@ -194,3 +197,38 @@ def retrieve_contribution_history(
             total_count=total_count,
         ),
     )
+
+
+@router.post(
+    "/accounts/{account_id}/contributions",
+    response_model=SingleAccountResponse,
+    response_model_by_alias=True,
+    status_code=201,
+    summary="Contribute to a savings account",
+    description=(
+        "Data_shapes.docx §2.28 & §2.29. Records a contribution from a "
+        "loved one/interested party (or the member themselves) against an "
+        "existing account, updating the balance and, for education-fund "
+        "and purpose-driven accounts, progress toward the target."
+    ),
+    responses={
+        404: {"description": "Account not found."},
+        403: {"description": "Account exists but belongs to a different member."},
+    },
+)
+def contribute_to_savings_account(
+    account_id: UUID,
+    payload: ContributeToAccountRequest,
+    current_member: Member = Depends(get_current_member),
+    db: Session = Depends(get_db),
+) -> SingleAccountResponse:
+    account = get_account_by_id(db, account_id)
+
+    if account is None:
+        raise SavingsAccountNotFoundError()
+
+    if account.member_id != current_member.id:
+        raise SavingsAccountAccessDeniedError()
+
+    account = contribute_to_account(db, account, payload)
+    return SingleAccountResponse(data=serialize_account(account))

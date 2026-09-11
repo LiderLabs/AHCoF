@@ -43,13 +43,15 @@ TYPE_CHOICES = {
 def _create_one(db, account_type: str, member_id, args) -> None:
     if account_type == "regular_account":
         payload = CreateRegularSavingsAccountRequest(
-            amount_contributed_that_month=args.amount,
+            initial_deposit=args.amount,
+            auto_transfer=False,
             is_primary=False,
         )
         create_regular_savings_account(db, payload, member_id)
 
     elif account_type == "kidi_account":
         payload = CreateKidiAccountRequest(
+            initial_deposit=args.amount,
             auto_transfer=False,
             child_name=args.child_name,
         )
@@ -57,6 +59,7 @@ def _create_one(db, account_type: str, member_id, args) -> None:
 
     elif account_type == "education_fund":
         payload = CreateEducationFundRequest(
+            initial_deposit=args.amount,
             auto_transfer=False,
             goal_name=args.goal_name,
             target_amount=args.target_amount,
@@ -65,6 +68,7 @@ def _create_one(db, account_type: str, member_id, args) -> None:
 
     elif account_type == "purpose_driven":
         payload = CreatePurposeDrivenRequest(
+            initial_deposit=args.amount,
             auto_transfer=False,
             goal_name=args.goal_name,
             target_amount=args.target_amount,

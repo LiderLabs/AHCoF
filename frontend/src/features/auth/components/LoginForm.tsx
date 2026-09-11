@@ -41,14 +41,12 @@ export function LoginForm() {
       setIsSubmitting(true);
       const response = await login(result.data);
       setAuth(response.member, response.accessToken, response.refreshToken);
-      router.replace("/portfolio");
+      router.replace("/savings/savingspage");
     } catch (err) {
       setFormError(err instanceof Error ? err.message : "Login failed. Try again.");
     } finally {
       setIsSubmitting(false);
     }
-
-    router.replace("/completeprofile");
   };
 
   return (
