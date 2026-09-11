@@ -7,6 +7,9 @@ Documentation for developers working on the AHCoF member mobile app (frontend).
 - [Getting Started](./setup.md)
 - [User Flow](./user-flow.md)  
 - [Folder Structure](./folder-structure.md)  
+- [Project Status(progress)](./progress.md)
+- [Data Shapes](./data-shapes.md)  
+- [Quick reference](./quick-reference.md)  
 
 ## Project Overview
 
