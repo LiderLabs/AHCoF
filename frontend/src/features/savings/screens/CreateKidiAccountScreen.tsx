@@ -24,12 +24,11 @@ export function CreateKidiAccountScreen() {
     if (!isValid) return;
     setSubmitting(true);
     try {
+      const depositValue = initialDeposit ? Math.round(parseFloat(initialDeposit) * 100) : 5000;
       const payload: CreateKidiAccountPayload = {
         childName: childName.trim(),
         autoTransfer,
-        initialDeposit: initialDeposit
-          ? Math.round(parseFloat(initialDeposit) * 100)
-          : undefined,
+        initialDeposit: depositValue,
       };
       const res = await createKidiAccount(payload);
       if (res.status === "success") {

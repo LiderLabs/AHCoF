@@ -21,17 +21,16 @@ export function CreateRegularAccountScreen() {
   const handleSubmit = async () => {
     setSubmitting(true);
     try {
+      const depositValue = initialDeposit ? Math.round(parseFloat(initialDeposit) * 100) : 5000;
       const payload: CreateRegularAccountPayload = {
-        initialDeposit: initialDeposit
-          ? Math.round(parseFloat(initialDeposit) * 100)
-          : undefined,
+        initialDeposit: depositValue,
         isPrimary,
         autoTransfer,
       };
       const res = await createRegularAccount(payload);
 
       if (res.status === "success") {
-        router.replace("/savings");
+        router.replace("/savings/savingspage");
       } else {
         console.error("Account creation failed:", res);
       }

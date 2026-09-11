@@ -28,10 +28,9 @@ export function CreatePurposeDrivenScreen() {
     if (!isValid) return;
     setSubmitting(true);
     try {
+      const depositValue = initialDeposit ? Math.round(parseFloat(initialDeposit) * 100) : 5000;
       const payload: CreatePurposeDrivenPayload = {
-        initialDeposit: initialDeposit
-          ? Math.round(parseFloat(initialDeposit) * 100)
-          : undefined,
+        initialDeposit: depositValue,
         goalName: goalName.trim(),
         targetAmount: Math.round(parseFloat(targetAmount) * 100),
         autoTransfer,
